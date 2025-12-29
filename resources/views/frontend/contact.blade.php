@@ -74,7 +74,7 @@
                                     </div>
                                 </div>
                                 <div class="text-right">
-                                    <button type="submit" class="btn btn-primary rounded-pill py-3 px-5 font-weight-bold shadow-sm transition-hover">
+                                    <button type="submit" class="btn btn-primary btn-rounded py-3 px-5 font-weight-bold shadow-sm transition-hover">
                                         <i class="fa fa-paper-plane mr-2"></i> {{ __('frontend.send_message') }}
                                     </button>
                                 </div>
@@ -149,12 +149,14 @@
     </div>
 </div>
 
-<style>
     /* Custom Utils for BS4 Compatibility */
     .bg-white-glass { background: rgba(255, 255, 255, 0.2) !important; backdrop-filter: blur(5px); }
     .border-white-10 { border-color: rgba(255, 255, 255, 0.1) !important; }
     .opacity-10 { opacity: 0.1; }
     .ls-1 { letter-spacing: 1px; }
+    
+    /* Button Styles */
+    .btn-rounded { border-radius: 50px !important; }
     
     /* Animations & Hover Effects */
     .transition-hover:hover { transform: translateY(-3px); box-shadow: 0 0.5rem 1rem rgba(13, 110, 253, 0.15); }
