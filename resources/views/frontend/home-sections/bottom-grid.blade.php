@@ -5,11 +5,11 @@
                 @foreach($gridArticles as $post)
                 <div class="col-lg-3 col-sm-6">
                     <div class="single-post-wrap style-overlay">
-                        <div class="thumb">
+                        <div class="thumb" style="height: 200px; overflow: hidden; border-radius: 5px;">
                             @if($post->featured_image)
-                                <img src="{{ asset('storage/' . $post->featured_image) }}" alt="img">
+                                <img src="{{ asset('storage/' . $post->featured_image) }}" alt="img" style="width: 100%; height: 100%; object-fit: cover;">
                             @else
-                                <div class="d-flex align-items-center justify-content-center bg-secondary" style="height: 200px; width: 100%;">
+                                <div class="d-flex align-items-center justify-content-center bg-secondary" style="height: 100%; width: 100%;">
                                     <i class="fa fa-newspaper-o text-white-50 fa-2x"></i>
                                 </div>
                             @endif
