@@ -59,4 +59,6 @@ return [
     'page_not_found' => 'Halaman Tidak Ditemukan',
     'page_not_found_desc' => 'Halaman yang Anda cari mungkin telah dihapus, namanya diubah, atau sedang tidak tersedia.',
     'back_to_home' => 'Kembali ke Beranda',
+    'all_articles' => 'Semua Artikel', // New Key
+    'no_articles' => 'Tidak ada artikel ditemukan.', // New Key
 ];

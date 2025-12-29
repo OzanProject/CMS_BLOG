@@ -59,4 +59,6 @@ return [
     'page_not_found' => 'Page Not Found',
     'page_not_found_desc' => 'The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.',
     'back_to_home' => 'Back to Home',
+    'all_articles' => 'All Articles', // New Key
+    'no_articles' => 'No articles found.', // New Key
 ];
