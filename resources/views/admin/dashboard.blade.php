@@ -194,21 +194,11 @@
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Articles', 'Categories', 'Comments', 'Users'],
+            labels: {!! json_encode($chartData['labels']) !!},
             datasets: [{
-                label: 'Total Count',
-                data: [
-                    {{ $stats['total_articles'] }}, 
-                    {{ $stats['total_categories'] }}, 
-                    {{ $stats['total_comments'] }}, 
-                    {{ $stats['total_users'] }}
-                ],
-                backgroundColor: [
-                    'rgba(235, 22, 22, .7)', // Primary
-                    'rgba(235, 22, 22, .5)',
-                    'rgba(235, 22, 22, .3)',
-                    'rgba(235, 22, 22, .1)'
-                ],
+                label: 'Articles Count',
+                data: {!! json_encode($chartData['data']) !!},
+                backgroundColor: 'rgba(235, 22, 22, .5)',
                 borderColor: 'rgba(235, 22, 22, 1)',
                 borderWidth: 1
             }]

@@ -27,10 +27,19 @@ class DashboardController extends Controller
             ];
         });
 
+        // Content Distribution Chart Data
+        $chartData = Cache::remember('admin_chart_data', 5 * 60, function () {
+            $categories = Category::withCount('articles')->get();
+            return [
+                'labels' => $categories->pluck('name'),
+                'data' => $categories->pluck('articles_count'),
+            ];
+        });
+
         $latest_articles = Article::with('user', 'category')->latest()->take(5)->get();
         $recent_comments = Comment::with('article')->latest()->take(5)->get();
         $tasks = \App\Models\Task::latest()->get();
 
-        return view('admin.dashboard', compact('stats', 'latest_articles', 'recent_comments', 'tasks'));
+        return view('admin.dashboard', compact('stats', 'latest_articles', 'recent_comments', 'tasks', 'chartData'));
     }
 }
