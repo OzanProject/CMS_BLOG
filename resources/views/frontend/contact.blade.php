@@ -74,8 +74,8 @@
                                     </div>
                                 </div>
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-primary btn-block btn-rounded py-3 font-weight-bold shadow-sm transition-hover" style="background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%); border: none;">
-                                        <i class="fa fa-paper-plane mr-2"></i> {{ __('frontend.send_message') }}
+                                    <button type="submit" class="btn btn-primary btn-block btn-rounded py-3 font-weight-bold shadow-sm transition-hover d-flex justify-content-center align-items-center" style="background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%); border: none;">
+                                        <i class="fa fa-paper-plane mr-3"></i> {{ __('frontend.send_message') }}
                                     </button>
                                 </div>
                             </form>
