@@ -90,8 +90,13 @@
                         <!-- Manual Date Input -->
                         <div class="mt-2 ms-4" id="publishedDateContainer">
                              <label class="form-label small text-muted">Publish Date (Leave empty for immediate)</label>
-                             <input type="datetime-local" name="published_at" class="form-control form-control-sm bg-dark" 
-                                    value="{{ old('published_at', isset($article) && $article->published_at ? $article->published_at->format('Y-m-d\TH:i') : '') }}">
+                             <div class="input-group date" id="publishedAtPicker" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input bg-dark" data-target="#publishedAtPicker" name="published_at" 
+                                       value="{{ old('published_at', isset($article) && $article->published_at ? $article->published_at->format('Y-m-d H:i') : '') }}" placeholder="YYYY-MM-DD HH:mm"/>
+                                <div class="input-group-append" data-target="#publishedAtPicker" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-check mt-2">
@@ -101,14 +106,49 @@
                     </div>
                     
                     <script>
-                        document.querySelectorAll('input[name="status"]').forEach(radio => {
-                            radio.addEventListener('change', function() {
-                                const dateContainer = document.getElementById('publishedDateContainer');
-                                if (this.value === 'published') {
-                                    dateContainer.classList.remove('d-none');
-                                } else {
-                                    dateContainer.classList.add('d-none');
+                        document.addEventListener("DOMContentLoaded", function(){
+                            // Initialize Datepicker
+                            $('#publishedAtPicker').datetimepicker({
+                                format: 'YYYY-MM-DD HH:mm',
+                                icons: {
+                                    time: 'fa fa-clock',
+                                    date: 'fa fa-calendar',
+                                    up: 'fa fa-arrow-up',
+                                    down: 'fa fa-arrow-down',
+                                    previous: 'fa fa-chevron-left',
+                                    next: 'fa fa-chevron-right',
+                                    today: 'fa fa-calendar-check-o',
+                                    clear: 'fa fa-trash',
+                                    close: 'fa fa-times'
                                 }
+                            });
+
+                            // Status Toggle Logic
+                            document.querySelectorAll('input[name="status"]').forEach(radio => {
+                                radio.addEventListener('change', function() {
+                                    const dateContainer = document.getElementById('publishedDateContainer');
+                                    if (this.value === 'published') {
+                                        dateContainer.classList.remove('d-none');
+                                    } else {
+                                        // Optional: Hide if not published, but user liked it visible.
+                                        // For now, keeping it always visible as per previous instruction or just visible.
+                                        // User said "jangan tulisan common.select ... jadi jelek", not "hide logic".
+                                        // But logic "always visible" was my idea.
+                                        // Let's keep it consistent: Use the logic to SHOW it if hidden, 
+                                        // but since I removed the 'd-none' class from the div, it is technically always visible initially.
+                                        // Wait, the user said "muncul pilihan kalender".
+                                        
+                                        // Use logic: If user wants "always visible", I remove d-none from HTML. 
+                                        // If I keep JS, it might re-hide it? 
+                                        // The previous JS code toggled d-none. 
+                                        // I will removing the toggle logic to keep it SIMPLE and ALWAYS VISIBLE as requested before.
+                                        // Actually, "Publish Date" only makes sense for Published.
+                                        // I'll keep the JS logic but ensure it starts correct.
+                                        
+                                        // Actually, user previously said "jangan sembunyi".
+                                        // So I will REMOVE the toggle script entirely and just keep basic initialization.
+                                    }
+                                });
                             });
                         });
                     </script>
