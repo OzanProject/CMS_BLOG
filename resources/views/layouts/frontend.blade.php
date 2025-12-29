@@ -120,11 +120,7 @@
                     <div class="col-xl-6 col-lg-5 align-self-center">
                         <div class="logo text-md-left text-center">
                             <a class="main-logo" href="{{ url('/') }}">
-                                @if(isset($settings['site_logo']))
-                                    <img src="{{ asset('storage/' . $settings['site_logo']) }}" alt="{{ $settings['site_name'] ?? 'Logo' }}" style="max-height: 60px;">
-                                @else
-                                    <h2 class="text-white mb-0" style="font-weight: 800; letter-spacing: 1px;">{{ $settings['site_name'] ?? 'DeepBlog' }}</h2>
-                                @endif
+                                <h2 class="text-white mb-0" style="font-weight: 800; letter-spacing: 1px;">{{ $settings['site_name'] ?? 'DeepBlog' }}</h2>
                             </a>
                         </div>
                     </div>
@@ -144,11 +140,7 @@
                 <div class="responsive-mobile-menu">
                     <div class="logo d-lg-none d-block">
                         <a class="main-logo" href="{{ url('/') }}">
-                             @if(isset($settings['site_logo']))
-                                <img src="{{ asset('storage/' . $settings['site_logo']) }}" alt="{{ $settings['site_name'] ?? 'Logo' }}" style="max-height: 50px;">
-                             @else
-                                <h4 class="mb-0 text-white" style="font-weight: 800; letter-spacing: 0.5px;">{{ $settings['site_name'] ?? 'DeepBlog' }}</h4>
-                             @endif
+                             <h4 class="mb-0 text-white" style="font-weight: 800; letter-spacing: 0.5px;">{{ $settings['site_name'] ?? 'DeepBlog' }}</h4>
                         </a>
                     </div>
                     <button class="menu toggle-btn d-block d-lg-none" data-target="#nextpage_main_menu" 
