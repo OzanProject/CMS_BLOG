@@ -8,6 +8,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cache;
 
 class ArticleController extends Controller
 {
@@ -79,6 +80,7 @@ class ArticleController extends Controller
         $data['is_trending'] = $request->has('is_trending');
 
         Article::create($data);
+        Cache::forget('admin_dashboard_stats');
 
         return redirect()->route('admin.articles.index')->with('success', 'Article created successfully!');
     }
@@ -130,6 +132,7 @@ class ArticleController extends Controller
         $data['is_trending'] = $request->has('is_trending');
 
         $article->update($data);
+        Cache::forget('admin_dashboard_stats');
 
         return redirect()->route('admin.articles.index')->with('success', 'Article updated successfully!');
     }
@@ -147,6 +150,7 @@ class ArticleController extends Controller
         }
         
         $article->delete();
+        Cache::forget('admin_dashboard_stats');
         return redirect()->back()->with('success', 'Article deleted successfully!');
     }
 
@@ -171,6 +175,7 @@ class ArticleController extends Controller
                     Storage::disk('public')->delete($article->featured_image);
                 }
                 $article->delete();
+                Cache::forget('admin_dashboard_stats');
             }
         }
 
