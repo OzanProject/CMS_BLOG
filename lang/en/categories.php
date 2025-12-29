@@ -1,0 +1,12 @@
+<?php
+
+return [
+    'title' => 'Categories',
+    'list' => 'Category List',
+    'add_new' => 'Add Category',
+    'edit_category' => 'Edit Category',
+    'name' => 'Category Name',
+    'slug' => 'Slug',
+    'article_count' => 'Articles',
+    'description' => 'Description',
+];
