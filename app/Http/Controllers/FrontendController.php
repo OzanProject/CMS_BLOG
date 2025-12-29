@@ -188,4 +188,21 @@ class FrontendController extends Controller
         $settings = \App\Models\Configuration::pluck('value', 'key');
         return view('frontend.categories.index', compact('categories', 'settings'));
     }
+
+    public function articles()
+    {
+        $articles = Article::with(['user', 'category'])
+            ->where('status', 'published')
+            ->latest()
+            ->paginate(12);
+
+        $recentArticles = Article::where('status', 'published')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $settings = \App\Models\Configuration::pluck('value', 'key');
+
+        return view('frontend.articles.index', compact('articles', 'recentArticles', 'settings'));
+    }
 }

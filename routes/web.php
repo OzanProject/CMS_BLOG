@@ -88,6 +88,8 @@ Route::get('/p/{slug}', [App\Http\Controllers\PublicPageController::class, 'show
 Route::get('/search', [App\Http\Controllers\FrontendController::class, 'search'])->name('search');
 Route::get('/category', [App\Http\Controllers\FrontendController::class, 'allCategories'])->name('category.index');
 Route::get('/category/{slug}', [App\Http\Controllers\FrontendController::class, 'showCategory'])->name('category.show');
+Route::get('/article', [App\Http\Controllers\FrontendController::class, 'articles'])->name('article.index'); // Fixed: Route for /article
+Route::get('/articles', [App\Http\Controllers\FrontendController::class, 'articles']); // Alias
 Route::get('/article/{slug}', [App\Http\Controllers\FrontendController::class, 'showArticle'])->name('article.show');
 Route::post('/article/{slug}/comment', [App\Http\Controllers\FrontendController::class, 'storeComment'])->name('article.comment');
 Route::get('/author/{username}', [App\Http\Controllers\FrontendController::class, 'showAuthor'])->name('author.show');
