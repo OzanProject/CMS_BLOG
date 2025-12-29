@@ -1,8 +1,8 @@
     <div class="bg-sky pd-top-80 pd-bottom-50" id="grid">
         <div class="container">
             <div class="row">
-                @if(isset($latestArticles))
-                @foreach($latestArticles->shuffle()->take(4) as $post)
+                @if(isset($gridArticles))
+                @foreach($gridArticles as $post)
                 <div class="col-lg-3 col-sm-6">
                     <div class="single-post-wrap style-overlay">
                         <div class="thumb">
