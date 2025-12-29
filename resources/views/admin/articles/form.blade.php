@@ -149,6 +149,12 @@
             menubar: false,
             plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
             toolbar: 'undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media link anchor codesample',
+            
+            // URL Configuration for Portability
+            relative_urls: false,
+            remove_script_host: true,
+            convert_urls: true,
+            document_base_url: '{{ url("/") }}/',
             quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
             toolbar_mode: 'sliding',
             skin: 'oxide-dark',
