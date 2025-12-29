@@ -2,7 +2,7 @@
 
 A powerful, modern, and SEO-optimized Content Management System built with **Laravel**. Designed for performance, security, and ease of use.
 
-![Dashboard Preview](https://via.placeholder.com/800x400?text=DeepBlog+Admin+Dashboard)
+![Dashboard Preview](public/dashboard-preview.png)
 
 ## ✨ Key Features
 
