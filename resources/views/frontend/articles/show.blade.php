@@ -122,8 +122,8 @@
                         <div class="row">
                             @foreach($relatedArticles as $related)
                             <div class="col-md-4">
-                                <div class="single-post-wrap style-overlay">
-                                    <div class="thumb" style="height: 150px; overflow: hidden; border-radius: 5px;">
+                                <div class="single-post-wrap card border-0 h-100 shadow-sm">
+                                    <div class="thumb" style="height: 150px; overflow: hidden; border-radius: 5px 5px 0 0;">
                                         @if($related->featured_image)
                                             <img src="{{ asset('storage/' . $related->featured_image) }}" alt="{{ $related->title }}" style="width: 100%; height: 100%; object-fit: cover;">
                                         @else
@@ -134,9 +134,9 @@
                                     </div>
                                     <div class="details p-3">
                                         <div class="post-meta-single mb-2">
-                                            <p class="m-0"><i class="fa fa-clock-o"></i> {{ $related->created_at->translatedFormat('d M Y') }}</p>
+                                            <p class="m-0 text-muted small"><i class="fa fa-clock-o"></i> {{ $related->created_at->translatedFormat('d M Y') }}</p>
                                         </div>
-                                        <h6 class="title m-0"><a href="{{ route('article.show', $related->slug) }}">{{ Str::limit($related->title, 40) }}</a></h6>
+                                        <h6 class="title m-0" style="line-height: 1.5; font-size: 16px;"><a href="{{ route('article.show', $related->slug) }}" class="text-dark">{{ Str::limit($related->title, 55) }}</a></h6>
                                     </div>
                                 </div>
                             </div>
