@@ -66,20 +66,20 @@
                     <h6 class="title">{{ __('frontend.recent_posts') }}</h6>
                 </div>
                 @foreach($recentArticles as $recent)
-                <div class="media-post-wrap-2 media">
-                    <div class="thumb">
+                <div class="media-post-wrap-2 media d-flex align-items-center mb-3">
+                    <div class="thumb" style="width: 80px; height: 80px; flex-shrink: 0; overflow: hidden; border-radius: 5px; margin-right: 15px;">
                         @if($recent->featured_image)
-                            <img src="{{ asset('storage/' . $recent->featured_image) }}" alt="{{ $recent->title }}">
+                            <img src="{{ asset('storage/' . $recent->featured_image) }}" alt="{{ $recent->title }}" style="width: 100%; height: 100%; object-fit: cover;">
                         @else
-                            <div class="d-flex align-items-center justify-content-center bg-light" style="height: 80px; width: 80px;">
+                            <div class="d-flex align-items-center justify-content-center bg-light" style="width: 100%; height: 100%;">
                                 <i class="fa fa-file-text-o text-secondary fa-lg"></i>
                             </div>
                         @endif
                     </div>
                     <div class="media-body">
-                        <h6><a href="{{ route('article.show', $recent->slug) }}">{{ Str::limit($recent->title, 50) }}</a></h6>
-                        <div class="meta">
-                            <span class="date"><i class="fa fa-clock-o"></i>{{ $recent->created_at->translatedFormat('d M Y') }}</span>
+                        <h6 class="m-0" style="line-height: 1.4;"><a href="{{ route('article.show', $recent->slug) }}" class="text-dark">{{ Str::limit($recent->title, 50) }}</a></h6>
+                        <div class="meta text-muted small mt-1">
+                            <span class="date"><i class="fa fa-clock-o"></i> {{ $recent->created_at->translatedFormat('d M Y') }}</span>
                         </div>
                     </div>
                 </div>
