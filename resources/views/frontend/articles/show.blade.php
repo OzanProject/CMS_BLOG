@@ -120,11 +120,11 @@
                             @foreach($relatedArticles as $related)
                             <div class="col-md-4">
                                 <div class="single-post-wrap style-overlay">
-                                    <div class="thumb">
+                                    <div class="thumb" style="height: 150px; overflow: hidden; border-radius: 5px;">
                                         @if($related->featured_image)
-                                            <img src="{{ asset('storage/' . $related->featured_image) }}" alt="{{ $related->title }}">
+                                            <img src="{{ asset('storage/' . $related->featured_image) }}" alt="{{ $related->title }}" style="width: 100%; height: 100%; object-fit: cover;">
                                         @else
-                                            <div class="d-flex align-items-center justify-content-center bg-dark" style="height: 150px; width: 100%;">
+                                            <div class="d-flex align-items-center justify-content-center bg-dark" style="height: 100%; width: 100%;">
                                                 <i class="fa fa-newspaper-o text-white-50 fa-2x"></i>
                                             </div>
                                         @endif
