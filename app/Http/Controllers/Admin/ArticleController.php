@@ -18,7 +18,7 @@ class ArticleController extends Controller
     {
         $query = Article::with(['category', 'user']);
 
-        if (auth()->user()->role !== 1) {
+        if (auth()->user()->role != 1) {
             $query->where('user_id', auth()->id());
         }
 
@@ -88,7 +88,7 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        if (auth()->user()->role !== 1 && $article->user_id !== auth()->id()) {
+        if (auth()->user()->role != 1 && $article->user_id !== auth()->id()) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -139,7 +139,7 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        if (auth()->user()->role !== 1 && $article->user_id !== auth()->id()) {
+        if (auth()->user()->role != 1 && $article->user_id !== auth()->id()) {
             abort(403, 'Unauthorized action.');
         }
         if ($article->featured_image) {
@@ -163,7 +163,7 @@ class ArticleController extends Controller
         foreach ($request->ids as $id) {
             $article = Article::find($id);
             if ($article) {
-                 if (auth()->user()->role !== 1 && $article->user_id !== auth()->id()) {
+                if (auth()->user()->role != 1 && $article->user_id !== auth()->id()) {
                     continue; // Skip if unauthorized
                 }
                 
