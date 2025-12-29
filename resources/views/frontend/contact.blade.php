@@ -15,8 +15,8 @@
                 <div class="breadcrumb-inner">
                     <h1 class="title text-white font-weight-bold display-4 mb-3">{{ $title ?? __('frontend.contacts') }}</h1>
                     @include('frontend.partials.breadcrumbs', ['links' => [
-                        ['url' => url('/'), 'label' => 'Home'],
-                        ['label' => __('frontend.contacts')]
+                        'Home' => url('/'),
+                        __('frontend.contacts') => '#'
                     ]])
                 </div>
             </div>
