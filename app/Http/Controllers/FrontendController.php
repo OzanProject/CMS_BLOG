@@ -11,12 +11,12 @@ class FrontendController extends Controller
 {
     public function index()
     {
-        // Cache Duration: 10 Minutes
-        $minutes = 10;
+        // Cache Duration: Disabled temporarily for debugging
+        $minutes = 0;
 
-        $data = Cache::remember('homepage_data', $minutes * 60, function () {
-            return [
-                'bannerArticles' => Article::with(['category', 'user'])
+        // $data = Cache::remember('homepage_data', $minutes * 60, function () {
+        $data = [
+            'bannerArticles' => Article::with(['category', 'user'])
                     ->where('status', 'published')
                     ->orderBy('is_featured', 'desc')
                     ->orderBy('created_at', 'desc')
@@ -37,9 +37,9 @@ class FrontendController extends Controller
                     ->inRandomOrder()
                     ->take(4)
                     ->get(),
-                'settings' => \App\Models\Configuration::pluck('value', 'key'),
-            ];
-        });
+            'settings' => \App\Models\Configuration::pluck('value', 'key'),
+        ];
+        // });
 
         return view('frontend.home', $data);
     }
