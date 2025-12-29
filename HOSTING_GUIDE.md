@@ -1,94 +1,117 @@
-# Panduan Upload ke Hosting (DeepBlog CMS) 🚀
+# Panduan Hosting: Struktur Folder Aman (DeepBlog CMS) 🚀
 
-Ada dua cara untuk menaruh website ini ke hosting:
-1.  **Cara Modern (Rekomendasi)**: Menggunakan Git (karena kode sudah ada di GitHub).
-2.  **Cara Manual**: Upload file Zip.
+Sesuai permintaan, kita akan memisahkan folder **Project** (codingan) dengan folder **Public** (yang diakses pengunjung). Ini adalah struktur **paling aman**.
+
+**Target Struktur:**
+- `/home/ozanproj/cms-blog` -> Codingan Laravel ada di sini (Aman, tidak bisa diakses publik).
+- `/home/ozanproj/public_html` -> Hanya isi folder `public` Laravel (index.php, gambar) yang ditaruh di sini.
 
 ---
 
-## OPSI 1: Menggunakan Git (Paling Mudah Update) 🐙
-Jika hosting Bapak support Terminal / SSH atau menu "Git Version Control" (cPanel).
+## Langkah-langkah Penerapan
 
-### Langkah-langkah:
-1.  Masuk ke **Terminal** di cPanel atau SSH.
-2.  Masuk ke folder `public_html` (atau folder tujuan):
-    ```bash
-    cd public_html
-    ```
-3.  **Clone Project**:
-    ```bash
-    git clone https://github.com/OzanProject/CMS_BLOG.git .
-    ```
-    *(Tanda titik `.` artinya clone ke folder saat ini. Pastikan folder kosong. Jika tidak kosong, clone ke folder baru lalu pindahkan isinya).*
+### 1. Masuk ke Terminal Hosting
+Masuk ke root directory (`/home/ozanproj`).
+Ketikan perintah ini:
 
-4.  **Install Dependencies**:
-    ```bash
-    composer install --optimize-autoloader --no-dev
-    ```
-
-5.  **Setup Environment (.env)**:
-    *   Copy file contoh: `cp .env.example .env`
-    *   Edit `.env`: `nano .env` (atau edit lewat File Manager cPanel).
-    *   Isi data database hosting (DB_DATABASE, DB_USERNAME, DB_PASSWORD).
-    *   Set `APP_URL=https://domainbapak.com`
-    *   Set `APP_DEBUG=false`
-
-6.  **Generate Key & Migrate**:
-    ```bash
-    php artisan key:generate
-    php artisan migrate --seed
-    ```
-
-7.  **Storage Link** (Wajib biar gambar muncul):
-    ```bash
-    php artisan storage:link
-    ```
-
-### Cara Update Nanti:
-Kalau besok saya update fitur baru, Bapak cukup ketik ini di terminal hosting:
 ```bash
-git pull origin main
-php artisan migrate
+cd /home/ozanproj
 ```
-*Selesai! Website langsung update otomatis.*
 
----
+### 2. Clone Project (Di Luar public_html)
+Kita download codingannya ke folder baru bernama `cms-blog`. Jangan di dalam `public_html`.
 
-## OPSI 2: Cara Manual (Upload Zip) 📦
-Gunakan cara ini jika hosting **tidak ada akses git/terminal**.
+```bash
+# Clone ke folder cms-blog
+git clone https://github.com/OzanProject/CMS_BLOG.git cms-blog
+```
 
-### 1. Persiapan File (Di Laptop)
-- [ ] **Backup Database**: Download file `.sql` dari Admin Panel Local.
-- [ ] **Compress Codingan**: Zip semua folder `cms-blog-new`.
-  - **PENTING**: Folder `node_modules` JANGAN diikutkan (berat).
-  - Folder `vendor` BOLEH diikutkan jika di hosting tidak bisa run `composer install`.
+### 3. Pindahkan Isi Token Public
+Sekarang kita pindahkan **ISI** folder `public` dari project ke folder `public_html`.
 
-### 2. Upload ke Hosting
-- [ ] Upload zip ke File Manager cPanel.
-- [ ] Extract file.
-- [ ] Jika folder `public` Laravel ingin dijadikan root (agar domain langsung buka web tanpa `/public`), pindahkan **isi** folder `public` ke `public_html`.
-  - Lalu edit `index.php` di `public_html`, sesuaikan path:
-    `require __DIR__.'/../cms-blog-new/vendor/autoload.php';`
+**PENTING:** Pastikan `public_html` kosong dulu (kecuali file default cgi-bin).
 
-### 3. Database & Setting
-- [ ] Buat database baru di cPanel.
-- [ ] Import file `.sql` via phpMyAdmin.
-- [ ] Edit file `.env` sesuaikan dengan database hosting.
+```bash
+# Pindahkan semua isi public ke public_html
+cp -r /home/ozanproj/cms-blog/public/* /home/ozanproj/public_html/
 
-### 4. Storage Link (Tanpa Terminal)
-Buat Route sementara di `routes/web.php` lalu buka di browser sekali:
+# Copy juga file .htaccess (penting karena hidden file)
+cp /home/ozanproj/cms-blog/public/.htaccess /home/ozanproj/public_html/
+```
+
+### 4. Edit index.php (KUNCI UTAMA) 🔑
+Karena codingan pindah lokasi, kita harus kasih tahu `index.php` dimana file Laravel-nya berada.
+
+1.  Buka File Manager atau `nano`.
+2.  Edit file: `/home/ozanproj/public_html/index.php`.
+3.  Ubah dua baris path `require`.
+
+**Cari Baris Ini:**
 ```php
-Route::get('/link', function () {
-    Artisan::call('storage:link');
-    return 'Link linked';
-});
+if (file_exists(__DIR__.'/../storage/framework/maintenance.php')) {
+    require __DIR__.'/../storage/framework/maintenance.php';
+}
+
+require __DIR__.'/../vendor/autoload.php';
+
+$app = require_once __DIR__.'/../bootstrap/app.php';
 ```
-*Setelah dibuka dan muncul tulisan "Link linked", hapus route ini.*
+
+**Ubah Menjadi (Arahkan ke folder cms-blog):**
+```php
+// Sesuaikan path ke maintenance mode
+if (file_exists(__DIR__.'/../cms-blog/storage/framework/maintenance.php')) {
+    require __DIR__.'/../cms-blog/storage/framework/maintenance.php';
+}
+
+// Arahkan ke folder cms-blog
+require __DIR__.'/../cms-blog/vendor/autoload.php';
+
+$app = require_once __DIR__.'/../cms-blog/bootstrap/app.php';
+```
+
+### 5. Install & Setup
+Kembali ke terminal, masuk ke folder project untuk setup.
+
+```bash
+cd /home/ozanproj/cms-blog
+
+# 1. Install Library
+composer install --optimize-autoloader --no-dev
+
+# 2. Setup Database (.env)
+cp .env.example .env
+nano .env 
+# (Isi DB_DATABASE, DB_USERNAME, DB_PASSWORD, APP_URL=https://domain.com)
+
+# 3. Generate Key
+php artisan key:generate
+
+# 4. Migrate Database
+php artisan migrate --seed
+```
+
+### 6. Perbaiki Storage Link (Gambar) 🖼️
+Ini bagian *tricky*. Folder `storage` ada di `/home/ozanproj/cms-blog/storage`, tapi kita butuh aksesnya di `/home/ozanproj/public_html/storage`.
+
+Hapus symlink lama (jika ada) dan buat baru manual:
+
+```bash
+# Hapus folder storage di public_html (jika ada)
+rm -rf /home/ozanproj/public_html/storage
+
+# Buat link manual dari folder project ke public_html
+ln -s /home/ozanproj/cms-blog/storage/app/public /home/ozanproj/public_html/storage
+```
 
 ---
 
-## Checklist Akhir (PENTING) ✅
-Apapun caranya, pastikan ini sudah beres:
-1.  **Permission**: Folder `storage` dan `bootstrap/cache` harus **Writable** (775/755).
-2.  **APP_URL**: Pastikan di `.env` pakai `https://`.
-3.  **Debug Mode**: Pastikan `APP_DEBUG=false` biar aman.
+## 🛑 Pengecekan Terakhir
+1.  Buka domain Bapak.
+2.  Kalau muncul error "Permission Denied" pada folder Log/Storage:
+    ```bash
+    chmod -R 775 /home/ozanproj/cms-blog/storage
+    chmod -R 775 /home/ozanproj/cms-blog/bootstrap/cache
+    ```
+
+Selesai! Dengan cara ini, kode inti Laravel Bapak aman tersembunyi di `/home/ozanproj/cms-blog`, sedangkan pengunjung hanya mengakses `/home/ozanproj/public_html`.
