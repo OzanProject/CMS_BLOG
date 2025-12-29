@@ -71,6 +71,11 @@ A powerful, modern, and SEO-optimized Content Management System built with **Lar
    php artisan serve
    ```
 
+## 🔑 Default Login
+- **Email**: `ardiansyahdzan@gmail.com`
+- **Password**: `password`
+- **Role**: Super Admin
+
 ## 📖 Usage Guide
 
 ### Backup & Restore
