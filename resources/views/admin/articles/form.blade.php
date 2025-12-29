@@ -66,7 +66,7 @@
                     <div class="mb-3">
                         <label class="form-label">{{ __('articles.category') }} <span class="text-danger">*</span></label>
                         <select class="form-select" name="category_id" required>
-                            <option value="">{{ __('common.select') ?? 'Select' }} {{ __('articles.category') }}</option>
+                            <option value="">Select Category</option>
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}" {{ old('category_id', $article->category_id ?? '') == $category->id ? 'selected' : '' }}>
                                     {{ $category->name }}
@@ -87,9 +87,9 @@
                             <label class="form-check-label" for="statusPublished">{{ __('articles.published') }}</label>
                         </div>
                         
-                        <!-- Manual Date Input (Visible only when Published) -->
-                        <div class="mt-2 ms-4 {{ old('status', $article->status ?? '') == 'published' ? '' : 'd-none' }}" id="publishedDateContainer">
-                             <label class="form-label small text-muted">Publish Date</label>
+                        <!-- Manual Date Input -->
+                        <div class="mt-2 ms-4" id="publishedDateContainer">
+                             <label class="form-label small text-muted">Publish Date (Leave empty for immediate)</label>
                              <input type="datetime-local" name="published_at" class="form-control form-control-sm bg-dark" 
                                     value="{{ old('published_at', isset($article) && $article->published_at ? $article->published_at->format('Y-m-d\TH:i') : '') }}">
                         </div>
