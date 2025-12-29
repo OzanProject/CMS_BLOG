@@ -70,16 +70,33 @@ class ArticleController extends Controller
         }
         
         // Handle Published Date
-        // Handle Published Date
-        if ($request->status === 'published' && empty($request->published_at)) {
-            $data['published_at'] = now();
+        if ($request->status === 'published') {
+            $data['published_at'] = $request->filled('published_at') ? $request->published_at : now();
         }
 
         // Handle Booleans
         $data['is_featured'] = $request->has('is_featured');
         $data['is_trending'] = $request->has('is_trending');
 
-        Article::create($data);
+        $article = Article::create($data);
+
+        // Handle Tags
+        if ($request->has('tags')) {
+            $tagIds = [];
+            $tags = explode(',', $request->tags);
+            foreach ($tags as $tagName) {
+                $tagName = trim($tagName);
+                if ($tagName) {
+                    $tag = \App\Models\Tag::firstOrCreate(
+                        ['slug' => Str::slug($tagName)],
+                        ['name' => $tagName]
+                    );
+                    $tagIds[] = $tag->id;
+                }
+            }
+            $article->tags()->sync($tagIds);
+        }
+
         Cache::forget('admin_dashboard_stats');
         Cache::forget('homepage_data');
 
@@ -124,8 +141,12 @@ class ArticleController extends Controller
             $data['featured_image'] = $path;
         }
         
-        if ($request->status === 'published' && empty($article->published_at)) {
-            $data['published_at'] = now();
+        if ($request->status === 'published') {
+            if ($request->filled('published_at')) {
+                $data['published_at'] = $request->published_at;
+            } elseif (empty($article->published_at)) {
+                $data['published_at'] = now();
+            }
         }
 
         // Handle Booleans
@@ -133,6 +154,31 @@ class ArticleController extends Controller
         $data['is_trending'] = $request->has('is_trending');
 
         $article->update($data);
+
+        // Handle Tags
+        if ($request->has('tags')) {
+            $tagIds = [];
+            $tags = explode(',', $request->tags);
+            foreach ($tags as $tagName) {
+                $tagName = trim($tagName);
+                if ($tagName) {
+                    $tag = \App\Models\Tag::firstOrCreate(
+                        ['slug' => Str::slug($tagName)],
+                        ['name' => $tagName]
+                    );
+                    $tagIds[] = $tag->id;
+                }
+            }
+            $article->tags()->sync($tagIds);
+        } else {
+             // If tags input is empty/missing but present in request, sync to empty (remove all)
+             // But we need to be careful if input is missing entirely vs empty string.
+             // Usually for text input, it sends empty string.
+             if($request->exists('tags')) {
+                 $article->tags()->sync([]);
+             }
+        }
+
         Cache::forget('admin_dashboard_stats');
         Cache::forget('homepage_data');
 

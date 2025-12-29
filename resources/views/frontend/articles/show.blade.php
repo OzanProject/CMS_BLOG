@@ -31,6 +31,10 @@
                                 @if($article->category)
                                 <li><a href="{{ route('category.show', $article->category->slug) }}" class="tag-base tag-blue">{{ $article->category->name }}</a></li>
                                 @endif
+                                
+                                @foreach($article->tags as $tag)
+                                <li><a href="#" class="tag-base tag-light-blue" style="background: #e3f2fd; color: #1976d2;">{{ $tag->name }}</a></li>
+                                @endforeach
                                 <li><i class="fa fa-user"></i><a href="{{ route('author.show', $article->user->username ?? Str::slug($article->user->name)) }}" class="text-secondary">{{ $article->user->name }}</a></li>
                                 <li><i class="fa fa-clock-o"></i>{{ $article->published_at->translatedFormat('d M Y') }}</li>
                                 <li><i class="fa fa-eye"></i>{{ $article->views }} {{ __('frontend.views') }}</li>

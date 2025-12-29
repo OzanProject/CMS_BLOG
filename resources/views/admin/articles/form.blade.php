@@ -32,6 +32,12 @@
                         <label class="form-label">{{ __('articles.excerpt') }}</label>
                         <textarea name="excerpt" class="form-control" rows="3" placeholder="...">{{ old('excerpt', $article->excerpt ?? '') }}</textarea>
                     </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Tags (Comma separated)</label>
+                        <input type="text" name="tags" value="{{ old('tags', isset($article) ? $article->tags->pluck('name')->implode(', ') : '') }}" class="form-control" placeholder="Technology, Laravel, Tutorial">
+                         <div class="form-text">Separate tags with commas.</div>
+                    </div>
                 </div>
 
                 <!-- SEO Section -->
@@ -80,11 +86,32 @@
                             <input class="form-check-input" type="radio" name="status" id="statusPublished" value="published" {{ old('status', $article->status ?? '') == 'published' ? 'checked' : '' }}>
                             <label class="form-check-label" for="statusPublished">{{ __('articles.published') }}</label>
                         </div>
-                        <div class="form-check">
+                        
+                        <!-- Manual Date Input (Visible only when Published) -->
+                        <div class="mt-2 ms-4 {{ old('status', $article->status ?? '') == 'published' ? '' : 'd-none' }}" id="publishedDateContainer">
+                             <label class="form-label small text-muted">Publish Date</label>
+                             <input type="datetime-local" name="published_at" class="form-control form-control-sm bg-dark" 
+                                    value="{{ old('published_at', isset($article) && $article->published_at ? $article->published_at->format('Y-m-d\TH:i') : '') }}">
+                        </div>
+
+                        <div class="form-check mt-2">
                             <input class="form-check-input" type="radio" name="status" id="statusArchived" value="archived" {{ old('status', $article->status ?? '') == 'archived' ? 'checked' : '' }}>
                             <label class="form-check-label" for="statusArchived">{{ __('articles.archived') }}</label>
                         </div>
                     </div>
+                    
+                    <script>
+                        document.querySelectorAll('input[name="status"]').forEach(radio => {
+                            radio.addEventListener('change', function() {
+                                const dateContainer = document.getElementById('publishedDateContainer');
+                                if (this.value === 'published') {
+                                    dateContainer.classList.remove('d-none');
+                                } else {
+                                    dateContainer.classList.add('d-none');
+                                }
+                            });
+                        });
+                    </script>
 
                     @if(auth()->user()->role === 1)
                     <div class="mb-3">
