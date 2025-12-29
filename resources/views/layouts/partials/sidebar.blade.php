@@ -24,7 +24,7 @@
             </div>
             <div class="ms-3">
                 <h6 class="mb-0">{{ auth()->user()->name }}</h6>
-                <span>{{ auth()->user()->role === 1 ? 'Administrator' : 'Start User' }}</span>
+                <span>{{ auth()->user()->role == 1 ? 'Administrator' : 'Start User' }}</span>
             </div>
         </div>
         
@@ -43,7 +43,7 @@
                     <a href="{{ route('admin.articles.index') }}" class="dropdown-item {{ request()->routeIs('admin.articles.*') ? 'active' : '' }}">
                         <i class="fa fa-newspaper me-2"></i>{{ __('menu.articles') }}
                     </a>
-                    @if(auth()->user()->role === 1)
+                    @if(auth()->user()->role == 1)
                     <a href="{{ route('admin.categories.index') }}" class="dropdown-item {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
                         <i class="fa fa-th me-2"></i>{{ __('menu.categories') }}
                     </a>
@@ -63,7 +63,7 @@
                     <a href="{{ route('admin.comments.index') }}" class="dropdown-item {{ request()->routeIs('admin.comments.*') ? 'active' : '' }}">
                         <i class="fa fa-comments me-2"></i>{{ __('menu.comments') }}
                     </a>
-                    @if(auth()->user()->role === 1)
+                    @if(auth()->user()->role == 1)
                     <a href="{{ route('admin.users.index') }}" class="dropdown-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
                         <i class="fa fa-user me-2"></i>{{ __('menu.users') }}
                     </a>
@@ -81,7 +81,7 @@
             </div>
 
             <!-- System Group (Admin Only) -->
-            @if(auth()->user()->role === 1)
+            @if(auth()->user()->role == 1)
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle {{ request()->routeIs('admin.backups.*') || request()->routeIs('admin.settings.*') ? 'active' : '' }}" data-bs-toggle="dropdown">
                     <i class="fa fa-cogs me-2"></i>System
