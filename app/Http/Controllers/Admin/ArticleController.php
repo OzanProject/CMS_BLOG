@@ -81,6 +81,7 @@ class ArticleController extends Controller
 
         Article::create($data);
         Cache::forget('admin_dashboard_stats');
+        Cache::forget('homepage_data');
 
         return redirect()->route('admin.articles.index')->with('success', 'Article created successfully!');
     }
@@ -133,6 +134,7 @@ class ArticleController extends Controller
 
         $article->update($data);
         Cache::forget('admin_dashboard_stats');
+        Cache::forget('homepage_data');
 
         return redirect()->route('admin.articles.index')->with('success', 'Article updated successfully!');
     }
@@ -151,6 +153,7 @@ class ArticleController extends Controller
         
         $article->delete();
         Cache::forget('admin_dashboard_stats');
+        Cache::forget('homepage_data');
         return redirect()->back()->with('success', 'Article deleted successfully!');
     }
 
@@ -176,6 +179,7 @@ class ArticleController extends Controller
                 }
                 $article->delete();
                 Cache::forget('admin_dashboard_stats');
+                Cache::forget('homepage_data');
             }
         }
 
