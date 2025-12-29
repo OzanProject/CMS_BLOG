@@ -73,8 +73,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="text-right">
-                                    <button type="submit" class="btn btn-primary btn-rounded py-3 px-5 font-weight-bold shadow-sm transition-hover">
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary btn-block btn-rounded py-3 font-weight-bold shadow-sm transition-hover" style="background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%); border: none;">
                                         <i class="fa fa-paper-plane mr-2"></i> {{ __('frontend.send_message') }}
                                     </button>
                                 </div>
