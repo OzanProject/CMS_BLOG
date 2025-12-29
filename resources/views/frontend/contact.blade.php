@@ -149,6 +149,7 @@
     </div>
 </div>
 
+<style>
     /* Custom Utils for BS4 Compatibility */
     .bg-white-glass { background: rgba(255, 255, 255, 0.2) !important; backdrop-filter: blur(5px); }
     .border-white-10 { border-color: rgba(255, 255, 255, 0.1) !important; }
