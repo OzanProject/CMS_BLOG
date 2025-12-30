@@ -23,11 +23,13 @@
     ];
     
     foreach($links as $label => $url) {
+        $itemUrl = $url === '#' ? url()->current() : $url;
+        
         $itemListElement[] = [
             "@type" => "ListItem",
             "position" => count($itemListElement) + 1,
             "name" => $label,
-            "item" => $url
+            "item" => $itemUrl
         ];
     }
 
