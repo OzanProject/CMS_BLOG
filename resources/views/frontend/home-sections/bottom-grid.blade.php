@@ -1,31 +1,47 @@
     <div class="bg-sky pd-top-80 pd-bottom-50" id="grid">
         <div class="container">
             <div class="row">
-                @if(isset($gridArticles))
-                @foreach($gridArticles as $post)
-                <div class="col-lg-3 col-sm-6">
-                    <div class="single-post-wrap style-overlay">
-                        <div class="thumb" style="height: 200px; overflow: hidden; border-radius: 5px;">
-                            @if($post->featured_image)
-                                <img src="{{ asset('storage/' . $post->featured_image) }}" alt="img" style="width: 100%; height: 100%; object-fit: cover;">
-                            @else
-                                <div class="d-flex align-items-center justify-content-center bg-secondary" style="height: 100%; width: 100%;">
-                                    <i class="fa fa-newspaper-o text-white-50 fa-2x"></i>
-                                </div>
-                            @endif
-                            @if($post->category)
-                            <a class="tag-base tag-purple" href="{{ route('category.show', $post->category->slug) }}">{{ $post->category->name }}</a>
-                            @endif
-                        </div>
-                        <div class="details">
-                            <div class="post-meta-single">
-                                <p><i class="fa fa-clock-o"></i>{{ $post->created_at->format('M d, Y') }}</p>
+                @if(isset($latestArticles) && $latestArticles->count() > 0)
+                    @foreach($latestArticles->shuffle()->take(4) as $post)
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="single-post-wrap style-overlay">
+                            <div class="thumb">
+                                @if($post->featured_image)
+                                    <img src="{{ asset('storage/' . $post->featured_image) }}" alt="img">
+                                @else
+                                    <img src="{{ asset('nextpage-lite/assets/img/post/15.png') }}" alt="img">
+                                @endif
+                                @if($post->category)
+                                <a class="tag-base tag-purple" href="#">{{ $post->category->name }}</a>
+                                @endif
                             </div>
-                            <h6 class="title"><a href="{{ route('article.show', $post->slug) }}">{{ Str::limit($post->title, 40) }}</a></h6>
+                            <div class="details">
+                                <div class="post-meta-single">
+                                    <p><i class="fa fa-clock-o"></i>{{ $post->created_at->format('M d, Y') }}</p>
+                                </div>
+                                <h6 class="title"><a href="#">{{ Str::limit($post->title, 40) }}</a></h6>
+                            </div>
                         </div>
                     </div>
-                </div>
-                @endforeach
+                    @endforeach
+                @else
+                    <!-- Fallback Bottom Grid -->
+                    @for($i=15; $i<=18; $i++)
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="single-post-wrap style-overlay">
+                            <div class="thumb">
+                                <img src="{{ asset('nextpage-lite/assets/img/post/'.$i.'.png') }}" alt="img">
+                                <a class="tag-base tag-purple" href="#">Tech</a>
+                            </div>
+                            <div class="details">
+                                <div class="post-meta-single">
+                                    <p><i class="fa fa-clock-o"></i>{{ date('M d, Y') }}</p>
+                                </div>
+                                <h6 class="title"><a href="#">Sample Grid Article {{ $i }}</a></h6>
+                            </div>
+                        </div>
+                    </div>
+                    @endfor
                 @endif
             </div>
         </div>  
