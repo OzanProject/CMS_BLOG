@@ -54,7 +54,7 @@
         </script>
     @endif
 </head>
-<body>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
 
     <!-- preloader area start -->
     <div class="preloader" id="preloader">
@@ -194,7 +194,9 @@
     </div>
     <!-- navbar end -->
 
-    @yield('content')
+    <div style="flex: 1;">
+        @yield('content')
+    </div>
 
     <!-- footer area start -->
     <div class="footer-area bg-black pd-top-95">
