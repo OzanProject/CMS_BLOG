@@ -1,4 +1,5 @@
     <div class="bg-sky pd-top-80 pd-bottom-50" id="grid">
+<div class="bg-sky pd-top-80 pd-bottom-50" id="grid">
         <div class="container">
             <div class="row">
                 @if(isset($latestArticles) && $latestArticles->count() > 0)
@@ -7,12 +8,12 @@
                         <div class="single-post-wrap style-overlay-bg">
                             <div class="thumb">
                                 @if($post->featured_image)
-                                    <img src="{{ asset('storage/' . $post->featured_image) }}" alt="img">
+                                    <img src="{{ asset('storage/' . $post->featured_image) }}" alt="img" style="height: 220px; width: 100%; object-fit: cover;">
                                 @else
-                                    <img src="{{ asset('nextpage-lite/assets/img/post/15.png') }}" alt="img">
+                                    <img src="{{ asset('nextpage-lite/assets/img/post/15.png') }}" alt="img" style="height: 220px; width: 100%; object-fit: cover;">
                                 @endif
                             </div>
-                            <div class="details">
+                            <div class="details" style="min-height: 160px;">
                                 <div class="post-meta-single mb-3">
                                     <ul>
                                         @if($post->category)
@@ -21,7 +22,7 @@
                                         <li><p><i class="fa fa-clock-o"></i>{{ $post->created_at->format('M d, Y') }}</p></li>
                                     </ul>
                                 </div>
-                                <h6 class="title"><a href="{{ route('article.show', $post->slug) }}">{{ Str::limit($post->title, 40) }}</a></h6>
+                                <h6 class="title"><a href="{{ route('article.show', $post->slug) }}">{{ Str::limit($post->title, 45) }}</a></h6>
                             </div>
                         </div>
                     </div>
