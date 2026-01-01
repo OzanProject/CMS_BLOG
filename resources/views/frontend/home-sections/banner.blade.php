@@ -20,14 +20,14 @@
                                 <div class="post-meta-single">
                                     <ul>
                                         @if($mainBanner->category)
-                                        <li><a class="tag-base tag-blue" href="#">{{ $mainBanner->category->name }}</a></li>
+                                        <li><a class="tag-base tag-blue" href="{{ route('category.show', $mainBanner->category->slug) }}">{{ $mainBanner->category->name }}</a></li>
                                         @endif
                                         <li class="date"><i class="fa fa-clock-o"></i>{{ $mainBanner->created_at->format('M d, Y') }}</li>
                                     </ul>
                                 </div>
                                 <h2>{{ Str::limit($mainBanner->title, 60) }}</h2>
                                 <p>{{ Str::limit($mainBanner->excerpt ?? strip_tags($mainBanner->content), 100) }}</p>
-                                <a class="btn btn-blue" href="{{ route('page.show', $mainBanner->slug) }}">Read More</a>
+                                <a class="btn btn-blue" href="{{ route('article.show', $mainBanner->slug) }}">Read More</a>
                             </div>
                         </div>
                     @else
@@ -69,11 +69,11 @@
                                     <img src="{{ asset('nextpage-lite/assets/img/post/1.png') }}" alt="img">
                                 @endif
                                 @if($bannerItem->category)
-                                    <a class="tag-base tag-blue" href="#">{{ $bannerItem->category->name }}</a>
+                                    <a class="tag-base tag-blue" href="{{ route('category.show', $bannerItem->category->slug) }}">{{ $bannerItem->category->name }}</a>
                                 @endif
                             </div>
                             <div class="details">
-                                <h6 class="title"><a href="#">{{ Str::limit($bannerItem->title, 40) }}</a></h6>
+                                <h6 class="title"><a href="{{ route('article.show', $bannerItem->slug) }}">{{ Str::limit($bannerItem->title, 40) }}</a></h6>
                                 <div class="post-meta-single mt-3">
                                     <ul>
                                         <li><i class="fa fa-clock-o"></i>{{ $bannerItem->created_at->format('M d, Y') }}</li>

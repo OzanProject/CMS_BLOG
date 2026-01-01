@@ -18,12 +18,12 @@
                                         <div class="post-meta-single mb-4 pt-1">
                                             <ul>
                                                 @if($post->category)
-                                                <li><a class="tag-base tag-blue" href="#">{{ $post->category->name }}</a></li>
+                                                <li><a class="tag-base tag-blue" href="{{ route('category.show', $post->category->slug) }}">{{ $post->category->name }}</a></li>
                                                 @endif
                                                 <li><i class="fa fa-clock-o"></i>{{ $post->created_at->format('M d, Y') }}</li>
                                             </ul>
                                         </div>
-                                        <h6 class="title"><a href="#">{{ Str::limit($post->title, 50) }}</a></h6>
+                                        <h6 class="title"><a href="{{ route('article.show', $post->slug) }}">{{ Str::limit($post->title, 50) }}</a></h6>
                                         <p>{{ Str::limit($post->excerpt, 80) }}</p>
                                     </div>
                                 </div>

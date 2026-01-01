@@ -12,14 +12,14 @@
                                     <img src="{{ asset('nextpage-lite/assets/img/post/15.png') }}" alt="img">
                                 @endif
                                 @if($post->category)
-                                <a class="tag-base tag-purple" href="#">{{ $post->category->name }}</a>
+                                <a class="tag-base tag-purple" href="{{ route('category.show', $post->category->slug) }}">{{ $post->category->name }}</a>
                                 @endif
                             </div>
                             <div class="details">
                                 <div class="post-meta-single">
                                     <p><i class="fa fa-clock-o"></i>{{ $post->created_at->format('M d, Y') }}</p>
                                 </div>
-                                <h6 class="title"><a href="#">{{ Str::limit($post->title, 40) }}</a></h6>
+                                <h6 class="title"><a href="{{ route('article.show', $post->slug) }}">{{ Str::limit($post->title, 40) }}</a></h6>
                             </div>
                         </div>
                     </div>

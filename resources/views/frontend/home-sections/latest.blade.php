@@ -23,7 +23,7 @@
                                                         <li><i class="fa fa-clock-o"></i>{{ $post->created_at->format('M d, Y') }}</li>
                                                     </ul>
                                                 </div>
-                                                <h6 class="title"><a href="#">{{ Str::limit($post->title, 40) }}</a></h6>
+                                                <h6 class="title"><a href="{{ route('article.show', $post->slug) }}">{{ Str::limit($post->title, 40) }}</a></h6>
                                             </div>
                                         </div>
                                     </div>
