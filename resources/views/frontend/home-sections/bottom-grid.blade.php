@@ -4,20 +4,22 @@
                 @if(isset($latestArticles) && $latestArticles->count() > 0)
                     @foreach($latestArticles->shuffle()->take(4) as $post)
                     <div class="col-lg-3 col-sm-6">
-                        <div class="single-post-wrap style-overlay">
+                        <div class="single-post-wrap style-overlay-bg">
                             <div class="thumb">
                                 @if($post->featured_image)
                                     <img src="{{ asset('storage/' . $post->featured_image) }}" alt="img">
                                 @else
                                     <img src="{{ asset('nextpage-lite/assets/img/post/15.png') }}" alt="img">
                                 @endif
-                                @if($post->category)
-                                <a class="tag-base tag-purple" href="{{ route('category.show', $post->category->slug) }}">{{ $post->category->name }}</a>
-                                @endif
                             </div>
                             <div class="details">
-                                <div class="post-meta-single">
-                                    <p><i class="fa fa-clock-o"></i>{{ $post->created_at->format('M d, Y') }}</p>
+                                <div class="post-meta-single mb-3">
+                                    <ul>
+                                        @if($post->category)
+                                        <li><a class="tag-base tag-purple" href="{{ route('category.show', $post->category->slug) }}">{{ $post->category->name }}</a></li>
+                                        @endif
+                                        <li><p><i class="fa fa-clock-o"></i>{{ $post->created_at->format('M d, Y') }}</p></li>
+                                    </ul>
                                 </div>
                                 <h6 class="title"><a href="{{ route('article.show', $post->slug) }}">{{ Str::limit($post->title, 40) }}</a></h6>
                             </div>
