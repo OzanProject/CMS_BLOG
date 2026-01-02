@@ -82,7 +82,7 @@ class SitemapController extends Controller
     {
         $content = "User-agent: *\n";
         $content .= "Disallow:\n";
-        $content .= "Sitemap: " . route('sitemap') . "\n";
+        $content .= "Sitemap: https://ozanproject.site/sitemap.xml\n";
         
         return response($content, 200)->header('Content-Type', 'text/plain');
     }
