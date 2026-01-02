@@ -45,48 +45,35 @@
     <style>
         @media (max-width: 991px) {
             .navbar-collapse {
-                position: fixed;
-                top: 0;
-                left: -100%; /* Hidden by default */
-                width: 300px; /* Drawer width */
-                height: 100vh;
-                background-color: #080f2d; /* Premium Dark Blue */
-                background-image: linear-gradient(180deg, #080f2d 0%, #1a224a 100%);
-                padding-bottom: 20px;
-                display: block !important; /* Override Bootstrap's hidden */
-                transition: left 0.3s ease-in-out; /* Smooth slide */
-                z-index: 9999;
-                box-shadow: 5px 0 15px rgba(0,0,0,0.5);
-                overflow-y: auto;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: rgba(8, 15, 45, 0.98); /* Deep Blue, slightly transparent */
+                backdrop-filter: blur(10px); /* Premium Blur Effect */
+                z-index: 99999;
+                padding: 15px 0;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                border-top: 1px solid rgba(255,255,255,0.1);
             }
-
-            .navbar-collapse.show {
-                left: 0; /* Slide in */
-            }
-            
-            /* Overlay when menu is open (optional, requires JS or clever CSS) */
-            /* For now, we rely on the drawer shadow */
             
             .navbar-nav {
-                padding-top: 10px;
+                padding: 0 15px;
             }
             
             .navbar-nav li {
-                 border-bottom: 1px solid rgba(255,255,255,0.05);
+                border-bottom: 1px solid rgba(255,255,255,0.05);
             }
             
             .navbar-nav li a {
-                padding: 15px 25px !important;
-                font-size: 16px;
-                font-weight: 500;
-                color: #ffffff !important;
-                display: block;
+                padding: 12px 15px !important;
+                color: #fff !important;
+                font-size: 15px;
             }
             
             .navbar-nav li a:hover {
-                background-color: rgba(255,255,255,0.05);
-                color: #00bcd4 !important; /* Premium Cyan accent */
-                padding-left: 30px !important; /* Slight movement on hover */
+                color: #0d6efd !important; /* Bootstrap Primary Blue */
+                padding-left: 20px !important;
                 transition: all 0.2s;
             }
         }
