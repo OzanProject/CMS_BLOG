@@ -81,8 +81,7 @@ class SitemapController extends Controller
     public function robots()
     {
         $content = "User-agent: *\n";
-        $content .= "Allow: /\n";
-        $content .= "Disallow: /admin/\n";
+        $content .= "Disallow:\n";
         $content .= "Sitemap: " . route('sitemap') . "\n";
         
         return response($content, 200)->header('Content-Type', 'text/plain');
