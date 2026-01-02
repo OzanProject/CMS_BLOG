@@ -5,6 +5,9 @@
 
     RewriteEngine On
 
+    # Force robots.txt to be handled by Laravel (index.php) even if file missing/intercepted
+    RewriteRule ^robots.txt$ index.php [L]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
