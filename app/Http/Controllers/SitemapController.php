@@ -32,7 +32,11 @@ class SitemapController extends Controller
         }
 
         // Articles (Posts)
-        $articles = Article::where('status', 'published')->latest()->get();
+        // Articles (Posts)
+        $articles = Article::where('status', 'published')
+            ->where('published_at', '<=', now())
+            ->latest()
+            ->get();
         foreach ($articles as $article) {
             $urls[] = [
                 'loc' => route('article.show', $article->slug),
@@ -44,7 +48,7 @@ class SitemapController extends Controller
 
         // Authors
         $authors = User::whereHas('articles', function($q) {
-            $q->where('status', 'published');
+            $q->where('status', 'published')->where('published_at', '<=', now());
         })->get();
         foreach ($authors as $author) {
              // Assuming author route uses name/username logic from FrontendController
