@@ -80,10 +80,6 @@ class SitemapController extends Controller
     }
     public function robots()
     {
-        $content = "User-agent: *\n";
-        $content .= "Disallow:\n";
-        $content .= "Sitemap: https://ozanproject.site/sitemap.xml\n";
-        
-        return response($content, 200)->header('Content-Type', 'text/plain');
+        return response("ROBOTS_TXT_IS_DYNAMIC_NOW", 200)->header('Content-Type', 'text/plain');
     }
 }
