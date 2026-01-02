@@ -41,6 +41,20 @@
 
     <!-- Custom/Dynamic CSS if needed -->
     @stack('styles')
+    <style>
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: #080f2d; /* Dark Blue match */
+                z-index: 9999;
+                padding-bottom: 20px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            }
+        }
+    </style>
     
     <!-- Google Analytics / GTM -->
     @if(isset($settings['google_analytics_id']))
