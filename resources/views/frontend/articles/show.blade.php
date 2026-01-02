@@ -4,6 +4,34 @@
 @section('meta_description', $article->meta_description ?? Str::limit(strip_tags($article->content), 150))
 @section('meta_keywords', $article->keywords)
 
+@section('schema_json')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "headline": "{{ addslashes($article->title) }}",
+  "image": [
+    "{{ asset('storage/' . $article->featured_image) }}"
+   ],
+  "datePublished": "{{ $article->published_at->toIso8601String() }}",
+  "dateModified": "{{ $article->updated_at->toIso8601String() }}",
+  "author": [{
+      "@type": "Person",
+      "name": "{{ $article->user->name }}",
+      "url": "{{ route('author.show', $article->user->username ?? Str::slug($article->user->name)) }}"
+    }],
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ $settings['site_name'] ?? 'DeepBlog' }}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ isset($settings['site_logo']) ? asset('storage/' . $settings['site_logo']) : asset('nextpage-lite/assets/img/logo.png') }}"
+    }
+  }
+}
+</script>
+@endsection
+
 @section('content')
 <div class="pd-top-75 pd-bottom-50">
     <div class="container">

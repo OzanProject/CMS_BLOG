@@ -41,6 +41,7 @@
 
     <!-- Custom/Dynamic CSS if needed -->
     @stack('styles')
+    @yield('schema_json')
     <style>
         @media (max-width: 991px) {
             .navbar-collapse {
