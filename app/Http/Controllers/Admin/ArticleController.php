@@ -82,7 +82,15 @@ class ArticleController extends Controller
         
         // Handle Published Date
         if ($request->status === 'published') {
-            $data['published_at'] = $request->filled('published_at') ? $request->published_at : now();
+            if ($request->filled('published_at')) {
+                try {
+                    $data['published_at'] = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $request->published_at);
+                } catch (\Exception $e) {
+                    $data['published_at'] = now();
+                }
+            } else {
+                $data['published_at'] = now();
+            }
         }
 
         // Handle Booleans
@@ -163,7 +171,11 @@ class ArticleController extends Controller
         
         if ($request->status === 'published') {
             if ($request->filled('published_at')) {
-                $data['published_at'] = $request->published_at;
+                try {
+                    $data['published_at'] = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $request->published_at);
+                } catch (\Exception $e) {
+                    // Keep old date if parsing fails, or update ??
+                }
             } elseif (empty($article->published_at)) {
                 $data['published_at'] = now();
             }

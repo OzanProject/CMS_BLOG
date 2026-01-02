@@ -18,22 +18,26 @@ class FrontendController extends Controller
         $data = [
             'bannerArticles' => Article::with(['category', 'user'])
                     ->where('status', 'published')
+                    ->where('published_at', '<=', now())
                     ->orderBy('is_featured', 'desc')
                     ->orderBy('created_at', 'desc')
                     ->take(5)
                     ->get(),
                 'trendingArticles' => Article::with(['category', 'user'])
                     ->where('status', 'published')
+                    ->where('published_at', '<=', now())
                     ->orderBy('views', 'desc')
                     ->take(6)
                     ->get(),
                 'latestArticles' => Article::with(['category', 'user'])
                     ->where('status', 'published')
+                    ->where('published_at', '<=', now())
                     ->latest()
                     ->take(5)
                     ->get(),
                 'gridArticles' => Article::with(['category', 'user'])
                     ->where('status', 'published')
+                    ->where('published_at', '<=', now())
                     ->inRandomOrder()
                     ->take(4)
                     ->get(),
@@ -51,10 +55,12 @@ class FrontendController extends Controller
         $articles = Article::with(['user', 'category'])
             ->where('category_id', $category->id)
             ->where('status', 'published')
+            ->where('published_at', '<=', now())
             ->latest()
             ->paginate(12); // Grid pagination
 
         $recentArticles = Article::where('status', 'published')
+            ->where('published_at', '<=', now())
             ->latest()
             ->take(5)
             ->get();
@@ -70,6 +76,7 @@ class FrontendController extends Controller
         
         $articles = Article::with(['user', 'category'])
             ->where('status', 'published')
+            ->where('published_at', '<=', now())
             ->where(function($q) use ($query) {
                 $q->where('title', 'like', "%{$query}%")
                   ->orWhere('content', 'like', "%{$query}%");
@@ -78,6 +85,7 @@ class FrontendController extends Controller
             ->paginate(12);
 
         $recentArticles = Article::where('status', 'published')
+            ->where('published_at', '<=', now())
             ->latest()
             ->take(5)
             ->get();
@@ -94,12 +102,16 @@ class FrontendController extends Controller
         }])
             ->where('slug', $slug)
             ->where('status', 'published')
+            // Don't filter 'show' by date? Or should we?
+            // Usually Scheduled post should result in 404.
+            ->where('published_at', '<=', now())
             ->firstOrFail();
 
         // Increment views
         $article->increment('views');
 
         $recentArticles = Article::where('status', 'published')
+            ->where('published_at', '<=', now())
             ->where('id', '!=', $article->id)
             ->latest()
             ->take(5)
@@ -111,6 +123,7 @@ class FrontendController extends Controller
         $relatedArticles = Article::where('category_id', $article->category_id)
             ->where('id', '!=', $article->id)
             ->where('status', 'published')
+            ->where('published_at', '<=', now())
             ->latest()
             ->take(3) // Show 3 related articles
             ->get();
@@ -161,10 +174,12 @@ class FrontendController extends Controller
         $articles = Article::with(['category'])
             ->where('user_id', $user->id)
             ->where('status', 'published')
+            ->where('published_at', '<=', now())
             ->latest()
             ->paginate(12);
 
         $recentArticles = Article::where('status', 'published')
+            ->where('published_at', '<=', now())
             ->latest()
             ->take(5)
             ->get();
@@ -193,10 +208,12 @@ class FrontendController extends Controller
     {
         $articles = Article::with(['user', 'category'])
             ->where('status', 'published')
+            ->where('published_at', '<=', now())
             ->latest()
             ->paginate(12);
 
         $recentArticles = Article::where('status', 'published')
+            ->where('published_at', '<=', now())
             ->latest()
             ->take(5)
             ->get();
