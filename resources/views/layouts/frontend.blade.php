@@ -45,8 +45,49 @@
     <style>
         @media (max-width: 991px) {
             .navbar-collapse {
-                background-color: #080f2d; /* Dark Blue match */
+                position: fixed;
+                top: 0;
+                left: -100%; /* Hidden by default */
+                width: 300px; /* Drawer width */
+                height: 100vh;
+                background-color: #080f2d; /* Premium Dark Blue */
+                background-image: linear-gradient(180deg, #080f2d 0%, #1a224a 100%);
                 padding-bottom: 20px;
+                display: block !important; /* Override Bootstrap's hidden */
+                transition: left 0.3s ease-in-out; /* Smooth slide */
+                z-index: 9999;
+                box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+                overflow-y: auto;
+            }
+
+            .navbar-collapse.show {
+                left: 0; /* Slide in */
+            }
+            
+            /* Overlay when menu is open (optional, requires JS or clever CSS) */
+            /* For now, we rely on the drawer shadow */
+            
+            .navbar-nav {
+                padding-top: 10px;
+            }
+            
+            .navbar-nav li {
+                 border-bottom: 1px solid rgba(255,255,255,0.05);
+            }
+            
+            .navbar-nav li a {
+                padding: 15px 25px !important;
+                font-size: 16px;
+                font-weight: 500;
+                color: #ffffff !important;
+                display: block;
+            }
+            
+            .navbar-nav li a:hover {
+                background-color: rgba(255,255,255,0.05);
+                color: #00bcd4 !important; /* Premium Cyan accent */
+                padding-left: 30px !important; /* Slight movement on hover */
+                transition: all 0.2s;
             }
         }
     </style>
@@ -162,6 +203,12 @@
                     <a class="search header-search" href="#"><i class="fa fa-search"></i></a>
                 </div>
                 <div class="collapse navbar-collapse" id="nextpage_main_menu">
+                    <div class="d-flex justify-content-end p-3 d-lg-none">
+                        <button class="menu toggle-btn border-0 bg-transparent text-white" data-target="#nextpage_main_menu" 
+                        aria-expanded="true" aria-label="Close navigation" onclick="$('#nextpage_main_menu').collapse('hide')">
+                            <i class="fa fa-times fa-2x"></i>
+                        </button>
+                    </div>
                     <ul class="navbar-nav menu-open">
                         <li class="current-menu-item">
                             <a href="{{ url('/') }}">{{ __('frontend.home') }}</a>
