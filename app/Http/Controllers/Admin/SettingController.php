@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Configuration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class SettingController extends Controller
 {
@@ -41,7 +44,21 @@ class SettingController extends Controller
     {
         if ($request->hasFile($key)) {
             $file = $request->file($key);
-            $path = $file->store('settings', 'public');
+            $filename = 'settings/' . Str::random(40) . '.webp';
+            
+            // Optimization
+            $manager = new ImageManager(new Driver());
+            $image = $manager->read($file);
+
+            // Resize logic
+            if ($key === 'site_favicon') {
+                $image->scale(width: 128); // Favicon size
+            } else {
+                $image->scale(width: 1200); // General limit
+            }
+
+            $encoded = $image->toWebp(quality: 85);
+            Storage::disk('public')->put($filename, (string) $encoded);
             
             // Delete old file if exists
             $old = Configuration::where('key', $key)->value('value');
@@ -49,7 +66,7 @@ class SettingController extends Controller
                 Storage::disk('public')->delete($old);
             }
 
-            Configuration::updateOrCreate(['key' => $key], ['value' => $path]);
+            Configuration::updateOrCreate(['key' => $key], ['value' => $filename]);
         }
     }
 }
