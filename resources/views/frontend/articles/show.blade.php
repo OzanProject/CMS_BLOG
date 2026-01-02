@@ -4,8 +4,6 @@
 @section('meta_description', $article->meta_description ?? Str::limit(strip_tags($article->content), 150))
 @section('meta_keywords', $article->keywords)
 
-
-
 @section('content')
 <div class="pd-top-75 pd-bottom-50">
     <div class="container">
@@ -51,8 +49,6 @@
                             {!! $article->content !!}
                         </div>
 
-
-
                         <!-- Social Share -->
                         <div class="post-meta-single mt-4">
                             <h6 class="mb-3">{{ __('frontend.share_article') }}</h6>
@@ -61,7 +57,7 @@
                                 <a href="https://twitter.com/intent/tweet?text={{ urlencode($article->title) }}&url={{ urlencode(request()->url()) }}" target="_blank" class="btn btn-social btn-twitter"><i class="fa fa-twitter"></i> <span class="d-none d-md-inline">Twitter</span></a>
                                 <a href="https://wa.me/?text={{ urlencode($article->title . ' ' . request()->url()) }}" target="_blank" class="btn btn-social btn-whatsapp"><i class="fa fa-whatsapp"></i> <span class="d-none d-md-inline">WhatsApp</span></a>
                                 <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ urlencode(request()->url()) }}" target="_blank" class="btn btn-social btn-linkedin"><i class="fa fa-linkedin"></i> <span class="d-none d-md-inline">LinkedIn</span></a>
-                                <a href="https://t.me/share/url?url={{ urlencode(request()->url()) }}&text={{ urlencode($article->title) }}" target="_blank" class="btn btn-social btn-telegram"><i class="fa fa-telegram"></i> <span class="d-none d-md-inline">Telegram</span></a>
+                                <a href="https://t.me/share/url?url={{ urlencode(request()->url()) }}" target="_blank" class="btn btn-social btn-telegram"><i class="fa fa-telegram"></i> <span class="d-none d-md-inline">Telegram</span></a>
                                 <button onclick="copyToClipboard('{{ request()->url() }}')" class="btn btn-social btn-copy"><i class="fa fa-link"></i> <span class="d-none d-md-inline">{{ __('frontend.copy_link') }}</span></button>
                             </div>
                         </div>
@@ -106,7 +102,6 @@
                         <script>
                             function copyToClipboard(text) {
                                 navigator.clipboard.writeText(text).then(function() {
-                                    // Use a simpler alert or toast if possible, standard alert is fine for now
                                     alert('Link copied to clipboard!');
                                 }, function(err) {
                                     console.error('Could not copy text: ', err);
@@ -178,13 +173,10 @@
                 </div>
                 @endforeach
                 
-                <!-- Ad Widget -->
-                <!-- Ad Widget -->
                 <div class="widget widget_add mt-4">
                     @include('frontend.partials.ad-sidebar')
                 </div>
 
-                <!-- Newsletter Widget -->
                 <div class="mt-4">
                     @include('frontend.partials.newsletter-sidebar')
                 </div>
