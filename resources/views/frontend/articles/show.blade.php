@@ -4,6 +4,10 @@
 @section('meta_description', $article->meta_description ?? Str::limit(strip_tags($article->content), 150))
 @section('meta_keywords', $article->keywords)
 
+@section('schema_json')
+    @include('frontend.articles.partials.json-ld')
+@endsection
+
 @section('content')
 <div class="pd-top-75 pd-bottom-50">
     <div class="container">
