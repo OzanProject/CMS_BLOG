@@ -258,8 +258,18 @@ class ArticleController extends Controller
     public function uploadImage(Request $request)
     {
         if ($request->hasFile('upload')) {
-            $path = $request->file('upload')->store('media', 'public');
-            $url = asset('storage/' . $path);
+            $file = $request->file('upload');
+            $filename = 'media/' . Str::random(40) . '.webp';
+            
+            // Optimization
+            $manager = new ImageManager(new Driver());
+            $image = $manager->read($file);
+            $image->scale(width: 1000); // Limit content image width
+            $encoded = $image->toWebp(quality: 80);
+            
+            Storage::disk('public')->put($filename, (string) $encoded);
+            
+            $url = asset('storage/' . $filename);
             
             return response()->json([
                 'url' => $url
