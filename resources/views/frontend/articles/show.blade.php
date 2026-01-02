@@ -4,6 +4,10 @@
 @section('meta_description', $article->meta_description ?? Str::limit(strip_tags($article->content), 150))
 @section('meta_keywords', $article->keywords)
 
+@if($article->featured_image)
+    @section('meta_image', asset('storage/' . $article->featured_image))
+@endif
+
 @section('schema_json')
     @include('frontend.articles.partials.json-ld')
 @endsection
