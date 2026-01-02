@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cache;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class ArticleController extends Controller
 {
@@ -56,17 +58,26 @@ class ArticleController extends Controller
             'category_id' => 'required|exists:categories,id',
             'content' => 'required',
             'status' => 'required|in:draft,published,archived',
-            'featured_image' => 'nullable|image|max:2048', // Max 2MB
+            'featured_image' => 'nullable|image|max:10240', // Max 10MB (Optimized to <100KB)
         ]);
 
         $data = $request->except('featured_image');
         $data['user_id'] = auth()->id();
         $data['slug'] = Str::slug($request->title);
         
-        // Handle Image Upload
+        // Handle Image Upload with Optimization
         if ($request->hasFile('featured_image')) {
-            $path = $request->file('featured_image')->store('articles', 'public');
-            $data['featured_image'] = $path;
+            $file = $request->file('featured_image');
+            $filename = 'articles/' . Str::random(40) . '.webp';
+            
+            // Optimization: Resize & Convert to WebP
+            $manager = new ImageManager(new Driver());
+            $image = $manager->read($file);
+            $image->scale(width: 1200); // Max width 1200px
+            $encoded = $image->toWebp(quality: 80);
+            
+            Storage::disk('public')->put($filename, (string) $encoded);
+            $data['featured_image'] = $filename;
         }
         
         // Handle Published Date
@@ -126,7 +137,7 @@ class ArticleController extends Controller
             'category_id' => 'required|exists:categories,id',
             'content' => 'required',
             'status' => 'required|in:draft,published,archived',
-            'featured_image' => 'nullable|image|max:2048',
+            'featured_image' => 'nullable|image|max:10240',
         ]);
 
         $data = $request->except('featured_image');
@@ -137,8 +148,17 @@ class ArticleController extends Controller
             if ($article->featured_image) {
                 Storage::disk('public')->delete($article->featured_image);
             }
-            $path = $request->file('featured_image')->store('articles', 'public');
-            $data['featured_image'] = $path;
+            $file = $request->file('featured_image');
+            $filename = 'articles/' . Str::random(40) . '.webp';
+            
+            // Optimization
+            $manager = new ImageManager(new Driver());
+            $image = $manager->read($file);
+            $image->scale(width: 1200);
+            $encoded = $image->toWebp(quality: 80);
+            
+            Storage::disk('public')->put($filename, (string) $encoded);
+            $data['featured_image'] = $filename;
         }
         
         if ($request->status === 'published') {
