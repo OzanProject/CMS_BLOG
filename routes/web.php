@@ -13,6 +13,18 @@ Route::get('/ads.txt', function () {
 
 Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
 Route::get('/robots.txt', [\App\Http\Controllers\SitemapController::class, 'robots'])->name('robots');
+Route::get('/debug-article', function() {
+    $article = \App\Models\Article::latest()->first();
+    return [
+        'title' => $article->title,
+        'status' => $article->status,
+        'published_at' => $article->published_at,
+        'published_at_raw' => $article->getAttributes()['published_at'],
+        'now_jakarta' => now()->format('Y-m-d H:i:s'),
+        'timezone' => config('app.timezone'),
+        'is_published' => $article->published_at <= now(),
+    ];
+});
 
 Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
