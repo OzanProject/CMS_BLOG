@@ -66,6 +66,9 @@
                 </div>
                 <!-- Google ReCaptcha -->
                 <div class="col-12 mb-3">
+                    <div class="alert alert-info py-1">
+                        <small>Debug Status: Config Key is <strong>{{ config('services.recaptcha.site_key') ? 'LOADED' : 'NOT FOUND (Check .env)' }}</strong></small>
+                    </div>
                     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
                     <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
                     @error('g-recaptcha-response')
