@@ -122,9 +122,19 @@
             <button type="submit" class="btn btn-blue">
                 {{ __('frontend.post_comment') }}
             </button>
+            
+            <small class="d-block mt-2 text-muted" style="font-size: 11px;">
+                This site is protected by reCAPTCHA and the Google 
+                <a href="https://policies.google.com/privacy" target="_blank">Privacy Policy</a> and 
+                <a href="https://policies.google.com/terms" target="_blank">Terms of Service</a> apply.
+            </small>
         </form>
     </div>
 </div>
+
+<style>
+    .grecaptcha-badge { visibility: hidden; }
+</style>
 
 {{-- ================= RECAPTCHA SCRIPT ================= --}}
 <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}"></script>
