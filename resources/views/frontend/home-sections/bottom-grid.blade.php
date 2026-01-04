@@ -19,7 +19,7 @@
                                         @if($post->category)
                                         <li><a class="tag-base tag-purple" href="{{ route('category.show', $post->category->slug) }}">{{ $post->category->name }}</a></li>
                                         @endif
-                                        <li><p><i class="fa fa-clock-o"></i>{{ $post->created_at->format('M d, Y') }}</p></li>
+                                        <li><p><i class="fa fa-clock-o"></i>{{ $post->published_at->translatedFormat('d M Y') }}</p></li>
                                     </ul>
                                 </div>
                                 <h6 class="title"><a href="{{ route('article.show', $post->slug) }}">{{ Str::limit($post->title, 45) }}</a></h6>

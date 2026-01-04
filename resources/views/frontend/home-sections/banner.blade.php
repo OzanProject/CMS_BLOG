@@ -22,7 +22,7 @@
                                         @if($mainBanner->category)
                                         <li><a class="tag-base tag-blue" href="{{ route('category.show', $mainBanner->category->slug) }}">{{ $mainBanner->category->name }}</a></li>
                                         @endif
-                                        <li class="date"><i class="fa fa-clock-o"></i>{{ $mainBanner->created_at->format('M d, Y') }}</li>
+                                        <li class="date"><i class="fa fa-clock-o"></i>{{ $mainBanner->published_at->translatedFormat('d M Y') }}</li>
                                     </ul>
                                 </div>
                                 <h2>{{ Str::limit($mainBanner->title, 60) }}</h2>
@@ -76,7 +76,7 @@
                                 <h6 class="title"><a href="{{ route('article.show', $bannerItem->slug) }}">{{ Str::limit($bannerItem->title, 40) }}</a></h6>
                                 <div class="post-meta-single mt-3">
                                     <ul>
-                                        <li><i class="fa fa-clock-o"></i>{{ $bannerItem->created_at->format('M d, Y') }}</li>
+                                        <li><i class="fa fa-clock-o"></i>{{ $bannerItem->published_at->translatedFormat('d M Y') }}</li>
                                     </ul>
                                 </div>
                             </div>

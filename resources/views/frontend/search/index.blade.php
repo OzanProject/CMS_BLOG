@@ -31,7 +31,7 @@
                             </div>
                             <div class="details">
                                 <div class="post-meta-single">
-                                    <p><i class="fa fa-clock-o"></i>{{ $post->created_at->format('M d, Y') }}</p>
+                                    <p><i class="fa fa-clock-o"></i>{{ $post->published_at->translatedFormat('d M Y') }}</p>
                                 </div>
                                 <h6 class="title"><a href="{{ route('article.show', $post->slug) }}">{{ Str::limit($post->title, 50) }}</a></h6>
                             </div>

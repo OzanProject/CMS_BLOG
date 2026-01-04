@@ -139,7 +139,7 @@
                                     </div>
                                     <div class="details p-3">
                                         <div class="post-meta-single mb-2">
-                                            <p class="m-0 text-muted small"><i class="fa fa-clock-o"></i> {{ $related->created_at->translatedFormat('d M Y') }}</p>
+                                            <p class="m-0 text-muted small"><i class="fa fa-clock-o"></i> {{ $related->published_at->translatedFormat('d M Y') }}</p>
                                         </div>
                                         <h6 class="title m-0" style="line-height: 1.5; font-size: 16px;"><a href="{{ route('article.show', $related->slug) }}" class="text-dark">{{ Str::limit($related->title, 55) }}</a></h6>
                                     </div>
@@ -175,7 +175,7 @@
                     <div class="media-body">
                         <h6 class="m-0" style="line-height: 1.4;"><a href="{{ route('article.show', $recent->slug) }}" class="text-dark">{{ Str::limit($recent->title, 50) }}</a></h6>
                         <div class="meta text-muted small mt-1">
-                            <span class="date"><i class="fa fa-clock-o"></i> {{ $recent->created_at->format('M d, Y') }}</span>
+                            <span class="date"><i class="fa fa-clock-o"></i> {{ $recent->published_at->translatedFormat('d M Y') }}</span>
                         </div>
                     </div>
                 </div>
