@@ -22,7 +22,7 @@
                                         @if($mainBanner->category)
                                         <li><a class="tag-base tag-blue" href="{{ route('category.show', $mainBanner->category->slug) }}">{{ $mainBanner->category->name }}</a></li>
                                         @endif
-                                        <li class="date"><i class="fa fa-clock-o"></i>{{ $mainBanner->published_at->translatedFormat('d M Y') }} (Updated)</li>
+                                        <li class="date"><i class="fa fa-clock-o"></i>{{ $mainBanner->published_at->translatedFormat('d M Y') }}</li>
                                     </ul>
                                 </div>
                                 <h2>{{ Str::limit($mainBanner->title, 60) }}</h2>
