@@ -65,16 +65,28 @@
                 </div>
                 </div>
                 <!-- Google ReCaptcha -->
-                <div class="col-12 mb-3">
-                    <div class="alert alert-info py-1">
-                        <small>Debug Status: Config Key is <strong>{{ config('services.recaptcha.site_key') ? 'LOADED' : 'NOT FOUND (Check .env)' }}</strong></small>
-                    </div>
-                    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-                    <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
-                    @error('g-recaptcha-response')
-                        <small class="text-danger">{{ $message }}</small>
-                    @enderror
-                </div>
+                <!-- Google ReCaptcha v3 -->
+                <input type="hidden" name="g-recaptcha-response" id="recaptcha-token">
+                
+                @error('g-recaptcha-response')
+                    <small class="text-danger d-block mb-3">{{ $message }}</small>
+                @enderror
+
+                <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}"></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const form = document.querySelector('.comment-form');
+                        form.addEventListener('submit', function(e) {
+                            e.preventDefault();
+                            grecaptcha.ready(function() {
+                                grecaptcha.execute('{{ config('services.recaptcha.site_key') }}', {action: 'submit'}).then(function(token) {
+                                    document.getElementById('recaptcha-token').value = token;
+                                    form.submit();
+                                });
+                            });
+                        });
+                    });
+                </script>
             </div>
             <button type="submit" class="btn btn-blue">{{ __('frontend.post_comment') }}</button>
         </form>

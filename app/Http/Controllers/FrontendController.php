@@ -153,8 +153,15 @@ class FrontendController extends Controller
                 'remoteip' => $request->ip(),
             ]);
 
-            if (!$response->successful() || !($response->json()['success'] ?? false)) {
-                return back()->withInput()->withErrors(['g-recaptcha-response' => 'Please verify that you are not a robot.']);
+            if (!$response->successful()) {
+                return back()->withInput()->withErrors(['g-recaptcha-response' => 'ReCaptcha Connection Failed.']);
+            }
+
+            $body = $response->json();
+
+            // v3 Verification (Success + Score Check)
+            if (!($body['success'] ?? false) || ($body['score'] ?? 0) < 0.5) {
+                return back()->withInput()->withErrors(['g-recaptcha-response' => 'Spam detected. Please try again later.']);
             }
         }
 
