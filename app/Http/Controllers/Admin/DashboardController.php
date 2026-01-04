@@ -36,10 +36,15 @@ class DashboardController extends Controller
             ];
         });
 
-        $latest_articles = Article::with('user', 'category')->latest()->take(5)->get();
+        $latest_articles = Article::with('user', 'category')->where('published_at', '<=', now())->latest()->take(5)->get();
+        $upcoming_posts = Article::where('status', 'published')
+            ->where('published_at', '>', now())
+            ->orderBy('published_at', 'asc')
+            ->take(5)
+            ->get();
         $recent_comments = Comment::with('article')->latest()->take(5)->get();
         $tasks = \App\Models\Task::latest()->get();
 
-        return view('admin.dashboard', compact('stats', 'latest_articles', 'recent_comments', 'tasks', 'chartData'));
+        return view('admin.dashboard', compact('stats', 'latest_articles', 'upcoming_posts', 'recent_comments', 'tasks', 'chartData'));
     }
 }

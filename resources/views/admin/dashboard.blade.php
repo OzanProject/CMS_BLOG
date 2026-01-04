@@ -93,6 +93,35 @@
                 <canvas id="content-chart" style="max-height: 250px;"></canvas>
             </div>
 
+            <!-- Upcoming Scheduled Posts -->
+            @if($upcoming_posts->count() > 0)
+            <div class="bg-secondary text-center rounded p-4 mb-4">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h6 class="mb-0 text-info"><i class="fa fa-calendar-alt me-2"></i>Upcoming Posts (Scheduled)</h6>
+                </div>
+                <div class="table-responsive">
+                    <table class="table text-start align-middle table-bordered table-hover mb-0">
+                        <thead>
+                            <tr class="text-white">
+                                <th scope="col">Title</th>
+                                <th scope="col">Scheduled Date</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($upcoming_posts as $post)
+                            <tr>
+                                <td>{{ Str::limit($post->title, 40) }}</td>
+                                <td class="text-info fw-bold">{{ $post->published_at->format('d M Y, H:i') }}</td>
+                                <td><span class="badge bg-warning text-dark"><i class="fa fa-clock me-1"></i>Scheduled</span></td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @endif
+
             <!-- Recent Articles -->
             <div class="bg-secondary text-center rounded p-4">
                 <div class="d-flex align-items-center justify-content-between mb-4">
