@@ -40,7 +40,7 @@ class DashboardController extends Controller
         $upcoming_posts = Article::where('status', 'published')
             ->where('published_at', '>', now())
             ->orderBy('published_at', 'asc')
-            ->take(5)
+            ->take(10)
             ->get();
         $recent_comments = Comment::with('article')->latest()->take(5)->get();
         $tasks = \App\Models\Task::latest()->get();
