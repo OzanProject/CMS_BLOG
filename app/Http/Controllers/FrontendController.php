@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 
 class FrontendController extends Controller
@@ -142,6 +143,20 @@ class FrontendController extends Controller
             'parent_id' => 'nullable|exists:comments,id',
             'website_catch' => 'nullable|string', // Honeypot validation
         ]);
+
+        // Verify ReCaptcha
+        if (config('services.recaptcha.secret_key')) {
+            /** @var \Illuminate\Http\Client\Response $response */
+             $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+                'secret' => config('services.recaptcha.secret_key'),
+                'response' => $request->input('g-recaptcha-response'),
+                'remoteip' => $request->ip(),
+            ]);
+
+            if (!$response->successful() || !($response->json()['success'] ?? false)) {
+                return back()->withInput()->withErrors(['g-recaptcha-response' => 'Please verify that you are not a robot.']);
+            }
+        }
 
         // Honeypot Trap
         if ($request->filled('website_catch')) {

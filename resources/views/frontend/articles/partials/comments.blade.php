@@ -63,6 +63,15 @@
                         <textarea name="body" class="form-control" rows="4" placeholder="{{ __('frontend.message_placeholder') }}" required>{{ old('body') }}</textarea>
                     </div>
                 </div>
+                </div>
+                <!-- Google ReCaptcha -->
+                <div class="col-12 mb-3">
+                    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+                    <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
+                    @error('g-recaptcha-response')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
             </div>
             <button type="submit" class="btn btn-blue">{{ __('frontend.post_comment') }}</button>
         </form>
