@@ -40,6 +40,7 @@ class AppServiceProvider extends ServiceProvider
                      $view->with('navbarComments', $unreadComments);
                      $view->with('navbarCommentsCount', $unreadCommentsCount);
                      $view->with('navbarCommentsCount', $unreadCommentsCount);
+                     $view->with('totalSiteViews', \App\Models\Article::sum('views'));
                 }
             });
 

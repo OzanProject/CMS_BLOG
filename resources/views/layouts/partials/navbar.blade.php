@@ -6,9 +6,9 @@
     <a href="#" class="sidebar-toggler flex-shrink-0">
         <i class="fa fa-bars"></i>
     </a>
-    <form class="d-none d-md-flex ms-4">
-        <input class="form-control bg-dark border-0" type="search" placeholder="Search">
-    </form>
+    <div class="d-none d-md-flex ms-4 align-items-center text-muted">
+        <i class="fa fa-eye me-2"></i> Total Visitors: <span class="fw-bold ms-1">{{ number_format($totalSiteViews ?? 0) }}</span>
+    </div>
     <div class="navbar-nav align-items-center ms-auto">
         
         <!-- Language Switcher -->
