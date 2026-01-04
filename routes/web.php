@@ -12,6 +12,13 @@ Route::get('/ads.txt', function () {
 });
 
 Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
+Route::get('/debug-comments', function() {
+    return [
+        'pending' => \App\Models\Comment::where('status', 'pending')->count(),
+        'total' => \App\Models\Comment::count(),
+        'latest_pending' => \App\Models\Comment::where('status', 'pending')->latest()->take(3)->get()
+    ];
+});
 Route::get('/robots.txt', [\App\Http\Controllers\SitemapController::class, 'robots'])->name('robots');
 Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
