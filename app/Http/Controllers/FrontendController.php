@@ -153,7 +153,7 @@ class FrontendController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'body' => $request->body,
-            'status' => 'approved', // Auto-approve for now, or change to 'pending'
+            'status' => 'pending', // Default to pending for moderation
             'parent_id' => $request->parent_id,
         ]);
 
