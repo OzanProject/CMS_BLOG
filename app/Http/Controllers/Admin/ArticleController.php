@@ -54,11 +54,13 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:255|unique:articles,title',
             'category_id' => 'required|exists:categories,id',
             'content' => 'required',
             'status' => 'required|in:draft,published,archived',
             'featured_image' => 'nullable|image|max:10240', // Max 10MB (Optimized to <100KB)
+        ], [
+            'title.unique' => 'Judul artikel ini sudah ada (Duplikat). Mohon gunakan judul lain.',
         ]);
 
         $data = $request->except('featured_image');
@@ -141,11 +143,13 @@ class ArticleController extends Controller
     public function update(Request $request, Article $article)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:255|unique:articles,title,' . $article->id,
             'category_id' => 'required|exists:categories,id',
             'content' => 'required',
             'status' => 'required|in:draft,published,archived',
             'featured_image' => 'nullable|image|max:10240',
+        ], [
+            'title.unique' => 'Judul artikel ini sudah ada (Duplikat). Mohon gunakan judul lain.',
         ]);
 
         $data = $request->except('featured_image');
