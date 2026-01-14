@@ -23,24 +23,25 @@ class SitemapController extends Controller
         // Categories
         $categories = Category::all();
         foreach ($categories as $category) {
+            $date = $category->updated_at ?? $category->created_at ?? now();
             $urls[] = [
                 'loc' => route('category.show', $category->slug),
-                'lastmod' => $category->updated_at->toAtomString(),
+                'lastmod' => $date->toAtomString(),
                 'priority' => '0.8',
                 'changefreq' => 'weekly',
             ];
         }
 
         // Articles (Posts)
-        // Articles (Posts)
         $articles = Article::where('status', 'published')
             ->where('published_at', '<=', now())
             ->latest()
             ->get();
         foreach ($articles as $article) {
+            $date = $article->updated_at ?? $article->published_at ?? $article->created_at ?? now();
             $urls[] = [
                 'loc' => route('article.show', $article->slug),
-                'lastmod' => $article->updated_at->toAtomString(),
+                'lastmod' => $date->toAtomString(),
                 'priority' => '0.9',
                 'changefreq' => 'daily',
             ];
@@ -52,12 +53,12 @@ class SitemapController extends Controller
         })->get();
         foreach ($authors as $author) {
              // Assuming author route uses name/username logic from FrontendController
-             // Using Str::slug($author->name) as per existing showAuthor logic if username not present
             $username = $author->username ?? \Illuminate\Support\Str::slug($author->name);
+            $date = $author->updated_at ?? $author->created_at ?? now();
             
             $urls[] = [
                 'loc' => route('author.show', $username),
-                'lastmod' => $author->updated_at->toAtomString(),
+                'lastmod' => $date->toAtomString(),
                 'priority' => '0.7',
                 'changefreq' => 'monthly',
             ];
@@ -66,9 +67,10 @@ class SitemapController extends Controller
         // Dynamic Pages (About, Contact, etc.)
         $pages = Page::where('status', 1)->get();
         foreach ($pages as $page) {
+            $date = $page->updated_at ?? $page->created_at ?? now();
             $urls[] = [
                 'loc' => route('page.show', $page->slug),
-                'lastmod' => $page->updated_at->toAtomString(),
+                'lastmod' => $date->toAtomString(),
                 'priority' => '0.5',
                 'changefreq' => 'monthly',
             ];
