@@ -153,6 +153,45 @@
 
                     <hr class="dropdown-divider bg-dark my-4">
 
+                    <!-- SMTP Settings -->
+                    <h6 class="mb-4 text-primary">SMTP Email Configuration</h6>
+                    <div class="row mb-4">
+                        <div class="col-md-8 mb-3">
+                            <label class="form-label">SMTP Host</label>
+                            <input type="text" class="form-control" name="mail_host" value="{{ $settings['mail_host'] ?? '' }}" placeholder="smtp.gmail.com">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">SMTP Port</label>
+                            <input type="text" class="form-control" name="mail_port" value="{{ $settings['mail_port'] ?? '587' }}" placeholder="587">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">SMTP Username</label>
+                            <input type="text" class="form-control" name="mail_username" value="{{ $settings['mail_username'] ?? '' }}" placeholder="email@example.com">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">SMTP Password</label>
+                            <input type="password" class="form-control" name="mail_password" value="{{ $settings['mail_password'] ?? '' }}" placeholder="App Password / Secret">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Encryption</label>
+                            <select class="form-select" name="mail_encryption">
+                                <option value="tls" {{ ($settings['mail_encryption'] ?? '') == 'tls' ? 'selected' : '' }}>TLS</option>
+                                <option value="ssl" {{ ($settings['mail_encryption'] ?? '') == 'ssl' ? 'selected' : '' }}>SSL</option>
+                                <option value="" {{ ($settings['mail_encryption'] ?? '') == '' ? 'selected' : '' }}>None</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">From Address</label>
+                            <input type="text" class="form-control" name="mail_from_address" value="{{ $settings['mail_from_address'] ?? '' }}" placeholder="noreply@example.com">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">From Name</label>
+                            <input type="text" class="form-control" name="mail_from_name" value="{{ $settings['mail_from_name'] ?? '' }}" placeholder="My Website">
+                        </div>
+                    </div>
+
+                    <hr class="dropdown-divider bg-dark my-4">
+
                     <!-- Contact & About Information -->
                     <h6 class="mb-4 text-primary">{{ __('settings.contact') }}</h6>
                     <div class="row mb-4">

@@ -30,6 +30,19 @@ class AppServiceProvider extends ServiceProvider
             if (\Illuminate\Support\Facades\Schema::hasTable('configurations')) {
                 $settings = \App\Models\Configuration::pluck('value', 'key');
                 \Illuminate\Support\Facades\View::share('settings', $settings);
+
+                // Override Mail Config
+                if ($settings->get('mail_host')) {
+                    config([
+                        'mail.mailers.smtp.host' => $settings->get('mail_host'),
+                        'mail.mailers.smtp.port' => $settings->get('mail_port'),
+                        'mail.mailers.smtp.username' => $settings->get('mail_username'),
+                        'mail.mailers.smtp.password' => $settings->get('mail_password'),
+                        'mail.mailers.smtp.encryption' => $settings->get('mail_encryption'),
+                        'mail.from.address' => $settings->get('mail_from_address'),
+                        'mail.from.name' => $settings->get('mail_from_name'),
+                    ]);
+                }
             }
 
             // Compose Navbar with Comment Notifications
