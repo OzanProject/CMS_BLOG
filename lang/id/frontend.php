@@ -61,4 +61,5 @@ return [
     'back_to_home' => 'Kembali ke Beranda',
     'all_articles' => 'Semua Artikel', // New Key
     'no_articles' => 'Tidak ada artikel ditemukan.', // New Key
+    'read_also' => 'Baca Juga',
 ];

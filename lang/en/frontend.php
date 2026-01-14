@@ -61,4 +61,5 @@ return [
     'back_to_home' => 'Back to Home',
     'all_articles' => 'All Articles', // New Key
     'no_articles' => 'No articles found.', // New Key
+    'read_also' => 'Read Also',
 ];
