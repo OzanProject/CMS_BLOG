@@ -68,6 +68,9 @@ Route::middleware('auth')->group(function () {
         Route::resource('messages', \App\Http\Controllers\Admin\MessageController::class)->only(['index', 'show', 'destroy']);
 
         // Subscribers (Newsletter)
+        // Subscribers (Newsletter)
+        Route::get('subscribers/compose', [\App\Http\Controllers\Admin\SubscriberController::class, 'compose'])->name('subscribers.compose');
+        Route::post('subscribers/send', [\App\Http\Controllers\Admin\SubscriberController::class, 'send'])->name('subscribers.send');
         Route::resource('subscribers', \App\Http\Controllers\Admin\SubscriberController::class)->only(['index', 'destroy']);
 
         // Backups (Database)

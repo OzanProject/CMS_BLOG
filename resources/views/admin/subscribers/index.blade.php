@@ -7,7 +7,10 @@
     <div class="bg-secondary text-center rounded p-4">
         <div class="d-flex align-items-center justify-content-between mb-4">
             <h6 class="mb-0">All Subscribers</h6>
-            <button class="btn btn-primary btn-sm" onclick="copyToClipboard()"><i class="fa fa-copy me-2"></i>Copy All Emails</button>
+            <div>
+                <a href="{{ route('admin.subscribers.compose') }}" class="btn btn-success btn-sm me-2"><i class="fa fa-envelope me-2"></i>Compose Email</a>
+                <button class="btn btn-primary btn-sm" onclick="copyToClipboard()"><i class="fa fa-copy me-2"></i>Copy All Emails</button>
+            </div>
         </div>
         <div class="table-responsive">
             <table class="table text-start align-middle table-bordered table-hover mb-0">
