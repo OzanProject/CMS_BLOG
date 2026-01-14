@@ -40,6 +40,7 @@ class SubscriberController extends Controller
 
         $subscribers = Subscriber::all();
         $count = 0;
+        $errors = [];
 
         foreach ($subscribers as $subscriber) {
             try {
@@ -48,9 +49,15 @@ class SubscriberController extends Controller
                     ->send(new \App\Mail\NewsletterEmail($request->subject, $request->message));
                 $count++;
             } catch (\Exception $e) {
-                // Continue even if one fails
+                // Log and capture error
                 \Illuminate\Support\Facades\Log::error('Newsletter Send Error to ' . $subscriber->email . ': ' . $e->getMessage());
+                $errors[] = $e->getMessage();
             }
+        }
+
+        if ($count == 0 && count($subscribers) > 0) {
+            // All failed
+            return back()->with('error', 'Failed to send emails. Error: ' . ($errors[0] ?? 'Unknown Error'));
         }
 
         return redirect()->route('admin.subscribers.index')
