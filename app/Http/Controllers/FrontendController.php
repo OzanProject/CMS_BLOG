@@ -170,7 +170,7 @@ class FrontendController extends Controller
             return back()->with('success', 'Your comment has been posted!'); // Fake success
         }
 
-        $article->comments()->create([
+        $comment = $article->comments()->create([
             'user_id' => auth()->id(), // Null if guest
             'name' => $request->name,
             'email' => $request->email,
@@ -179,7 +179,26 @@ class FrontendController extends Controller
             'parent_id' => $request->parent_id,
         ]);
 
-        return back()->with('success', 'Your comment has been posted!');
+        // Send Notification to Admin
+        try {
+            $adminEmail = \App\Models\Configuration::where('key', 'contact_email')->value('value') ?? 'admin@example.com';
+            
+            // If contact email is default/empty, try to find first admin
+            if ($adminEmail == 'admin@example.com' || empty($adminEmail)) {
+                 $admin = \App\Models\User::where('role', 'admin')->first();
+                 if ($admin) $adminEmail = $admin->email;
+            }
+
+            // Check if SMTP is configured before sending to avoid errors
+            if (config('mail.mailers.smtp.host')) {
+                 \Illuminate\Support\Facades\Mail::to($adminEmail)->send(new \App\Mail\NewCommentNotification($comment, $article));
+            }
+        } catch (\Exception $e) {
+            // Log error but don't stop the comment process
+            \Illuminate\Support\Facades\Log::error('Mail Send Error: ' . $e->getMessage());
+        }
+
+        return back()->with('success', __('frontend.comment_success'));
     }
 
     public function showAuthor($username)
