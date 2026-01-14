@@ -54,7 +54,15 @@
                         <h2 class="title">{{ $article->title }}</h2>
                         
                         <div class="content mt-4">
-                            {!! $article->content !!}
+                            @php
+                                $adScript = \App\Models\Configuration::where('key', 'ad_in_article_script')->value('value');
+                                // Fallback to Image if Script is empty (Logic could be refined, but script is priority)
+                                // Only injecting script for now as ContentInjector focuses on text/script.
+                                
+                                // Pick a random related article for "Read Also" (different from current)
+                                $readAlso = $relatedArticles->shuffle()->first();
+                            @endphp
+                            {!! \App\Helpers\ContentInjector::inject($article->content, $adScript, $readAlso) !!}
                         </div>
 
                         <!-- Social Share -->

@@ -110,10 +110,12 @@
 
                     <hr class="dropdown-divider bg-dark my-4">
 
+                    <hr class="dropdown-divider bg-dark my-4">
+
                     <!-- Advertisement Settings -->
                     <h6 class="mb-4 text-primary">{{ __('settings.advertisements') }}</h6>
                     <div class="row mb-4">
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label class="form-label">Header Ad (728x90)</label>
                              @if(isset($settings['ad_header_image']))
                                 <div class="mb-2">
@@ -121,12 +123,11 @@
                                 </div>
                             @endif
                             <input class="form-control bg-dark mb-2" type="file" name="ad_header_image">
-                            <input type="text" class="form-control mb-2" name="ad_header_url" value="{{ $settings['ad_header_url'] ?? '' }}" placeholder="Destination URL (http://...)">
-                            <textarea class="form-control" name="ad_header_script" rows="4" placeholder="Or paste AdSense/Script code here...">{{ $settings['ad_header_script'] ?? '' }}</textarea>
-                            <div class="form-text">Note: Script takes priority over Image if both are present.</div>
+                            <input type="text" class="form-control mb-2" name="ad_header_url" value="{{ $settings['ad_header_url'] ?? '' }}" placeholder="Destination URL">
+                            <textarea class="form-control" name="ad_header_script" rows="4" placeholder="Script code...">{{ $settings['ad_header_script'] ?? '' }}</textarea>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Sidebar Ad</label>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Sidebar Ad (300x250)</label>
                              @if(isset($settings['ad_sidebar_image']))
                                 <div class="mb-2">
                                     <img src="{{ asset('storage/' . $settings['ad_sidebar_image']) }}" class="img-fluid" style="max-height: 100px;">
@@ -134,8 +135,19 @@
                             @endif
                             <input class="form-control bg-dark mb-2" type="file" name="ad_sidebar_image">
                             <input type="text" class="form-control mb-2" name="ad_sidebar_url" value="{{ $settings['ad_sidebar_url'] ?? '' }}" placeholder="Destination URL">
-                            <textarea class="form-control" name="ad_sidebar_script" rows="4" placeholder="Or paste AdSense/Script code here...">{{ $settings['ad_sidebar_script'] ?? '' }}</textarea>
-                            <div class="form-text">Note: Script takes priority over Image if both are present.</div>
+                            <textarea class="form-control" name="ad_sidebar_script" rows="4" placeholder="Script code...">{{ $settings['ad_sidebar_script'] ?? '' }}</textarea>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">In-Article Ad (Responsive)</label>
+                             @if(isset($settings['ad_in_article_image']))
+                                <div class="mb-2">
+                                    <img src="{{ asset('storage/' . $settings['ad_in_article_image']) }}" class="img-fluid" style="max-height: 100px;">
+                                </div>
+                            @endif
+                            <input class="form-control bg-dark mb-2" type="file" name="ad_in_article_image">
+                            <input type="text" class="form-control mb-2" name="ad_in_article_url" value="{{ $settings['ad_in_article_url'] ?? '' }}" placeholder="Destination URL">
+                            <textarea class="form-control" name="ad_in_article_script" rows="4" placeholder="Script code (Google AdSense/etc)...">{{ $settings['ad_in_article_script'] ?? '' }}</textarea>
+                            <div class="form-text">Will be injected after 5th paragraph.</div>
                         </div>
                     </div>
 
