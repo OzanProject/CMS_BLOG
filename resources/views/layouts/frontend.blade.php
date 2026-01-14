@@ -151,10 +151,10 @@
         <!-- topbar end-->
 
         <!-- adbar end-->
-        <div class="adbar-area bg-black d-none d-lg-block">
+        <div class="adbar-area bg-black">
             <div class="container">
                 <div class="row">
-                    <div class="col-xl-6 col-lg-5 align-self-center">
+                    <div class="col-xl-6 col-lg-5 align-self-center d-none d-lg-block">
                         <div class="logo text-md-left text-center">
                             <a class="main-logo" href="{{ url('/') }}">
                                 <h2 class="text-white mb-0" style="font-weight: 800; letter-spacing: 1px;">{{ $settings['site_name'] ?? 'DeepBlog' }}</h2>
