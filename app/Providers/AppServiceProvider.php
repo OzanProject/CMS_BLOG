@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,7 +20,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if($this->app->environment('production')) {
+        // Gunakan Bootstrap untuk tampilan pagination (bukan Tailwind default Laravel 11)
+        Paginator::useBootstrap();
+        if ($this->app->environment('production')) {
             \Illuminate\Support\Facades\URL::forceScheme('https');
         }
 
@@ -48,20 +51,20 @@ class AppServiceProvider extends ServiceProvider
             // Compose Navbar with Comment Notifications
             \Illuminate\Support\Facades\View::composer('layouts.partials.navbar', function ($view) {
                 if (\Illuminate\Support\Facades\Schema::hasTable('comments')) {
-                     $unreadComments = \App\Models\Comment::where('status', 'pending')->latest()->take(3)->get();
-                     $unreadCommentsCount = \App\Models\Comment::where('status', 'pending')->count();
-                     $view->with('navbarComments', $unreadComments);
-                     $view->with('navbarCommentsCount', $unreadCommentsCount);
-                     $view->with('navbarCommentsCount', $unreadCommentsCount);
-                     $view->with('totalSiteViews', \App\Models\Article::sum('views'));
+                    $unreadComments = \App\Models\Comment::where('status', 'pending')->latest()->take(3)->get();
+                    $unreadCommentsCount = \App\Models\Comment::where('status', 'pending')->count();
+                    $view->with('navbarComments', $unreadComments);
+                    $view->with('navbarCommentsCount', $unreadCommentsCount);
+                    $view->with('navbarCommentsCount', $unreadCommentsCount);
+                    $view->with('totalSiteViews', \App\Models\Article::sum('views'));
                 }
             });
 
             // Compose Sidebar with Unread Messages Count
             \Illuminate\Support\Facades\View::composer('layouts.partials.sidebar', function ($view) {
                 if (\Illuminate\Support\Facades\Schema::hasTable('messages')) {
-                     $unreadMessagesCount = \App\Models\Message::where('is_read', false)->count();
-                     $view->with('unreadMessagesCount', $unreadMessagesCount);
+                    $unreadMessagesCount = \App\Models\Message::where('is_read', false)->count();
+                    $view->with('unreadMessagesCount', $unreadMessagesCount);
                 }
             });
         } catch (\Exception $e) {
