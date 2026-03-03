@@ -12,14 +12,8 @@ Route::get('/ads.txt', function () {
 });
 
 Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
-Route::get('/debug-comments', function() {
-    return [
-        'pending' => \App\Models\Comment::where('status', 'pending')->count(),
-        'total' => \App\Models\Comment::count(),
-        'latest_pending' => \App\Models\Comment::where('status', 'pending')->latest()->take(3)->get()
-    ];
-});
 Route::get('/robots.txt', [\App\Http\Controllers\SitemapController::class, 'robots'])->name('robots');
+
 Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
@@ -39,7 +33,7 @@ Route::middleware('auth')->group(function () {
         Route::post('articles-bulk-delete', [\App\Http\Controllers\Admin\ArticleController::class, 'bulkDestroy'])->name('articles.bulk-destroy');
         Route::post('articles/upload-image', [\App\Http\Controllers\Admin\ArticleController::class, 'uploadImage'])->name('articles.upload-image');
         Route::resource('articles', \App\Http\Controllers\Admin\ArticleController::class);
-        
+
         // Comment Management
         Route::get('comments/count', [\App\Http\Controllers\Admin\CommentController::class, 'count'])->name('comments.count');
         Route::resource('comments', \App\Http\Controllers\Admin\CommentController::class)->only(['index', 'update', 'destroy']);
@@ -49,15 +43,15 @@ Route::middleware('auth')->group(function () {
     Route::middleware(['role:1'])->prefix('admin')->name('admin.')->group(function () {
         // Categories
         Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
-        
+
         // User Management
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
         Route::patch('users/{user}/toggle-status', [\App\Http\Controllers\Admin\UserController::class, 'toggleStatus'])->name('users.toggle-status');
-        
+
         // Site Settings
         Route::get('settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
         Route::post('settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
-        
+
         // Tasks
         Route::resource('tasks', \App\Http\Controllers\Admin\TaskController::class)->only(['store', 'update', 'destroy']);
 
@@ -105,4 +99,4 @@ Route::post('/article/{slug}/comment', [App\Http\Controllers\FrontendController:
 Route::get('/author/{username}', [App\Http\Controllers\FrontendController::class, 'showAuthor'])->name('author.show');
 Route::get('/lang/{locale}', [App\Http\Controllers\FrontendController::class, 'switchLanguage'])->name('lang.switch');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

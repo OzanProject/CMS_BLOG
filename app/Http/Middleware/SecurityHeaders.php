@@ -18,10 +18,28 @@ class SecurityHeaders
         $response = $next($request);
 
         // Security Headers
-        $response->headers->set('X-Frame-Options', 'SAMEORIGIN'); // Prevent Clickjacking (iframe embedding from other sites)
-        $response->headers->set('X-XSS-Protection', '1; mode=block'); // Cross-site scripting (XSS) filter
-        $response->headers->set('X-Content-Type-Options', 'nosniff'); // Prevent MIME type sniffing
-        $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin'); // Controls how much referrer info is sent
+        $response->headers->set('X-Frame-Options', 'SAMEORIGIN');
+        $response->headers->set('X-XSS-Protection', '1; mode=block');
+        $response->headers->set('X-Content-Type-Options', 'nosniff');
+        $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
+
+        // Content-Security-Policy: Mencegah redirect JavaScript berbahaya dan script dari domain tidak dikenal.
+        // 'self' = hanya izinkan resource dari domain sendiri.
+        // Ditambah izin untuk CDN yang sah (Google Fonts, AdSense, Analytics, dsb.)
+        $csp = implode('; ', [
+            "default-src 'self'",
+            "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://pagead2.googlesyndication.com https://adservice.google.com",
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+            "font-src 'self' https://fonts.gstatic.com",
+            "img-src 'self' data: https: blob:",
+            "frame-src https://www.google.com https://pagead2.googlesyndication.com",
+            "connect-src 'self' https://www.google-analytics.com",
+            // form-action membatasi kemana form bisa di-submit - mencegah redirect form hijacking
+            "form-action 'self'",
+            // Melarang halaman ini dimuat dalam frame dari domain lain (lebih kuat dari X-Frame-Options)
+            "frame-ancestors 'self'",
+        ]);
+        $response->headers->set('Content-Security-Policy', $csp);
 
         return $response;
     }
