@@ -11,6 +11,13 @@
     };
     spinner();
     
+    // Fallback ensure spinner removed
+    $(window).on('load', function() {
+        if ($('#spinner').length > 0) {
+            $('#spinner').removeClass('show');
+        }
+    });
+    
     
     // Back to top button
     $(window).scroll(function () {

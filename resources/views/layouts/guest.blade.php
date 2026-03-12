@@ -43,6 +43,13 @@
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
+        <script>
+            // Emergency spinner hide after 1.5s if script fails
+            setTimeout(function() {
+                var s = document.getElementById('spinner');
+                if (s) s.classList.remove('show');
+            }, 1500);
+        </script>
         <!-- Spinner End -->
 
         <!-- Sign In/Up Start -->
