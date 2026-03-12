@@ -102,6 +102,13 @@
             </div>
         </div>
     </div>
+    <script>
+        // Emergency preloader hide after 2s if script fails
+        setTimeout(function() {
+            var p = document.getElementById('preloader');
+            if (p) p.style.display = 'none';
+        }, 2000);
+    </script>
 
     <!-- search popup start-->
     <div class="td-search-popup" id="td-search-popup">
