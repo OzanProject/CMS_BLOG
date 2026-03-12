@@ -93,25 +93,6 @@
 </head>
 <body style="display: flex; flex-direction: column; min-height: 100vh;">
 
-    <!-- preloader area start -->
-    <div class="preloader" id="preloader">
-        <div class="preloader-inner">
-            <div class="spinner">
-                <div class="dot1"></div>
-                <div class="dot2"></div>
-            </div>
-        </div>
-    </div>
-    <script>
-        // Emergency preloader hide after 1.5s if script fails
-        setTimeout(function() {
-            var p = document.getElementById('preloader');
-            if (p) {
-                p.style.display = 'none';
-                p.style.visibility = 'hidden';
-            }
-        }, 1500);
-    </script>
 
     <!-- search popup start-->
     <div class="td-search-popup" id="td-search-popup">
