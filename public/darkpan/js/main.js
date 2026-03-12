@@ -15,6 +15,7 @@
     $(window).on('load', function() {
         if ($('#spinner').length > 0) {
             $('#spinner').removeClass('show');
+            $('#spinner').css('display', 'none'); // Ensure it doesn't block clicks
         }
     });
     

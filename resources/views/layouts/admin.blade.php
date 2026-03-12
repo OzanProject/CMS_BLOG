@@ -21,7 +21,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@500;700&display=swap" rel="stylesheet"> 
     
     <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
@@ -41,6 +41,10 @@
             background: #191C24;
             border-left: 3px solid var(--primary);
         }
+        #spinner:not(.show) {
+            display: none !important;
+            pointer-events: none;
+        }
     </style>
 </head>
 
@@ -56,8 +60,11 @@
             // Emergency spinner hide after 1.5s if script fails
             setTimeout(function() {
                 var s = document.getElementById('spinner');
-                if (s) s.classList.remove('show');
-            }, 1500);
+                if (s) {
+                    s.classList.remove('show');
+                    s.style.display = 'none'; // Ensure it doesn't block clicks
+                }
+            }, 1000);
         </script>
         <!-- Spinner End -->
 

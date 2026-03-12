@@ -44,11 +44,14 @@
             </div>
         </div>
         <script>
-            // Emergency spinner hide after 1.5s if script fails
+            // Emergency spinner hide after 1s if script fails
             setTimeout(function() {
                 var s = document.getElementById('spinner');
-                if (s) s.classList.remove('show');
-            }, 1500);
+                if (s) {
+                    s.classList.remove('show');
+                    s.style.display = 'none'; // Ensure it doesn't block clicks
+                }
+            }, 1000);
         </script>
         <!-- Spinner End -->
 

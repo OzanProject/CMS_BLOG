@@ -103,11 +103,14 @@
         </div>
     </div>
     <script>
-        // Emergency preloader hide after 2s if script fails
+        // Emergency preloader hide after 1.5s if script fails
         setTimeout(function() {
             var p = document.getElementById('preloader');
-            if (p) p.style.display = 'none';
-        }, 2000);
+            if (p) {
+                p.style.display = 'none';
+                p.style.visibility = 'hidden';
+            }
+        }, 1500);
     </script>
 
     <!-- search popup start-->
