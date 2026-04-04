@@ -18,6 +18,13 @@ return new class extends Migration
             $table->boolean('is_active')->default(false);
             $table->timestamps();
         });
+
+        // Insert default themes
+        \Illuminate\Support\Facades\DB::table('themes')->insert([
+            ['name' => 'Default Theme', 'path' => 'default', 'is_active' => true, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Modern Theme (React)', 'path' => 'modern', 'is_active' => false, 'created_at' => now(), 'updated_at' => now()],
+        ]);
+
     }
 
     /**

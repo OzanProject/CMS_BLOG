@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Theme;
 
 class ThemeSeeder extends Seeder
 {
@@ -12,16 +12,14 @@ class ThemeSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Theme::create([
-            'name' => 'Default Theme',
-            'path' => 'default',
-            'is_active' => true,
-        ]);
+        Theme::updateOrCreate(
+            ['path' => 'default'],
+            ['name' => 'Default Theme', 'is_active' => true]
+        );
 
-        \App\Models\Theme::create([
-            'name' => 'Modern Theme',
-            'path' => 'modern',
-            'is_active' => false,
-        ]);
+        Theme::updateOrCreate(
+            ['path' => 'modern'],
+            ['name' => 'Modern Theme (React)', 'is_active' => false]
+        );
     }
 }
