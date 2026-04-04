@@ -17,7 +17,7 @@ class ContactController extends Controller
         
         $settings = \App\Models\Configuration::pluck('value', 'key');
         
-        return view('frontend.contact', compact('title', 'content', 'settings', 'page'));
+        return theme_view('frontend.contact', compact('title', 'content', 'settings', 'page'));
     }
 
     public function store(Request $request)

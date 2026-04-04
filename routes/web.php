@@ -12,11 +12,23 @@ Route::get('/ads.txt', function () {
 });
 
 Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
-Route::get('/robots.txt', [\App\Http\Controllers\SitemapController::class, 'robots'])->name('robots');
 
-Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])
+
+
+Route::get('/admin/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+    ->name('admin.dashboard');
+
+// Aliases for convenience
+Route::get('/dashboard', function() { return redirect()->route('admin.dashboard'); })->name('dashboard');
+
+
+
+
+
+
+
+
 
 
 Route::middleware('auth')->group(function () {
@@ -51,6 +63,10 @@ Route::middleware('auth')->group(function () {
         // Site Settings
         Route::get('settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
         Route::post('settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
+
+        // Theme Management
+        Route::get('themes', [\App\Http\Controllers\Admin\ThemeController::class, 'index'])->name('themes.index');
+        Route::post('themes/{theme}/activate', [\App\Http\Controllers\Admin\ThemeController::class, 'activate'])->name('themes.activate');
 
         // Tasks
         Route::resource('tasks', \App\Http\Controllers\Admin\TaskController::class)->only(['store', 'update', 'destroy']);

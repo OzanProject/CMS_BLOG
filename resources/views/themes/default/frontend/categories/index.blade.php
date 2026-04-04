@@ -1,4 +1,4 @@
-@extends('layouts.frontend')
+@extends('frontend.layouts.frontend')
 
 @section('meta_title', 'All Categories - ' . ($settings['site_name'] ?? 'DeepBlog'))
 

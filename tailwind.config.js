@@ -8,6 +8,8 @@ export default {
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
         './resources/js/**/*.js',
+        './resources/js/**/*.jsx',
+        './resources/js/**/*.tsx',
     ],
 
     darkMode: 'class',
@@ -18,6 +20,39 @@ export default {
                 sans: ['Plus Jakarta Sans', ...defaultTheme.fontFamily.sans],
             },
             colors: {
+                border: "hsl(var(--border))",
+                input: "hsl(var(--input))",
+                ring: "hsl(var(--ring))",
+                background: "hsl(var(--background))",
+                foreground: "hsl(var(--foreground))",
+                primary: {
+                    DEFAULT: "hsl(var(--primary))",
+                    foreground: "hsl(var(--primary-foreground))",
+                },
+                secondary: {
+                    DEFAULT: "hsl(var(--secondary))",
+                    foreground: "hsl(var(--secondary-foreground))",
+                },
+                destructive: {
+                    DEFAULT: "hsl(var(--destructive))",
+                    foreground: "hsl(var(--destructive-foreground))",
+                },
+                muted: {
+                    DEFAULT: "hsl(var(--muted))",
+                    foreground: "hsl(var(--muted-foreground))",
+                },
+                accent: {
+                    DEFAULT: "hsl(var(--accent))",
+                    foreground: "hsl(var(--accent-foreground))",
+                },
+                popover: {
+                    DEFAULT: "hsl(var(--popover))",
+                    foreground: "hsl(var(--popover-foreground))",
+                },
+                card: {
+                    DEFAULT: "hsl(var(--card))",
+                    foreground: "hsl(var(--card-foreground))",
+                },
                 current: 'currentColor',
                 transparent: 'transparent',
                 white: '#FFFFFF',
@@ -27,8 +62,10 @@ export default {
                 bodydark: '#AEB7C0',
                 bodydark1: '#DEE4EE',
                 bodydark2: '#8A99AF',
-                primary: '#3C50E0',
-                secondary: '#80CAEE',
+                // Keep original primary/secondary for compatibility or merge?
+                // I'll merge them by adding them to the extend object.
+                'old-primary': '#3C50E0',
+                'old-secondary': '#80CAEE',
                 stroke: '#E2E8F0',
                 gray: '#EFF4FB',
                 graydark: '#333A48',
@@ -52,7 +89,12 @@ export default {
                 success: '#219653',
                 danger: '#D34053',
                 warning: '#FFA70B',
-            }
+            },
+            borderRadius: {
+                lg: "var(--radius)",
+                md: "calc(var(--radius) - 2px)",
+                sm: "calc(var(--radius) - 4px)",
+            },
         },
     },
 

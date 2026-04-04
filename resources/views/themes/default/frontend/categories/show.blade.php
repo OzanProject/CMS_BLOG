@@ -1,4 +1,4 @@
-@extends('layouts.frontend')
+@extends('frontend.layouts.frontend')
 
 @section('meta_title', $category->name . ' - ' . ($settings['site_name'] ?? 'DeepBlog'))
 @section('meta_description', $category->description ?? 'Read articles about ' . $category->name)

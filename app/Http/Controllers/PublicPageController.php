@@ -14,6 +14,6 @@ class PublicPageController extends Controller
         $recentArticles = \App\Models\Article::where('status', 'published')->latest()->take(5)->get();
         $settings = \App\Models\Configuration::pluck('value', 'key');
         
-        return view('frontend.pages.show', compact('page', 'recentArticles', 'settings'));
+        return theme_view('frontend.pages.show', compact('page', 'recentArticles', 'settings'));
     }
 }

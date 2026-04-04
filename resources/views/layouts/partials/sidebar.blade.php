@@ -86,9 +86,12 @@
                 <a href="#" class="nav-link dropdown-toggle {{ request()->routeIs('admin.backups.*') || request()->routeIs('admin.settings.*') ? 'active' : '' }}" data-bs-toggle="dropdown">
                     <i class="fa fa-cogs me-2"></i>System
                 </a>
-                <div class="dropdown-menu bg-transparent border-0 {{ request()->routeIs('admin.backups.*') || request()->routeIs('admin.settings.*') ? 'show' : '' }}">
+                <div class="dropdown-menu bg-transparent border-0 {{ request()->routeIs('admin.backups.*') || request()->routeIs('admin.settings.*') || request()->routeIs('admin.themes.*') ? 'show' : '' }}">
                     <a href="{{ route('admin.backups.index') }}" class="dropdown-item {{ request()->routeIs('admin.backups.*') ? 'active' : '' }}">
                         <i class="fa fa-database me-2"></i>Backup
+                    </a>
+                    <a href="{{ route('admin.themes.index') }}" class="dropdown-item {{ request()->routeIs('admin.themes.*') ? 'active' : '' }}">
+                        <i class="fa fa-palette me-2"></i>{{ __('menu.themes') ?? 'Themes' }}
                     </a>
                     <a href="{{ route('admin.settings.index') }}" class="dropdown-item {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
                         <i class="fa fa-cog me-2"></i>{{ __('menu.settings') }}

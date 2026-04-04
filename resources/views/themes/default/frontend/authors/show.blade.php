@@ -1,4 +1,4 @@
-@extends('layouts.frontend')
+@extends('frontend.layouts.frontend')
 
 @section('meta_title', __('frontend.author_by', ['name' => $user->name]) . ' - ' . ($settings['site_name'] ?? 'DeepBlog'))
 @section('meta_description', __('frontend.read_more_author', ['name' => $user->name]))

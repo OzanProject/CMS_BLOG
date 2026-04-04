@@ -1,4 +1,4 @@
-@extends('layouts.frontend')
+@extends('frontend.layouts.frontend')
 
 @section('title', $article->meta_title ?? $article->title)
 @section('meta_description', $article->meta_description ?? Str::limit(strip_tags($article->content), 150))

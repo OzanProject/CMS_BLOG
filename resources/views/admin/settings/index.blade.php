@@ -23,6 +23,17 @@
                             <label for="site_copyright" class="form-label">Copyright Text</label>
                             <input type="text" class="form-control" name="site_copyright" id="site_copyright" value="{{ $settings['site_copyright'] ?? '' }}">
                         </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="active_theme" class="form-label">Active Theme</label>
+                            <select class="form-select bg-dark" name="active_theme" id="active_theme">
+                                @foreach($themes as $theme)
+                                    <option value="{{ $theme->id }}" {{ $theme->is_active ? 'selected' : '' }}>
+                                        {{ $theme->name }} ({{ $theme->path }})
+                                    </option>
+                                @endforeach
+                            </select>
+                            <div class="form-text text-info">Changing theme will modify the frontend appearance immediately.</div>
+                        </div>
                         <div class="col-12 mb-3">
                             <label for="site_description" class="form-label">{{ __('settings.site_description') }}</label>
                             <textarea class="form-control" name="site_description" id="site_description" rows="3">{{ $settings['site_description'] ?? '' }}</textarea>

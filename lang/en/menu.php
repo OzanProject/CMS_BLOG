@@ -8,6 +8,7 @@ return [
     'users' => 'Users',
     'settings' => 'Settings',
     'pages' => 'Pages',
+    'themes' => 'Themes',
     'profile' => 'My Profile',
     'logout' => 'Log Out',
 ];

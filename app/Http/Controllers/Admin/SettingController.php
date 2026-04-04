@@ -94,7 +94,8 @@ class SettingController extends Controller
     public function index()
     {
         $settings = Configuration::pluck('value', 'key');
-        return view('admin.settings.index', compact('settings'));
+        $themes = \App\Models\Theme::all();
+        return view('admin.settings.index', compact('settings', 'themes'));
     }
 
     public function update(Request $request)
@@ -161,6 +162,12 @@ class SettingController extends Controller
             'user_id' => auth()->id(),
             'ip' => request()->ip(),
         ]);
+
+        // Handle Theme Switching
+        if ($request->has('active_theme')) {
+            \App\Models\Theme::query()->update(['is_active' => false]);
+            \App\Models\Theme::where('id', $request->active_theme)->update(['is_active' => true]);
+        }
 
         return back()->with('success', 'Settings updated successfully.');
     }

@@ -1,13 +1,13 @@
-@extends('layouts.frontend')
+@extends('frontend.layouts.frontend')
 
-@section('meta_title', 'Search: ' . $query . ' - ' . ($settings['site_name'] ?? 'DeepBlog'))
-@section('meta_description', 'Search results for ' . $query)
+@section('meta_title', 'All Articles - ' . ($settings['site_name'] ?? 'DeepBlog'))
+@section('meta_description', 'Read all the latest articles and news from ' . ($settings['site_name'] ?? 'DeepBlog'))
 
 @section('content')
 <div class="pd-top-75 pd-bottom-50">
     <div class="container">
         <div class="section-title">
-            <h6 class="title">{{ __('frontend.search_results') }} "{{ $query }}"</h6>
+            <h6 class="title">{{ __('frontend.all_articles') ?? 'Latest Articles' }}</h6>
         </div>
         
         <div class="row">
@@ -40,7 +40,7 @@
                     @empty
                     <div class="col-12">
                         <div class="alert alert-warning">
-                            {{ __('frontend.no_results', ['query' => $query]) }}
+                            {{ __('frontend.no_articles') ?? 'No articles found.' }}
                         </div>
                     </div>
                     @endforelse
@@ -48,7 +48,7 @@
                 
                 <!-- Pagination -->
                 <div class="mt-4">
-                    {{ $articles->appends(['q' => $query])->links('pagination::bootstrap-5') }}
+                    {{ $articles->links('pagination::bootstrap-5') }}
                 </div>
             </div>
             

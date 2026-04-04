@@ -8,6 +8,7 @@ return [
     'users' => 'Pengguna',
     'settings' => 'Pengaturan',
     'pages' => 'Halaman',
+    'themes' => 'Tema Tampilan',
     'profile' => 'Profil Saya',
     'logout' => 'Keluar',
 ];

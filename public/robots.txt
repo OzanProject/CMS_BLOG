@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /login/
+Allow: /
+
+Sitemap: https://ozanproject.site/sitemap.xml

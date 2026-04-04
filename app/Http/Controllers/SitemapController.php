@@ -80,12 +80,6 @@ class SitemapController extends Controller
         return response('<?xml version="1.0" encoding="UTF-8"?>' . $content)
             ->header('Content-Type', 'text/xml');
     }
-    public function robots()
-    {
-        $content = "User-agent: *\n";
-        $content .= "Disallow:\n";
-        $content .= "Sitemap: https://ozanproject.site/sitemap.xml\n";
-        
-        return response($content, 200)->header('Content-Type', 'text/plain');
-    }
 }
+
+

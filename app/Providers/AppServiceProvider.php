@@ -20,6 +20,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Theme System Integration
+        try {
+            if (\Illuminate\Support\Facades\Schema::hasTable('themes')) {
+                $activeTheme = \App\Models\Theme::where('is_active', true)->first() ?? new \App\Models\Theme(['path' => 'default']);
+                $themePath = resource_path('views/themes/' . $activeTheme->path);
+                
+                if (is_dir($themePath)) {
+                    \Illuminate\Support\Facades\View::prependLocation($themePath);
+                }
+
+            }
+        } catch (\Exception $e) {
+            // Silently fail during migrations
+        }
+
         // Gunakan Bootstrap untuk tampilan pagination (bukan Tailwind default Laravel 11)
         Paginator::useBootstrap();
         if ($this->app->environment('production')) {

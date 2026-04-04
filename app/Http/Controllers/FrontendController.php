@@ -42,11 +42,12 @@ class FrontendController extends Controller
                     ->inRandomOrder()
                     ->take(4)
                     ->get(),
+            'categories' => Category::all(),
             'settings' => \App\Models\Configuration::pluck('value', 'key'),
         ];
         // });
 
-        return view('frontend.home', $data);
+        return theme_view('frontend.home', $data);
     }
 
     public function showCategory($slug)
@@ -68,7 +69,7 @@ class FrontendController extends Controller
 
         $settings = \App\Models\Configuration::pluck('value', 'key');
 
-        return view('frontend.categories.show', compact('category', 'articles', 'recentArticles', 'settings'));
+        return theme_view('frontend.categories.show', compact('category', 'articles', 'recentArticles', 'settings'));
     }
 
     public function search(Request $request)
@@ -93,7 +94,7 @@ class FrontendController extends Controller
 
         $settings = \App\Models\Configuration::pluck('value', 'key');
 
-        return view('frontend.search.index', compact('articles', 'recentArticles', 'settings', 'query'));
+        return theme_view('frontend.search.index', compact('articles', 'recentArticles', 'settings', 'query'));
     }
 
     public function showArticle($slug)
@@ -129,7 +130,7 @@ class FrontendController extends Controller
             ->take(3) // Show 3 related articles
             ->get();
 
-        return view('frontend.articles.show', compact('article', 'recentArticles', 'relatedArticles', 'settings'));
+        return theme_view('frontend.articles.show', compact('article', 'recentArticles', 'relatedArticles', 'settings'));
     }
 
     public function storeComment(Request $request, $slug)
@@ -227,7 +228,7 @@ class FrontendController extends Controller
 
         $settings = \App\Models\Configuration::pluck('value', 'key');
 
-        return view('frontend.authors.show', compact('user', 'articles', 'recentArticles', 'settings'));
+        return theme_view('frontend.authors.show', compact('user', 'articles', 'recentArticles', 'settings'));
     }
 
     public function switchLanguage($locale)
@@ -242,7 +243,7 @@ class FrontendController extends Controller
     {
         $categories = Category::withCount('articles')->orderBy('name', 'asc')->get();
         $settings = \App\Models\Configuration::pluck('value', 'key');
-        return view('frontend.categories.index', compact('categories', 'settings'));
+        return theme_view('frontend.categories.index', compact('categories', 'settings'));
     }
 
     public function articles()
@@ -261,6 +262,6 @@ class FrontendController extends Controller
 
         $settings = \App\Models\Configuration::pluck('value', 'key');
 
-        return view('frontend.articles.index', compact('articles', 'recentArticles', 'settings'));
+        return theme_view('frontend.articles.index', compact('articles', 'recentArticles', 'settings'));
     }
 }
