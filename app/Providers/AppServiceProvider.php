@@ -47,7 +47,11 @@ class AppServiceProvider extends ServiceProvider
             \Illuminate\Support\Facades\URL::forceScheme('https');
         }
 
-        \Illuminate\Support\Facades\View::composer('layouts.frontend', \App\Http\View\Composers\FrontendViewComposer::class);
+        \Illuminate\Support\Facades\View::composer([
+            'layouts.frontend',           // Fallback
+            'frontend.layouts.frontend',   // Tema Default
+            'themes.modern.frontend.layouts.app' // Tema Modern
+        ], \App\Http\View\Composers\FrontendViewComposer::class);
 
         try {
             // Share settings global variable if table exists

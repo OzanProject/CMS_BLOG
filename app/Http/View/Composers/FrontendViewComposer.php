@@ -19,6 +19,7 @@ class FrontendViewComposer
 
         // Get popular articles based on views
         $popularArticles = Article::where('status', 'published')
+            ->where('published_at', '<=', now())
             ->orderBy('views', 'desc')
             ->take(3)
             ->get();
