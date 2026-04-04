@@ -13,7 +13,8 @@ class PageController extends Controller
      */
     public function index()
     {
-        $pages = Page::latest()->get();
+        // Menggunakan paginate(10) untuk membatasi jumlah halaman per halaman dan mendukung pagination
+        $pages = Page::latest()->paginate(10);  // Ubah get() menjadi paginate(10)
         return view('admin.pages.index', compact('pages'));
     }
 
@@ -77,7 +78,7 @@ class PageController extends Controller
     public function update(Request $request, $id)
     {
         $page = Page::findOrFail($id);
-        
+
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'nullable',
@@ -93,7 +94,7 @@ class PageController extends Controller
         ];
 
         if ($request->title !== $page->title) {
-             $data['slug'] = \Illuminate\Support\Str::slug($request->title);
+            $data['slug'] = \Illuminate\Support\Str::slug($request->title);
         }
 
         $page->update($data);

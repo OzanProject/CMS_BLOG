@@ -3,64 +3,87 @@
 @section('header', 'Newsletter Subscribers')
 
 @section('content')
-<div class="container-fluid pt-4 px-4">
-    <div class="bg-secondary text-center rounded p-4">
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <h6 class="mb-0">All Subscribers</h6>
-            <div>
-                <a href="{{ route('admin.subscribers.compose') }}" class="btn btn-success btn-sm me-2"><i class="fa fa-envelope me-2"></i>Compose Email</a>
-                <button class="btn btn-primary btn-sm" onclick="copyToClipboard()"><i class="fa fa-copy me-2"></i>Copy All Emails</button>
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-secondary text-center rounded p-4">
+            <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+                <h6 class="mb-0 text-white">All Subscribers</h6>
+                <div>
+                    <a href="{{ route('admin.subscribers.compose') }}" class="btn btn-success btn-sm me-2"
+                        title="Compose Email">
+                        <i class="fa fa-envelope me-2"></i> Compose Email
+                    </a>
+                    <button class="btn btn-primary btn-sm" onclick="copyToClipboard()" title="Copy All Emails">
+                        <i class="fa fa-copy me-2"></i> Copy All Emails
+                    </button>
+                </div>
+            </div>
+
+            <!-- Success Alert -->
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show text-start" role="alert">
+                    <i class="fa fa-check-circle me-2"></i>{{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            <!-- Subscribers Table -->
+            <div class="table-responsive">
+                <table class="table text-start align-middle table-bordered table-hover mb-0 text-nowrap">
+                    <thead>
+                        <tr class="text-white">
+                            <th scope="col">Date Subscribed</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($subscribers as $subscriber)
+                            <tr>
+                                <td>{{ $subscriber->created_at->format('d M Y H:i') }}</td>
+                                <td class="email-item">{{ $subscriber->email }}</td>
+                                <td>
+                                    <form action="{{ route('admin.subscribers.destroy', $subscriber->id) }}" method="POST"
+                                        class="d-inline" onsubmit="return confirm('Delete this subscriber?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger" title="Delete Subscriber">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3" class="text-center text-muted">No subscribers found.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="mt-4">
+                {{ $subscribers->links() }}
             </div>
         </div>
-        <div class="table-responsive">
-            <table class="table text-start align-middle table-bordered table-hover mb-0">
-                <thead>
-                    <tr class="text-white">
-                        <th scope="col">Date Subscribed</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($subscribers as $subscriber)
-                    <tr>
-                        <td>{{ $subscriber->created_at->format('d M Y H:i') }}</td>
-                        <td class="email-item">{{ $subscriber->email }}</td>
-                        <td>
-                            <form action="{{ route('admin.subscribers.destroy', $subscriber->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this subscriber?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-trash"></i></button>
-                            </form>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="3" class="text-center">No subscribers found.</td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-        <div class="mt-4">
-            {{ $subscribers->links() }}
-        </div>
     </div>
-</div>
 
-<!-- All Emails Hidden Container -->
-<textarea id="all-emails" class="d-none">{{ $subscribers->pluck('email')->implode(', ') }}</textarea>
+    <!-- All Emails Hidden Container -->
+    <textarea id="all-emails" class="d-none">{{ $subscribers->pluck('email')->implode(', ') }}</textarea>
 
-<script>
-    function copyToClipboard() {
-        var copyText = document.getElementById("all-emails");
-        copyText.classList.remove("d-none");
-        copyText.select();
-        copyText.setSelectionRange(0, 99999); /* For mobile devices */
-        navigator.clipboard.writeText(copyText.value).then(() => {
-            alert("Copied all emails to clipboard!");
-            copyText.classList.add("d-none");
-        });
-    }
-</script>
+    <script>
+        function copyToClipboard() {
+            var copyText = document.getElementById("all-emails");
+            copyText.classList.remove("d-none");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); /* For mobile devices */
+            navigator.clipboard.writeText(copyText.value).then(() => {
+                // Feedback after successful copy
+                alert("Copied all emails to clipboard!");
+                copyText.classList.add("d-none");
+            }).catch(err => {
+                alert("Failed to copy emails. Please try again.");
+            });
+        }
+    </script>
 @endsection

@@ -6,6 +6,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
+    @php
+        $settings = \App\Models\Configuration::whereIn('key', [
+            'adsense_active', 'adsense_client_id', 'adsense_auto_ads',
+            'adsterra_active', 'adsterra_pop_script', 'adsterra_social_script',
+            'site_name', 'site_description', 'site_logo', 'site_favicon',
+            'google_verification_code', 'google_analytics_id', 'social_facebook',
+            'social_twitter', 'social_youtube', 'social_instagram', 'social_google',
+            'contact_address', 'contact_phone', 'contact_email', 'site_copyright'
+        ])->pluck('value', 'key');
+    @endphp
+
+    <!-- Google AdSense Auto Ads -->
+    @if(($settings['adsense_active'] ?? '0') === '1' && ($settings['adsense_auto_ads'] ?? '0') === '1' && !empty($settings['adsense_client_id']))
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ $settings['adsense_client_id'] }}" crossorigin="anonymous"></script>
+    @endif
+    
     <title>@yield('meta_title', $settings['site_name'] ?? 'DeepBlog')</title>
     <meta name="description" content="@yield('meta_description', $settings['site_description'] ?? 'News & Magazine Website')">
     <meta name="keywords" content="@yield('meta_keywords', '')">
@@ -321,6 +337,16 @@
         <span class="back-top"><i class="fa fa-angle-up"></i></span>
     </div>
     <!-- back to top area end -->
+
+    <!-- Adsterra Scripts -->
+    @if(($settings['adsterra_active'] ?? '0') === '1')
+        @if(!empty($settings['adsterra_pop_script']))
+            {!! $settings['adsterra_pop_script'] !!}
+        @endif
+        @if(!empty($settings['adsterra_social_script']))
+            {!! $settings['adsterra_social_script'] !!}
+        @endif
+    @endif
 
     <!-- all plugins here -->
     <script src="{{ asset('nextpage-lite/assets/js/vendor.js') }}"></script>

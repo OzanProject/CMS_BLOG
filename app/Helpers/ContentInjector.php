@@ -20,6 +20,17 @@ class ContentInjector
             return '';
         }
 
+        // Fetch settings
+        $settings = \App\Models\Configuration::whereIn('key', [
+            'ad_in_article_active',
+            'ad_in_article_frequency',
+            'ad_in_article_max'
+        ])->pluck('value', 'key');
+
+        $isActive = ($settings['ad_in_article_active'] ?? '0') === '1';
+        $frequency = (int) ($settings['ad_in_article_frequency'] ?? 3);
+        $maxAds = (int) ($settings['ad_in_article_max'] ?? 5);
+
         // Explode content by closing paragraph tag
         $paragraphs = explode('</p>', $content);
         $totalParagraphs = count($paragraphs);
@@ -32,18 +43,22 @@ class ContentInjector
             }
         }
 
-        // 2. Inject Ad after Paragraph 5 (index 4) or Middle if shorter
-        if ($adScript) {
-            $adPosition = 4; // Default after 5th paragraph
+        // 2. Inject Ads dynamically
+        if ($isActive && $adScript && $frequency > 0) {
+            $adCount = 0;
             
-            // If article is short (e.g. 4 paragraphs), put ad after 2nd (along with Read Also? No, maybe after 3rd)
-            if ($totalParagraphs <= 5 && $totalParagraphs > 2) {
-                $adPosition = 2;
-            }
+            // Loop through paragraphs starting from the frequency mark
+            for ($i = $frequency - 1; $i < $totalParagraphs - 1; $i += $frequency) {
+                if ($adCount >= $maxAds) break;
 
-            if (isset($paragraphs[$adPosition])) {
-                $adHtml = self::getAdHtml($adScript);
-                $paragraphs[$adPosition] .= $adHtml;
+                // Ensure we don't inject right after "Read Also" (index 1) if possible
+                if ($i === 1) continue; 
+
+                if (isset($paragraphs[$i])) {
+                    $adHtml = self::getAdHtml($adScript);
+                    $paragraphs[$i] .= $adHtml;
+                    $adCount++;
+                }
             }
         }
 

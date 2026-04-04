@@ -7,6 +7,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
+    <meta name="robots" content="noindex, nofollow">
 
     <!-- Favicon -->
     @if(isset($settings['site_favicon']))
@@ -54,6 +55,9 @@
                                     {{ $settings['site_name'] ?? config('app.name') }}
                                 </h3>
                             </a>
+                            @auth
+                            <a href="{{ route('admin.dashboard') }}" class="material-symbols-outlined text-slate-900 dark:text-slate-100">dashboard</a>
+                        @endauth
                         </div>
                         
                         {{ $slot }}

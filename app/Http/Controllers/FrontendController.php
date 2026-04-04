@@ -69,7 +69,13 @@ class FrontendController extends Controller
 
         $settings = \App\Models\Configuration::pluck('value', 'key');
 
-        return theme_view('frontend.categories.show', compact('category', 'articles', 'recentArticles', 'settings'));
+        $trendingArticles = Article::where('status', 'published')
+            ->where('published_at', '<=', now())
+            ->orderBy('views', 'desc')
+            ->take(5)
+            ->get();
+
+        return theme_view('frontend.categories.show', compact('category', 'articles', 'recentArticles', 'trendingArticles', 'settings'));
     }
 
     public function search(Request $request)
@@ -94,7 +100,13 @@ class FrontendController extends Controller
 
         $settings = \App\Models\Configuration::pluck('value', 'key');
 
-        return theme_view('frontend.search.index', compact('articles', 'recentArticles', 'settings', 'query'));
+        $trendingArticles = Article::where('status', 'published')
+            ->where('published_at', '<=', now())
+            ->orderBy('views', 'desc')
+            ->take(5)
+            ->get();
+
+        return theme_view('frontend.search.index', compact('articles', 'recentArticles', 'trendingArticles', 'settings', 'query'));
     }
 
     public function showArticle($slug)
@@ -130,7 +142,14 @@ class FrontendController extends Controller
             ->take(3) // Show 3 related articles
             ->get();
 
-        return theme_view('frontend.articles.show', compact('article', 'recentArticles', 'relatedArticles', 'settings'));
+        // Fetch Trending Articles (Same as Home)
+        $trendingArticles = Article::where('status', 'published')
+            ->where('published_at', '<=', now())
+            ->orderBy('views', 'desc')
+            ->take(5)
+            ->get();
+
+        return theme_view('frontend.articles.show', compact('article', 'recentArticles', 'relatedArticles', 'trendingArticles', 'settings'));
     }
 
     public function storeComment(Request $request, $slug)

@@ -35,11 +35,11 @@
                 <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
                 <label class="form-check-label" for="exampleCheck1">I agree with terms</label>
             </div>
-            <a href="{{ route('login') }}">Already have an account?</a>
+        
         </div>
         
         <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Sign Up</button>
         
-        <p class="text-center mb-0">Already have an Account? <a href="{{ route('login') }}">Sign In</a></p>
+        
     </form>
 </x-guest-layout>

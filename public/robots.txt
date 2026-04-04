@@ -1,6 +1,9 @@
 User-agent: *
 Disallow: /admin/
 Disallow: /login/
+Disallow: /register/
+Disallow: /password/
+Disallow: /reset-password/
 Allow: /
 
 Sitemap: https://ozanproject.site/sitemap.xml
