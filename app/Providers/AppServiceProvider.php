@@ -20,7 +20,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Manually load the theme helper as a fallback for hosting environments
+        if (file_exists(app_path('Helpers/theme.php'))) {
+            require_once app_path('Helpers/theme.php');
+        }
+
         // Theme System Integration
+
         try {
             if (\Illuminate\Support\Facades\Schema::hasTable('themes')) {
                 $activeTheme = \App\Models\Theme::where('is_active', true)->first() ?? new \App\Models\Theme(['path' => 'default']);
