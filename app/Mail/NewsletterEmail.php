@@ -24,10 +24,15 @@ class NewsletterEmail extends Mailable
 
     public function content(): Content
     {
+        $settings = \App\Models\Configuration::pluck('value', 'key');
+        $logoPath = $settings->get('site_logo') ? storage_path('app/public/' . $settings->get('site_logo')) : null;
+        
         return new Content(
             markdown: 'emails.newsletter',
             with: [
                 'body' => $this->messageStr,
+                'settings' => $settings,
+                'logoPath' => $logoPath,
             ],
         );
     }
