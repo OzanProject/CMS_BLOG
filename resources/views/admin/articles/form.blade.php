@@ -184,72 +184,50 @@
                 </div>
             </div>
         </form>
-    </div>
 
-    <!-- TinyMCE 6 -->
-    @php
-        $tinymceKey = \App\Models\Configuration::where('key', 'tinymce_api_key')->value('value') ?? 'no-api-key';
-    @endphp
-    <script src="https://cdn.tiny.cloud/1/{{ $tinymceKey }}/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <!-- Script TinyMCE Self-Hosted (Lokal) untuk menjamin tidak terblokir -->
+    <script src="{{ asset('js/tinymce/tinymce.min.js') }}" referrerpolicy="origin"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        console.log('Mencoba memuat TinyMCE Lokal...');
+        
+        window.onload = function() {
+            if (typeof tinymce === 'undefined') {
+                console.error('TINYMCE LOKAL GAGAL DIMUAT! Pastikan file ada di /public/js/tinymce/');
+                return;
+            }
+
             tinymce.init({
                 selector: '#editor',
                 height: 500,
+                // Menggunakan folder lokal agar skin/ikon dimuat dari server sendiri
+                base_url: '{{ asset("js/tinymce") }}',
+                license_key: 'gpl',
                 menubar: false,
                 promotion: false,
                 branding: false,
                 plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
-                toolbar: 'undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media link anchor codesample',
-
-                // URL Configuration
-                relative_urls: false,
-                remove_script_host: true,
-                convert_urls: true,
-                quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
-                toolbar_mode: 'sliding',
+                toolbar: 'undo redo | bold italic underline strikethrough | blocks fontfamily fontsize | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen preview save | insertfile image media link anchor codesample',
                 
-                // Dark Mode Aesthetic
                 skin: 'oxide-dark',
                 content_css: 'dark',
                 content_style: 'body { font-family: "Open Sans", sans-serif; background-color: #191C24; color: #6C7293; font-size: 14px; }',
 
-                // Modern Image Upload Handler
                 images_upload_handler: (blobInfo, progress) => new Promise((resolve, reject) => {
                     const formData = new FormData();
                     formData.append('upload', blobInfo.blob(), blobInfo.filename());
-
                     fetch('{{ route('admin.articles.upload-image') }}', {
                         method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
+                        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
                         body: formData
                     })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('HTTP Error: ' + response.status);
-                        }
-                        return response.json();
-                    })
+                    .then(response => response.json())
                     .then(json => {
-                        if (!json || typeof json.url !== 'string') {
-                            throw new Error('Invalid JSON response');
-                        }
-                        resolve(json.url);
+                        if (json && json.url) resolve(json.url);
+                        else reject('Invalid response');
                     })
-                    .catch(error => {
-                        reject(error.message || 'Image upload failed');
-                    });
-                }),
-
-                // Init Callback for Debugging
-                setup: function (editor) {
-                    editor.on('init', function () {
-                        console.log('TinyMCE Initialized successfully');
-                    });
-                }
+                    .catch(err => reject('Upload fail: ' + err.message));
+                })
             });
-        });
+        };
     </script>
 @endsection
