@@ -243,7 +243,15 @@
                                                     <label class="form-label text-white-50 small">Password</label>
                                                     <input type="password" class="form-control" name="mail_password" value="{{ $settings['mail_password'] ?? '' }}">
                                                 </div>
-                                                <div class="col-md-6 mb-3">
+                                                <div class="col-md-4 mb-3">
+                                                    <label class="form-label text-white-50 small">Mail Encryption</label>
+                                                    <select class="form-select bg-dark text-white border-secondary" name="mail_encryption">
+                                                        <option value="" {{ ($settings['mail_encryption'] ?? '') == '' ? 'selected' : '' }}>None</option>
+                                                        <option value="tls" {{ ($settings['mail_encryption'] ?? '') == 'tls' ? 'selected' : '' }}>TLS (Port 587)</option>
+                                                        <option value="ssl" {{ ($settings['mail_encryption'] ?? '') == 'ssl' ? 'selected' : '' }}>SSL (Port 465)</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4 mb-3">
                                                     <label class="form-label text-white-50 small">From Address</label>
                                                     <input type="text" class="form-control" name="mail_from_address" value="{{ $settings['mail_from_address'] ?? '' }}">
                                                 </div>

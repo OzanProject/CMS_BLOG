@@ -61,12 +61,22 @@ class AppServiceProvider extends ServiceProvider
 
                 // Override Mail Config
                 if ($settings->get('mail_host')) {
+                    $encryption = $settings->get('mail_encryption');
+                    
+                    // Auto-detect encryption if empty
+                    if (empty($encryption)) {
+                        $port = (int) $settings->get('mail_port');
+                        if ($port === 465) $encryption = 'ssl';
+                        elseif ($port === 587) $encryption = 'tls';
+                    }
+
                     config([
+                        'mail.default' => 'smtp', // Change driver from log to smtp
                         'mail.mailers.smtp.host' => $settings->get('mail_host'),
                         'mail.mailers.smtp.port' => $settings->get('mail_port'),
                         'mail.mailers.smtp.username' => $settings->get('mail_username'),
                         'mail.mailers.smtp.password' => $settings->get('mail_password'),
-                        'mail.mailers.smtp.encryption' => $settings->get('mail_encryption'),
+                        'mail.mailers.smtp.encryption' => $encryption,
                         'mail.from.address' => $settings->get('mail_from_address'),
                         'mail.from.name' => $settings->get('mail_from_name'),
                     ]);
