@@ -59,7 +59,11 @@ class AppServiceProvider extends ServiceProvider
                 $settings = \App\Models\Configuration::pluck('value', 'key');
                 \Illuminate\Support\Facades\View::share('settings', $settings);
 
-                // Override Mail Config
+                // Override App & Mail Config
+                if ($settings->get('site_name')) {
+                    config(['app.name' => $settings->get('site_name')]);
+                }
+
                 if ($settings->get('mail_host')) {
                     $encryption = $settings->get('mail_encryption');
                     
