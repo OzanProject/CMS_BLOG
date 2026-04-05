@@ -64,7 +64,6 @@ class SettingController extends Controller
         'maintenance_message',
         'recaptcha_site_key',
         'recaptcha_secret_key',
-        'tinymce_api_key',
     ];
 
     /**

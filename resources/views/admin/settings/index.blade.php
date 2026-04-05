@@ -270,20 +270,9 @@
                                     </div>
                                 </div><!-- end first row -->
 
-                                <!-- Second Row: Editor Configuration -->
-                                <div class="row g-4 mt-2">
-                                    <div class="col-md-6">
-                                        <div class="card bg-dark border-0 shadow-sm p-4">
-                                            <h6 class="mb-4 text-primary border-bottom border-secondary pb-2"><i class="fa fa-pencil me-2"></i>Editor Configuration</h6>
-                                            <div class="mb-3">
-                                                <label class="form-label text-white-50 small">TinyMCE Cloud API Key</label>
-                                                <input type="text" class="form-control" name="tinymce_api_key" value="{{ $settings['tinymce_api_key'] ?? '' }}" placeholder="no-api-key">
-                                                <div class="form-text small text-muted mt-2">Dapatkan kunci di <a href="https://www.tiny.cloud/" target="_blank" class="text-info">tiny.cloud</a>. Gunakan <code>no-api-key</code> untuk pengujian.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                </div><!-- end first row -->
                             </div>
+                        </div>
 
                         </div>
 
