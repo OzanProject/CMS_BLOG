@@ -1,188 +1,151 @@
 @extends('themes.modern.frontend.layouts.app')
 
 @section('content')
-<main class="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-12 gap-12 text-white">
-    <!-- Side Navigation (Left - Editorial Hub) -->
-    <aside class="hidden lg:flex flex-col lg:col-span-2 space-y-8">
-        <div class="bg-surface-container-low dark:bg-slate-900 p-6 rounded-lg space-y-6">
-            <div>
-                <h3 class="font-body text-xs uppercase tracking-widest text-on-surface-variant font-bold">Editorial Hub</h3>
-                <p class="text-[0.6875rem] text-on-surface-variant/70">Precision Storytelling</p>
-            </div>
-            <nav class="flex flex-col space-y-2">
-                <a @if($trendingArticles->isNotEmpty()) href="{{ route('article.show', $trendingArticles->first()->slug) }}" @else href="#" @endif class="flex items-center gap-3 p-3 text-on-surface font-bold bg-white dark:bg-slate-800 rounded-lg hover:translate-x-1 transition-transform">
-                    <span class="material-symbols-outlined text-lg">trending_up</span>
-                    <span class="font-body text-sm font-medium">Trending Now</span>
-                </a>
-                <a @if($latestArticles->isNotEmpty()) href="{{ route('article.show', $latestArticles->first()->slug) }}" @else href="#" @endif class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-slate-800 rounded-lg hover:translate-x-1 transition-transform">
-                    <span class="material-symbols-outlined text-lg">bolt</span>
-                    <span class="font-body text-sm font-medium">Latest Stories</span>
-                </a>
-                <a href="{{ route('article.index') }}" class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-slate-800 rounded-lg hover:translate-x-1 transition-transform">
-                    <span class="material-symbols-outlined text-lg">star</span>
-                    <span class="font-body text-sm font-medium">All Archives</span>
-                </a>
-                <a href="{{ route('category.index') }}" class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-slate-800 rounded-lg hover:translate-x-1 transition-transform">
-                    <span class="material-symbols-outlined text-lg">visibility</span>
-                    <span class="font-body text-sm font-medium">By Categories</span>
-                </a>
-            </nav>
-            <div class="pt-4 border-t border-outline-variant/20">
-                <form action="{{ route('newsletter.subscribe') }}" method="POST">
-                    @csrf
-                    <button class="w-full bg-primary text-on-primary py-3 rounded-xl text-xs font-bold uppercase tracking-wider">Newsletter Signup</button>
-                </form>
-            </div>
-        </div>
+    @php $heroArticle = $bannerArticles->shift() ?? $latestArticles->first(); @endphp
 
-        <!-- Sidebar Ad Space (Dynamic) -->
-        <div class="bg-surface-container-highest h-64 rounded-lg flex flex-col justify-center items-center p-4 overflow-hidden border border-outline-variant/10">
-            @php $sidebarAd = \App\Models\Configuration::where('key', 'ad_sidebar_script')->value('value'); @endphp
-            @if($sidebarAd)
-                {!! $sidebarAd !!}
-            @else
-                <span class="text-[0.6875rem] uppercase tracking-widest text-on-surface-variant font-medium mb-1">Ad Space</span>
-                <div class="text-on-surface-variant/40 italic text-xs text-center">Vertical Placement</div>
-            @endif
-        </div>
-    </aside>
+    <section class="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white pt-16 pb-32 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="absolute inset-0 bg-black/10"></div>
 
-    <!-- Main Feed (Center) -->
-    <div class="lg:col-span-7 space-y-16">
-        <!-- Hero Article Section -->
-        @if($bannerArticles->isNotEmpty())
-            @php $hero = $bannerArticles->first(); @endphp
-            <article class="group cursor-pointer" onclick="window.location='{{ route('article.show', $hero->slug) }}'">
-                <div class="relative overflow-hidden rounded-xl mb-6 shadow-2xl">
-                    @if($hero->image)
-                        <img src="{{ asset('storage/' . $hero->image) }}" alt="{{ $hero->title }}" class="w-full h-[500px] object-cover transition-transform duration-700 group-hover:scale-105">
-                    @else
-                        <div class="w-full h-[500px] bg-slate-800 flex items-center justify-center">
-                            <span class="text-slate-600 font-headline text-4xl italic">Editorial Selection</span>
+            <div class="relative grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8 z-10">
+                    <div
+                        class="inline-flex items-center px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-xs font-bold uppercase tracking-widest">
+                        <i class="fas fa-bolt mr-2 text-yellow-300"></i> BERITA TERKINI
+                    </div>
+
+                    @if($heroArticle)
+                        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
+                            <a href="{{ route('article.show', $heroArticle->slug) }}"
+                                class="hover:underline decoration-4 underline-offset-8">
+                                {{ $heroArticle->title }}
+                            </a>
+                        </h1>
+                        <p class="text-lg text-blue-100 leading-relaxed max-w-lg line-clamp-3">
+                            {{ Str::limit(strip_tags($heroArticle->content), 150) }}
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                            <a href="{{ route('article.show', $heroArticle->slug) }}"
+                                class="group bg-white text-gray-900 px-8 py-4 rounded-2xl font-bold text-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex items-center justify-center">
+                                <i class="fas fa-book-open mr-3 group-hover:rotate-12 transition-transform text-blue-600"></i>
+                                Baca Berita
+                            </a>
                         </div>
                     @endif
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-                    <div class="absolute bottom-0 left-0 p-8">
-                        <span class="inline-block bg-secondary text-white px-3 py-1 rounded text-[0.6875rem] font-bold tracking-widest uppercase mb-4">{{ $hero->category->name }}</span>
-                        <h1 class="text-white text-4xl md:text-5xl lg:text-6xl font-headline font-bold leading-tight mb-4 group-hover:underline decoration-secondary underline-offset-8">
-                            {{ $hero->title }}
-                        </h1>
-                        <p class="text-white/80 text-lg font-body max-w-2xl line-clamp-2">
-                            {{ Str::limit(strip_tags($hero->content), 150) }}
-                        </p>
-                    </div>
                 </div>
-                <div class="flex items-center gap-4 text-on-surface-variant text-[0.6875rem] font-bold uppercase tracking-widest px-2">
-                    <span>By {{ $hero->user->name }}</span>
-                    <span class="w-1 h-1 bg-outline-variant rounded-full"></span>
-                    <span>{{ $hero->published_at->format('M d, Y') }}</span>
-                </div>
-            </article>
-        @endif
 
-        <!-- Latest News Bento Grid -->
-        <section>
-            <div class="flex items-end justify-between mb-8">
-                <h2 class="text-3xl font-headline font-bold text-on-surface border-l-4 border-secondary pl-4">Latest Insights</h2>
-                <a class="text-sm font-label font-bold text-secondary hover:underline" href="{{ route('article.index') }}">View Archives</a>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                @foreach($latestArticles->skip(1)->take(4) as $article)
-                    <div class="flex flex-col space-y-4 group cursor-pointer" onclick="window.location='{{ route('article.show', $article->slug) }}'">
-                        @if($article->image)
-                            <div class="overflow-hidden rounded-lg">
-                                <img class="w-full aspect-video object-cover transition-transform group-hover:scale-105 duration-500" src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }}">
-                            </div>
-                        @endif
-                        <span class="text-[0.6875rem] font-bold tracking-widest uppercase text-secondary">{{ $article->category->name }}</span>
-                        <h3 class="text-2xl font-headline font-bold group-hover:text-secondary transition-colors text-on-surface">{{ $article->title }}</h3>
-                        <p class="text-on-surface-variant text-sm line-clamp-2">
-                            {{ Str::limit(strip_tags($article->content), 100) }}
-                        </p>
-                    </div>
-                @endforeach
-            </div>
-        </section>
-
-        <!-- In-Feed Ad Placeholder -->
-        @php $inFeedAd = \App\Models\Configuration::where('key', 'ad_in_article_script')->value('value'); @endphp
-        @if($inFeedAd)
-            <div class="bg-surface-container-low p-8 rounded-xl flex items-center justify-center overflow-hidden border border-outline-variant/10 shadow-sm">
-                {!! $inFeedAd !!}
-            </div>
-        @else
-            <div class="bg-surface-container-low p-8 rounded-xl flex items-center justify-between border border-outline-variant/10 shadow-sm">
-                <div class="max-w-md">
-                    <span class="text-[0.6875rem] font-bold tracking-widest uppercase text-on-surface-variant mb-2 block">Premium Insights</span>
-                    <h4 class="text-xl font-headline font-bold mb-2 text-on-surface">Experience deep storytelling at your fingertips.</h4>
-                    <p class="text-sm text-on-surface-variant">Stay updated with our curated editorial selection sent daily.</p>
-                </div>
-                <button class="bg-primary text-on-primary px-6 py-3 rounded-xl text-sm font-bold hover:bg-secondary transition-colors">Join Newsletter</button>
-            </div>
-        @endif
-        
-        <!-- Bottom Banner (Alternative Data Feed or Additional Feature) -->
-        <section class="bg-primary-container p-8 rounded-xl text-white shadow-xl relative overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent"></div>
-            <div class="relative z-10">
-                <div class="flex items-center gap-2 mb-6">
-                    <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">star</span>
-                    <h2 class="text-2xl font-headline font-bold uppercase tracking-tight">Editors Pick</h2>
-                </div>
-                    @foreach($gridArticles->take(3) as $article)
-                        <a href="{{ route('article.show', $article->slug) }}" class="group block">
-                            <h3 class="text-lg font-headline font-bold group-hover:text-secondary mb-2 line-clamp-2">{{ $article->title }}</h3>
-                            <p class="text-sm text-white/60 line-clamp-1 italic">Read Analysis &rarr;</p>
-                        </a>
-                    @endforeach
-            </div>
-        </section>
-    </div>
-
-    <!-- Trending Sidebar (Right) -->
-    <aside class="lg:col-span-3 space-y-12 text-on-surface">
-        <section>
-            <h3 class="font-label font-bold text-xs uppercase tracking-[0.2em] mb-6 border-b-2 border-secondary inline-block pb-1">Trending Stories</h3>
-                @foreach($trendingArticles->take(5) as $index => $article)
-                    <div class="flex gap-4 group cursor-pointer" onclick="window.location='{{ route('article.show', $article->slug) }}'">
-                        <span class="text-3xl font-headline font-black text-outline-variant group-hover:text-secondary transition-colors italic">{{ sprintf('%02d', $index + 1) }}</span>
-                        <div>
-                            <h4 class="text-sm font-bold font-body leading-tight group-hover:underline text-on-surface">{{ $article->title }}</h4>
-                            <span class="text-[10px] text-on-surface-variant font-bold mt-2 inline-block">{{ number_format($article->views) }} Analytical Engagements</span>
+                @if($heroArticle)
+                    <div class="relative mt-8 lg:mt-0">
+                        <img src="{{ asset('storage/' . $heroArticle->image) }}" alt="Hero"
+                            class="w-full h-80 md:h-[400px] object-cover rounded-3xl shadow-2xl animate-pulse-slow ring-8 ring-white/10">
+                        <div
+                            class="absolute -bottom-6 -right-6 md:-bottom-8 md:-right-8 w-20 h-20 md:w-24 md:h-24 bg-gradient-to-tr from-yellow-400 to-orange-500 rounded-full animate-bounce shadow-xl flex items-center justify-center">
+                            <i class="fas fa-star text-white text-3xl"></i>
                         </div>
-                    </div>
-                @endforeach
-        </section>
-
-        <!-- Sidebar Newsletter Slot -->
-        <div class="bg-surface-container-highest rounded-lg flex flex-col justify-center items-center p-8 border border-outline-variant/10 shadow-sm text-center">
-            <span class="text-[0.6875rem] uppercase tracking-widest text-on-surface-variant font-medium mb-3">Newsletter</span>
-            <p class="text-xs font-body mb-4 text-on-surface-variant">Get the weekend edition of our publication directly to your inbox.</p>
-            <form action="{{ route('newsletter.subscribe') }}" method="POST" class="w-full">
-                @csrf
-                <input name="email" class="w-full bg-white border-2 border-surface-container-highest rounded-lg text-xs py-2 px-4 mb-3 focus:ring-1 focus:ring-secondary focus:border-secondary" placeholder="email@address.com" type="email" required/>
-                <button type="submit" class="w-full bg-primary text-on-primary py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest hover:bg-secondary transition-colors">Sign Up Now</button>
-            </form>
-        </div>
-
-        <section>
-            <h3 class="font-label font-bold text-xs uppercase tracking-[0.2em] mb-6">Cultural Insights</h3>
-            <div class="space-y-6">
-                @if($gridArticles->isNotEmpty())
-                    @php $cultural = $gridArticles->last(); @endphp
-                    <div class="group cursor-pointer" onclick="window.location='{{ route('article.show', $cultural->slug) }}'">
-                        <div class="relative overflow-hidden rounded-lg mb-3 shadow-md">
-                            @if($cultural->image)
-                                <img class="w-full aspect-square object-cover transition-transform group-hover:scale-105 duration-500" src="{{ asset('storage/' . $cultural->image) }}" alt="{{ $cultural->title }}">
-                            @else
-                                <div class="w-full aspect-square bg-slate-200 flex items-center justify-center text-slate-400 italic">No Media</div>
-                            @endif
-                        </div>
-                        <h4 class="text-sm font-headline font-bold text-on-surface line-clamp-2">{{ $cultural->title }}</h4>
                     </div>
                 @endif
             </div>
-        </section>
-    </aside>
-</main>
+        </div>
+    </section>
+
+    <section class="py-20 bg-white -mt-10 rounded-t-[3rem] relative z-20 shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between mb-12">
+                <div>
+                    <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Terbaru Hari Ini</h2>
+                    <div class="w-20 h-1.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                @foreach($latestArticles->take(8) as $article)
+                    <a href="{{ route('article.show', $article->slug) }}"
+                        class="group bg-white border border-gray-100 rounded-3xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden flex flex-col">
+                        <div class="h-48 relative overflow-hidden bg-gray-200">
+                            <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }}"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div
+                                class="absolute top-4 left-4 bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest shadow-lg">
+                                {{ $article->category->name }}
+                            </div>
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col">
+                            <span class="text-xs text-gray-500 font-bold mb-3"><i class="far fa-clock mr-1"></i>
+                                {{ $article->published_at->diffForHumans() }}</span>
+                            <h3
+                                class="text-lg font-bold text-gray-900 leading-snug group-hover:text-blue-600 transition-colors">
+                                {{ $article->title }}
+                            </h3>
+                            <p class="text-gray-500 text-sm mt-3 line-clamp-2">
+                                {{ Str::limit(strip_tags($article->content), 80) }}</p>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+
+            <div class="mt-12 flex justify-center">
+                {{ $latestArticles->links() }}
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-gray-50 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-16">Eksplor Kategori</h2>
+
+            @php
+                // Array untuk memberi ikon dan warna berbeda pada setiap kategori
+                $styles = [
+                    ['icon' => 'fa-home', 'bg' => 'from-red-500 to-orange-500', 'text' => 'group-hover:text-red-600'],
+                    ['icon' => 'fa-globe', 'bg' => 'from-blue-500 to-indigo-500', 'text' => 'group-hover:text-blue-600'],
+                    ['icon' => 'fa-chart-line', 'bg' => 'from-green-500 to-teal-500', 'text' => 'group-hover:text-green-600'],
+                    ['icon' => 'fa-laptop', 'bg' => 'from-purple-500 to-pink-500', 'text' => 'group-hover:text-purple-600'],
+                    ['icon' => 'fa-futbol', 'bg' => 'from-yellow-500 to-orange-500', 'text' => 'group-hover:text-yellow-600'],
+                    ['icon' => 'fa-heart', 'bg' => 'from-pink-500 to-rose-500', 'text' => 'group-hover:text-pink-600'],
+                ];
+            @endphp
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                @foreach($categories as $index => $cat)
+                    @php $style = $styles[$index % count($styles)]; @endphp
+                    <a href="{{ route('category.show', $cat->slug) }}"
+                        class="group p-6 rounded-3xl bg-white shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 text-center border border-gray-100">
+                        <div
+                            class="w-16 h-16 bg-gradient-to-r {{ $style['bg'] }} rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg">
+                            <i class="fas {{ $style['icon'] }} text-white text-2xl"></i>
+                        </div>
+                        <h3
+                            class="font-extrabold text-gray-800 text-sm uppercase tracking-wider {{ $style['text'] }} transition-colors">
+                            {{ $cat->name }}</h3>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl"></div>
+
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <div class="mb-10">
+                <h2 class="text-3xl md:text-5xl font-extrabold mb-6">Dapatkan Update Harian</h2>
+                <p class="text-lg text-gray-400 max-w-2xl mx-auto">
+                    Berlangganan newsletter kami untuk mendapatkan berita terbaru langsung ke email Anda.
+                </p>
+            </div>
+            <div
+                class="bg-white/10 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-10 max-w-2xl mx-auto shadow-2xl">
+                <form action="{{ route('newsletter.subscribe') }}" method="POST" class="flex flex-col sm:flex-row gap-4">
+                    @csrf
+                    <input name="email" type="email" placeholder="Masukkan alamat email..." required
+                        class="flex-1 px-6 py-4 bg-gray-900/50 border border-gray-700 rounded-2xl text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 outline-none transition-all duration-200">
+                    <button type="submit"
+                        class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 px-8 py-4 rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                        Berlangganan
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
 @endsection

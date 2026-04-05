@@ -187,45 +187,68 @@
     </div>
 
     <!-- TinyMCE 6 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js" referrerpolicy="origin"></script>
+    @php
+        $tinymceKey = \App\Models\Configuration::where('key', 'tinymce_api_key')->value('value') ?? 'no-api-key';
+    @endphp
+    <script src="https://cdn.tiny.cloud/1/{{ $tinymceKey }}/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             tinymce.init({
                 selector: '#editor',
                 height: 500,
                 menubar: false,
+                promotion: false,
+                branding: false,
                 plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
                 toolbar: 'undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media link anchor codesample',
 
-                // URL Configuration for Portability
+                // URL Configuration
                 relative_urls: false,
                 remove_script_host: true,
                 convert_urls: true,
-                document_base_url: '{{ url("/") }}/',
                 quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
                 toolbar_mode: 'sliding',
+                
+                // Dark Mode Aesthetic
                 skin: 'oxide-dark',
                 content_css: 'dark',
-                content_style: 'body { font-family: "Open Sans", sans-serif; background-color: #191C24; color: #6C7293; }',
+                content_style: 'body { font-family: "Open Sans", sans-serif; background-color: #191C24; color: #6C7293; font-size: 14px; }',
 
-                // Image Upload Logic (Same as before)
+                // Modern Image Upload Handler
                 images_upload_handler: (blobInfo, progress) => new Promise((resolve, reject) => {
-                    const xhr = new XMLHttpRequest();
-                    xhr.withCredentials = false;
-                    xhr.open('POST', '{{ route('admin.articles.upload-image') }}');
-                    xhr.setRequestHeader('x-csrf-token', '{{ csrf_token() }}');
-                    xhr.upload.onprogress = (e) => { progress(e.loaded / e.total * 100); };
-                    xhr.onload = () => {
-                        if (xhr.status < 200 || xhr.status >= 300) { reject('HTTP Error: ' + xhr.status); return; }
-                        const json = JSON.parse(xhr.responseText);
-                        if (!json || typeof json.url !== 'string') { reject('Invalid JSON: ' + xhr.responseText); return; }
-                        resolve(json.url);
-                    };
-                    xhr.onerror = () => { reject('Image upload failed.'); };
                     const formData = new FormData();
                     formData.append('upload', blobInfo.blob(), blobInfo.filename());
-                    xhr.send(formData);
-                })
+
+                    fetch('{{ route('admin.articles.upload-image') }}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: formData
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('HTTP Error: ' + response.status);
+                        }
+                        return response.json();
+                    })
+                    .then(json => {
+                        if (!json || typeof json.url !== 'string') {
+                            throw new Error('Invalid JSON response');
+                        }
+                        resolve(json.url);
+                    })
+                    .catch(error => {
+                        reject(error.message || 'Image upload failed');
+                    });
+                }),
+
+                // Init Callback for Debugging
+                setup: function (editor) {
+                    editor.on('init', function () {
+                        console.log('TinyMCE Initialized successfully');
+                    });
+                }
             });
         });
     </script>

@@ -34,8 +34,7 @@ class FrontendController extends Controller
                     ->where('status', 'published')
                     ->where('published_at', '<=', now())
                     ->orderBy('published_at', 'desc')
-                    ->take(5)
-                    ->get(),
+                    ->paginate(6),
                 'gridArticles' => Article::with(['category', 'user'])
                     ->where('status', 'published')
                     ->where('published_at', '<=', now())

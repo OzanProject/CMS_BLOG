@@ -1,60 +1,78 @@
 @extends('themes.modern.frontend.layouts.app')
 
-@section('title', 'Search results for: ' . $query . ' - ' . ($settings['site_name'] ?? 'The Editorial Authority'))
+@section('title', 'Pencarian: ' . $query . ' - ' . ($settings['site_name'] ?? 'NewsHub'))
 
 @section('content')
-<main class="max-w-7xl mx-auto px-6 py-12">
-    <div class="mb-12 border-l-4 border-secondary pl-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
-        <div>
-            <span class="text-[0.6875rem] font-bold tracking-[0.3em] uppercase text-on-surface-variant mb-2 block">Search Investigation</span>
-            <h1 class="text-4xl font-headline font-bold text-on-surface mb-2 italic">"{{ $query }}"</h1>
-            <p class="text-on-surface-variant font-body">Found {{ $articles->total() }} matching stories in our archives.</p>
+    <section class="bg-gray-900 text-white pt-16 pb-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="max-w-3xl">
+                <nav class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-500 mb-8">
+                    <a href="{{ url('/') }}" class="hover:text-white">Home</a>
+                    <i class="fas fa-chevron-right text-[8px]"></i>
+                    <span class="text-gray-300">Pencarian</span>
+                </nav>
+                <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-6">
+                    Hasil Pencarian untuk: <span class="text-blue-500">"{{ $query }}"</span>
+                </h1>
+                <p class="text-lg text-gray-400 font-medium">
+                    Menampilkan <span class="text-white font-bold">{{ $articles->total() }}</span> artikel yang sesuai dengan kueri Anda.
+                </p>
+            </div>
+            
+            <div class="mt-12 max-w-xl">
+                <form action="{{ route('search') }}" method="GET" class="relative group">
+                    <input name="q" value="{{ $query }}" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-6 py-5 text-sm text-white focus:border-blue-500 outline-none transition-all shadow-2xl placeholder:text-gray-600" placeholder="Cari berita lainnya...">
+                    <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 bg-blue-600 text-white rounded-xl flex items-center justify-center hover:bg-blue-700 transition-all shadow-lg">
+                        <i class="fas fa-search text-lg"></i>
+                    </button>
+                </form>
+            </div>
         </div>
-        
-        <form action="{{ route('search') }}" method="GET" class="flex items-center bg-surface-container-highest px-6 py-3 rounded-xl w-full md:w-96">
-            <span class="material-symbols-outlined text-on-surface-variant text-lg mr-3">search</span>
-            <input name="q" value="{{ $query }}" class="bg-transparent border-none focus:ring-0 text-sm w-full font-body" placeholder="Refine search..." type="text"/>
-        </form>
-    </div>
+    </section>
 
-    @if($articles->isEmpty())
-        <div class="py-24 text-center">
-            <span class="material-symbols-outlined text-6xl text-outline-variant mb-4">search_off</span>
-            <h3 class="text-2xl font-headline font-bold text-on-surface">No results found for your query.</h3>
-            <p class="text-on-surface-variant mt-2 font-body">Try different keywords or browse our categories.</p>
-            <a href="{{ url('/') }}" class="inline-block mt-8 bg-black text-white px-8 py-3 rounded-xl font-bold hover:bg-secondary transition-colors">Return Home</a>
-        </div>
-    @else
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-            @foreach($articles as $article)
-                <div class="flex flex-col space-y-6 group cursor-pointer" onclick="window.location='{{ route('article.show', $article->slug) }}'">
-                    @if($article->image)
-                        <div class="overflow-hidden rounded-xl shadow-lg border border-outline-variant/5">
-                            <img class="w-full aspect-video object-cover transition-transform group-hover:scale-105 duration-700" src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }}">
-                        </div>
-                    @endif
-                    
-                    <div class="space-y-4 px-2">
-                        <span class="text-[0.6875rem] font-bold tracking-[0.2em] uppercase text-secondary">{{ $article->category->name }}</span>
-                        <h3 class="text-3xl font-headline font-bold group-hover:text-secondary transition-colors text-on-surface leading-tight">
-                            {{ $article->title }}
-                        </h3>
-                        <p class="text-on-surface-variant text-base font-body line-clamp-3 leading-relaxed">
-                            {{ Str::limit(strip_tags($article->content), 120) }}
-                        </p>
-                        <div class="flex items-center gap-3 text-on-surface-variant/60 text-[10px] font-bold uppercase tracking-widest pt-4 border-t border-outline-variant/10">
-                            <span>By {{ $article->user->name }}</span>
-                            <span class="w-1 h-1 bg-outline-variant rounded-full"></span>
-                            <span>{{ $article->published_at->format('M d, Y') }}</span>
-                        </div>
-                    </div>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 pb-32">
+        @if($articles->isEmpty())
+            <div class="bg-white rounded-[3rem] p-24 text-center shadow-xl border border-gray-100 -mt-32 relative z-20">
+                <div class="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-8">
+                    <i class="fas fa-search-minus text-gray-300 text-4xl"></i>
                 </div>
-            @endforeach
-        </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">Tidak Ditemukan</h3>
+                <p class="text-gray-500 mb-10 max-w-md mx-auto">Maaf, kami tidak menemukan artikel yang sesuai dengan kata kunci yang Anda cari. Silakan coba dengan kata kunci yang berbeda.</p>
+                <a href="{{ url('/') }}" class="inline-flex items-center justify-center bg-blue-600 text-white px-10 py-4 rounded-2xl font-bold text-lg hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl">
+                    Kembali ke Beranda
+                </a>
+            </div>
+        @else
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach($articles as $article)
+                    <a href="{{ route('article.show', $article->slug) }}"
+                        class="group bg-white border border-gray-100 rounded-3xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden flex flex-col">
+                        <div class="h-48 relative overflow-hidden bg-gray-200">
+                            <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }}"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div
+                                class="absolute top-4 left-4 bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest shadow-lg">
+                                {{ $article->category->name }}
+                            </div>
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col">
+                            <span class="text-xs text-gray-500 font-bold mb-3"><i class="far fa-clock mr-1"></i>
+                                {{ $article->published_at->diffForHumans() }}</span>
+                            <h3
+                                class="text-lg font-bold text-gray-900 leading-snug group-hover:text-blue-600 transition-colors">
+                                {{ $article->title }}
+                            </h3>
+                            <p class="text-gray-500 text-sm mt-3 line-clamp-2">
+                                {{ Str::limit(strip_tags($article->content), 80) }}</p>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
 
-        <div class="mt-16 py-8 border-t border-outline-variant/10">
-            {{ $articles->links() }}
-        </div>
-    @endif
-</main>
+            <div class="mt-16 flex justify-center border-t border-gray-100 pt-16">
+                {{ $articles->links() }}
+            </div>
+        @endif
+    </main>
 @endsection
+
