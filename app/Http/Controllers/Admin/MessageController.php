@@ -37,4 +37,18 @@ class MessageController extends Controller
         $message->delete();
         return back()->with('success', 'Message deleted successfully.');
     }
+
+    /**
+     * Remove selected resources from storage.
+     */
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->ids;
+        if (!$ids || !is_array($ids)) {
+            return back()->with('error', 'No messages selected.');
+        }
+
+        Message::whereIn('id', $ids)->delete();
+        return back()->with('success', count($ids) . ' messages deleted successfully.');
+    }
 }

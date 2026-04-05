@@ -22,7 +22,7 @@
 {{-- Footer --}}
 <x-slot:footer>
 <x-mail::footer>
-© {{ date('Y') }} {{ config('app.name') }}. {{ __('All rights reserved.') }}
+{{-- Logic is inside footer.blade.php --}}
 </x-mail::footer>
 </x-slot:footer>
 </x-mail::layout>

@@ -75,6 +75,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('pages', \App\Http\Controllers\Admin\PageController::class);
 
         // Messages (Inbox)
+        Route::post('messages-bulk-delete', [\App\Http\Controllers\Admin\MessageController::class, 'bulkDestroy'])->name('messages.bulk-destroy');
         Route::resource('messages', \App\Http\Controllers\Admin\MessageController::class)->only(['index', 'show', 'destroy']);
 
         // Subscribers (Newsletter)
