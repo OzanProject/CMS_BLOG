@@ -24,8 +24,8 @@ class SecurityHeaders
         $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
 
         // Content-Security-Policy: Mencegah redirect JavaScript berbahaya dan script dari domain tidak dikenal.
-        // Ditambah izin untuk Adsterra (Dynamic Domains), YouTube, dan Google Services.
-        $adsterraDomains = "https://www.highperformanceformat.com https://*.profitablecpmratenetwork.com https://*.adsterra.com https://*.protrafficinspector.com https://*.skinnycrawlinglax.com https://*.sourshaped.com https://*.realizationnewestfangs.com https://*.kettledroopingcontinuation.com";
+        // Adsterra requires root domain AND wildcard to be whitelisted for dynamic delivery.
+        $adsterraDomains = "https://www.highperformanceformat.com https://*.profitablecpmratenetwork.com https://profitablecpmratenetwork.com https://*.adsterra.com https://adsterra.com https://*.protrafficinspector.com https://protrafficinspector.com https://*.skinnycrawlinglax.com https://skinnycrawlinglax.com https://*.sourshaped.com https://sourshaped.com https://*.realizationnewestfangs.com https://realizationnewestfangs.com https://*.kettledroopingcontinuation.com https://kettledroopingcontinuation.com";
         
         $csp = implode('; ', [
             "default-src 'self'",
@@ -34,7 +34,7 @@ class SecurityHeaders
             "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net",
             "img-src 'self' data: https: blob:",
             "frame-src 'self' https://www.google.com https://pagead2.googlesyndication.com https://www.youtube.com https://www.youtube-nocookie.com https://*.youtube.com https://*.smartlink-url.com " . $adsterraDomains,
-            "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://analytics.google.com https://*.g.doubleclick.net https://*.adsterra.com https://*.protrafficinspector.com",
+            "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://analytics.google.com https://*.g.doubleclick.net https://*.adsterra.com " . $adsterraDomains,
             "form-action 'self'",
             "frame-ancestors 'self'",
         ]);
