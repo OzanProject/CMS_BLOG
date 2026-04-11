@@ -249,25 +249,153 @@
     </div>
     <!-- navbar end -->
 
+    <style>
+        /* Premium Footer Overhaul CSS */
+        .footer-area.premium-border-top {
+            border-top: 1px solid rgba(255,255,255,0.05);
+            background: linear-gradient(180deg, #0a0e14 0%, #05070a 100%) !important;
+            padding-top: 80px !important;
+        }
+        .widget-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 14px;
+            color: #f59e0b !important;
+            margin-bottom: 30px !important;
+            position: relative;
+        }
+        .widget-title:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 30px;
+            height: 2px;
+            background: #f59e0b;
+        }
+        .footer-area p {
+            color: #94a3b8 !important;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+        .social-area-premium {
+            display: flex;
+            gap: 12px;
+            list-style: none;
+            padding: 0;
+            margin-top: 25px;
+        }
+        .social-area-premium li a {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .social-area-premium li a:hover {
+            background: #f59e0b;
+            color: #000;
+            transform: translateY(-5px);
+            border-color: #f59e0b;
+            box-shadow: 0 10px 20px -5px rgba(245,158,11,0.4);
+        }
+        .newsletter-glass {
+            background: rgba(255,255,255,0.02) !important;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.08) !important;
+            border-radius: 12px !important;
+            padding: 12px 20px !important;
+            color: #fff !important;
+        }
+        .newsletter-glass:focus {
+            background: rgba(255,255,255,0.05) !important;
+            border-color: #f59e0b !important;
+            box-shadow: none !important;
+        }
+        .btn-premium-send {
+            background: #f59e0b !important;
+            border: none !important;
+            border-radius: 0 12px 12px 0 !important;
+            padding: 0 20px !important;
+            color: #000 !important;
+            font-weight: 700 !important;
+        }
+        .contact_info_list_premium {
+            list-style: none;
+            padding: 0;
+        }
+        .contact_info_list_premium li {
+            color: #94a3b8;
+            margin-bottom: 15px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            font-size: 14px;
+        }
+        .contact_info_list_premium li i {
+            color: #f59e0b;
+            font-size: 16px;
+        }
+        .footer-bottom-premium {
+            margin-top: 80px;
+            padding: 40px 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .widget_nav_menu_premium {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        .widget_nav_menu_premium li a {
+            color: #64748b;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+        .widget_nav_menu_premium li a:hover {
+            color: #f59e0b;
+        }
+        .back-to-top {
+            bottom: 100px !important; /* Raised to avoid overlap with Adsterra Social Bar */
+            right: 30px !important;
+            background: #f59e0b !important;
+            border-radius: 12px !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+        }
+        .back-to-top i { color: #000 !important; }
+    </style>
+
     <div style="flex: 1;">
         @yield('content')
     </div>
 
     <!-- footer area start -->
-    <div class="footer-area bg-black pd-top-95">
+    <footer class="footer-area premium-border-top pd-top-95">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-sm-6">
                     <div class="widget">
                         <h5 class="widget-title">{{ __('frontend.about_us') }}</h5>
                         <div class="widget_about">
-                            <p>{{ Str::limit($settings['site_description'] ?? 'Blog content description', 150) }}</p>
-                            <ul class="social-area social-area-2 mt-4">
-                                @if(isset($settings['social_facebook'])) <li><a class="facebook-icon" href="{{ $settings['social_facebook'] }}"><i class="fa fa-facebook"></i></a></li> @endif
-                                @if(isset($settings['social_twitter'])) <li><a class="twitter-icon" href="{{ $settings['social_twitter'] }}"><i class="fa fa-twitter"></i></a></li> @endif
-                                @if(isset($settings['social_youtube'])) <li><a class="youtube-icon" href="{{ $settings['social_youtube'] }}"><i class="fa fa-youtube-play"></i></a></li> @endif
-                                @if(isset($settings['social_instagram'])) <li><a class="instagram-icon" href="{{ $settings['social_instagram'] }}"><i class="fa fa-instagram"></i></a></li> @endif
-                                @if(isset($settings['social_google'])) <li><a class="google-icon" href="{{ $settings['social_google'] }}"><i class="fa fa-google-plus"></i></a></li> @endif
+                            <p>{{ Str::limit($settings['site_description'] ?? 'Platform berita terpercaya yang menyajikan informasi terkini seputar teknologi, tutorial, dan inspirasi harian.', 150) }}</p>
+                            <ul class="social-area-premium">
+                                @if(isset($settings['social_facebook'])) <li><a href="{{ $settings['social_facebook'] }}"><i class="fa fa-facebook"></i></a></li> @endif
+                                @if(isset($settings['social_twitter'])) <li><a href="{{ $settings['social_twitter'] }}"><i class="fa fa-twitter"></i></a></li> @endif
+                                @if(isset($settings['social_youtube'])) <li><a href="{{ $settings['social_youtube'] }}"><i class="fa fa-youtube-play"></i></a></li> @endif
+                                @if(isset($settings['social_instagram'])) <li><a href="{{ $settings['social_instagram'] }}"><i class="fa fa-instagram"></i></a></li> @endif
                             </ul>
                         </div>
                     </div>
@@ -276,16 +404,16 @@
                     <div class="widget widget_newsletter">
                         <h5 class="widget-title">{{ __('frontend.newsletter') ?? 'Newsletter' }}</h5>
                         @if(session('success'))
-                            <div class="alert alert-success p-1 mb-2 text-center" style="font-size: 12px;">
+                            <div class="alert alert-success p-2 mb-3 text-center" style="font-size: 12px; border-radius: 10px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: #10b981;">
                                 {{ session('success') }}
                             </div>
                         @endif
-                        <p class="text-white-50">{{ __('frontend.newsletter_desc') ?? 'Subscribe to get the latest updates.' }}</p>
-                        <form action="{{ route('newsletter.subscribe') }}" method="POST" class="mt-3">
+                        <p>{{ __('frontend.newsletter_desc') ?? 'Berlangganan untuk mendapatkan berita terbaru langsung ke email Anda.' }}</p>
+                        <form action="{{ route('newsletter.subscribe') }}" method="POST" class="mt-4">
                             @csrf
                             <div class="input-group">
-                                <input type="email" name="email" class="form-control" placeholder="{{ __('frontend.email') }}" required style="background: rgba(255,255,255,0.1); border: none; color: #fff;">
-                                <button class="btn btn-primary" type="submit"><i class="fa fa-paper-plane"></i></button>
+                                <input type="email" name="email" class="form-control newsletter-glass" placeholder="{{ __('frontend.email') }}" required>
+                                <button class="btn btn-premium-send" type="submit"><i class="fa fa-paper-plane"></i></button>
                             </div>
                         </form>
                     </div>
@@ -293,49 +421,58 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="widget">
                         <h5 class="widget-title">{{ __('frontend.contacts') }}</h5>
-                        <ul class="contact_info_list">
+                        <ul class="contact_info_list_premium">
                             @if(isset($settings['contact_address'])) <li><i class="fa fa-map-marker"></i> {{ $settings['contact_address'] }}</li> @endif
                             @if(isset($settings['contact_phone'])) <li><i class="fa fa-phone"></i> {{ $settings['contact_phone'] }}</li> @endif
                             @if(isset($settings['contact_email'])) <li><i class="fa fa-envelope-o"></i> {{ $settings['contact_email'] }}</li> @endif
                         </ul>
                     </div>
                 </div>
-                <!-- Popular News Widget removed or replaced with dynamic content if available -->
                 <div class="col-lg-3 col-sm-6">
                     <div class="widget widget_recent_post">
                         <h5 class="widget-title">{{ __('frontend.popular_news') }}</h5>
-                        @if(isset($footerPopularArticles))
-                            @foreach($footerPopularArticles as $footerArticle)
-                            <div class="media">
-                                @if($footerArticle->image)
-                                <div class="media-left" style="margin-right: 15px;">
-                                    <a href="{{ route('article.show', $footerArticle->slug) }}">
-                                        <img src="{{ asset('storage/' . $footerArticle->image) }}" alt="image" style="width: 80px; height: 60px; object-fit: cover; border-radius: 4px;">
-                                    </a>
+                        <div class="footer-recent-posts">
+                            @if(isset($footerPopularArticles))
+                                @foreach($footerPopularArticles as $footerArticle)
+                                <div class="media mb-3">
+                                    <div class="media-body">
+                                        <h6 class="mb-0" style="font-size: 14px; line-height: 1.5; font-weight: 600;">
+                                            <a href="{{ route('article.show', $footerArticle->slug) }}" class="text-white hover-amber transition-all">
+                                                {{ Str::limit($footerArticle->title, 55) }}
+                                            </a>
+                                        </h6>
+                                        <span class="text-muted d-block mt-1" style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">
+                                            {{ $footerArticle->published_at->format('M d, Y') }}
+                                        </span>
+                                    </div>
                                 </div>
-                                @endif
-                                <div class="media-body">
-                                    <h6 class="mb-3"><a href="{{ route('article.show', $footerArticle->slug) }}">{{ Str::limit($footerArticle->title, 40) }}</a></h6>
-                                </div>
-                            </div>
-                            @endforeach
-                        @endif
+                                @endforeach
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="footer-bottom text-center">
-                <ul class="widget_nav_menu">
+            <div class="footer-bottom-premium text-center">
+                <ul class="widget_nav_menu_premium">
                      @foreach(\App\Models\Page::where('status', 1)->where('slug', '!=', 'contact')->get() as $pageLink)
                         <li><a href="{{ route('page.show', $pageLink->slug) }}">{{ $pageLink->title }}</a></li>
                      @endforeach
                      <li><a href="{{ route('contact.index') }}">{{ __('frontend.contacts') }}</a></li>
                      <li><a href="{{ route('sitemap') }}">Sitemap</a></li>
                 </ul>
-                <p>{{ $settings['site_copyright'] ?? 'Copyright © 2024 ' . ($settings['site_name'] ?? 'DeepBlog') }}</p>
+                <p class="mb-0">{{ $settings['site_copyright'] ?? 'Copyright © 2026 ' . ($settings['site_name'] ?? 'Ozan Project') }}</p>
+                <div class="mt-3 text-muted" style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase;">
+                    Handcrafted with <i class="fa fa-heart text-danger"></i> for Excellence
+                </div>
             </div>
         </div>
-    </div>
+    </footer>
     <!-- footer area end -->
+
+    <style>
+        .hover-amber:hover { color: #f59e0b !important; }
+        .transition-all { transition: all 0.3s ease; }
+    </style>
 
     <!-- back to top area start -->
     <div class="back-to-top">
