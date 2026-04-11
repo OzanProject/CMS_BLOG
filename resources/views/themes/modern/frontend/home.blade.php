@@ -123,6 +123,37 @@
         </div>
     </section>
 
+    {{-- Featured YouTube Video --}}
+    @php
+        $youtubeUrl = $settings['homepage_youtube_url'] ?? null;
+        $videoId = '';
+        if ($youtubeUrl) {
+            if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $youtubeUrl, $match)) {
+                $videoId = $match[1];
+            }
+        }
+    @endphp
+
+    @if($videoId)
+        <section class="py-20 bg-[#0d1117] border-t border-slate-800">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-extrabold text-white mb-2">Editor's Choice</h2>
+                    <div class="w-16 h-1 bg-amber-500 mx-auto rounded-full"></div>
+                </div>
+                <div class="relative aspect-video rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-slate-700">
+                    <iframe 
+                        src="https://www.youtube.com/embed/{{ $videoId }}" 
+                        class="absolute inset-0 w-full h-full"
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </section>
+    @endif
+
     <section class="py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white relative overflow-hidden">
         <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl"></div>
         <div class="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl"></div>

@@ -5,11 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="canonical" href="{{ url()->current() }}">
     
     @php
         $settings = \App\Models\Configuration::whereIn('key', [
             'adsense_active', 'adsense_client_id', 'adsense_auto_ads',
-            'adsterra_active', 'adsterra_pop_script', 'adsterra_social_script',
+            'adsterra_active', 
+            'adsterra_popunder_script', 'adsterra_social_bar_script',
+            'adsterra_banner_728x90_script', 'adsterra_banner_300x250_script',
+            'adsterra_native_banner_script', 'adsterra_smartlink_url',
+            'homepage_youtube_url',
             'site_name', 'site_description', 'site_logo', 'site_favicon',
             'google_verification_code', 'google_analytics_id', 'social_facebook',
             'social_twitter', 'social_youtube', 'social_instagram', 'social_google',
@@ -140,8 +145,8 @@
                     <div class="col-lg-6 col-md-5 mt-2 mt-md-0 text-md-right text-center">
                         <div class="topbar-social">
                             <div class="topbar-date d-none d-lg-inline-block mr-3">
-                                <a href="{{ route('lang.switch', 'en') }}" class="{{ app()->getLocale() == 'en' ? 'text-white font-weight-bold' : 'text-white-50' }}">EN</a> | 
-                                <a href="{{ route('lang.switch', 'id') }}" class="{{ app()->getLocale() == 'id' ? 'text-white font-weight-bold' : 'text-white-50' }}">ID</a>
+                                <a href="{{ route('lang.switch', 'en') }}" rel="nofollow" class="{{ app()->getLocale() == 'en' ? 'text-white font-weight-bold' : 'text-white-50' }}">EN</a> | 
+                                <a href="{{ route('lang.switch', 'id') }}" rel="nofollow" class="{{ app()->getLocale() == 'id' ? 'text-white font-weight-bold' : 'text-white-50' }}">ID</a>
                             </div>
                             <div class="topbar-date d-none d-lg-inline-block"><i class="fa fa-calendar"></i> {{ date('l, F j') }}</div>
                             <ul class="social-area social-area-2">
@@ -340,11 +345,11 @@
 
     <!-- Adsterra Scripts -->
     @if(($settings['adsterra_active'] ?? '0') === '1')
-        @if(!empty($settings['adsterra_pop_script']))
-            {!! $settings['adsterra_pop_script'] !!}
+        @if(!empty($settings['adsterra_popunder_script']))
+            {!! $settings['adsterra_popunder_script'] !!}
         @endif
-        @if(!empty($settings['adsterra_social_script']))
-            {!! $settings['adsterra_social_script'] !!}
+        @if(!empty($settings['adsterra_social_bar_script']))
+            {!! $settings['adsterra_social_bar_script'] !!}
         @endif
     @endif
 

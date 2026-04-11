@@ -4,6 +4,7 @@ Disallow: /login/
 Disallow: /register/
 Disallow: /password/
 Disallow: /reset-password/
+Disallow: /lang/
 Allow: /
 
 Sitemap: https://ozanproject.site/sitemap.xml

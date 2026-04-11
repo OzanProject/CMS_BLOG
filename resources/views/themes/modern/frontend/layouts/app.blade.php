@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="canonical" href="{{ url()->current() }}">
 
     @php
         $settings = \App\Models\Configuration::whereIn('key', [
@@ -25,6 +26,7 @@
             'ad_sidebar_script',
             // Social links
             'social_facebook', 'social_twitter', 'social_instagram', 'social_youtube',
+            'homepage_youtube_url',
         ])->pluck('value', 'key');
     @endphp
 

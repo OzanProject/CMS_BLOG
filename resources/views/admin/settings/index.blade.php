@@ -74,9 +74,14 @@
                                                     <label class="form-label-premium">Site Description/Tagline</label>
                                                     <textarea class="form-control" name="site_description" rows="2">{{ $settings['site_description'] ?? '' }}</textarea>
                                                 </div>
-                                                <div class="col-12">
+                                                <div class="col-12 mb-3">
                                                     <label class="form-label-premium">Copyright Footer</label>
                                                     <input type="text" class="form-control" name="site_copyright" value="{{ $settings['site_copyright'] ?? '' }}" placeholder="&copy; 2024 Your Company">
+                                                </div>
+                                                <div class="col-12">
+                                                    <label class="form-label-premium text-danger"><i class="fab fa-youtube me-1"></i> Homepage YouTube Video URL</label>
+                                                    <input type="url" class="form-control border-danger" name="homepage_youtube_url" value="{{ $settings['homepage_youtube_url'] ?? '' }}" placeholder="https://www.youtube.com/watch?v=...">
+                                                    <small class="text-white-50">Paste any standard or shortened YouTube link.</small>
                                                 </div>
                                             </div>
                                         </div>
