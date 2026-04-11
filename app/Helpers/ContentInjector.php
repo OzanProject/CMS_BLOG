@@ -2,39 +2,36 @@
 
 namespace App\Helpers;
 
-use Illuminate\Support\Str;
-
 class ContentInjector
 {
     /**
      * Inject Ads and 'Read Also' into article content.
      *
      * @param string $content
-     * @param string|null $adScript
+     * @param \Illuminate\Support\Collection|array|null $settings
      * @param \App\Models\Article|null $relatedArticle
      * @return string
      */
-    public static function inject($content, $adScript = null, $relatedArticle = null)
+    public static function inject($content, $settings = null, $relatedArticle = null)
     {
         if (empty($content)) {
             return '';
         }
 
-        // Fetch settings
-        $settings = \App\Models\Configuration::whereIn('key', [
-            'ad_in_article_active',
-            'ad_in_article_frequency',
-            'ad_in_article_max'
-        ])->pluck('value', 'key');
+        // Normalize settings
+        if (is_null($settings)) {
+            $settings = \App\Models\Configuration::pluck('value', 'key');
+        }
 
-        $isActive = ($settings['ad_in_article_active'] ?? '0') === '1';
-        $frequency = (int) ($settings['ad_in_article_frequency'] ?? 3);
-        $maxAds = (int) ($settings['ad_in_article_max'] ?? 5);
+        $isActive       = ($settings['ad_in_article_active'] ?? '0') === '1';
+        $frequency      = (int) ($settings['ad_in_article_frequency'] ?? 3);
+        $maxAds         = (int) ($settings['ad_in_article_max'] ?? 5);
+        $adScript       = $settings['ad_in_article_script'] ?? null;
 
         // Explode content by closing paragraph tag
         $paragraphs = explode('</p>', $content);
         $totalParagraphs = count($paragraphs);
-        
+
         // 1. Inject "Read Also" after Paragraph 2 (index 1)
         if ($totalParagraphs > 2 && $relatedArticle) {
             $readAlsoHtml = self::getReadAlsoHtml($relatedArticle);
@@ -44,46 +41,45 @@ class ContentInjector
         }
 
         // 2. Inject Ads dynamically
-        if ($isActive && $adScript && $frequency > 0) {
+        if ($isActive && !empty($adScript) && $frequency > 0) {
             $adCount = 0;
-            
-            // Loop through paragraphs starting from the frequency mark
+
             for ($i = $frequency - 1; $i < $totalParagraphs - 1; $i += $frequency) {
                 if ($adCount >= $maxAds) break;
 
-                // Ensure we don't inject right after "Read Also" (index 1) if possible
-                if ($i === 1) continue; 
+                // Don't inject right after "Read Also" block
+                if ($i === 1) continue;
 
                 if (isset($paragraphs[$i])) {
-                    $adHtml = self::getAdHtml($adScript);
-                    $paragraphs[$i] .= $adHtml;
+                    $paragraphs[$i] .= self::getAdHtml($adScript);
                     $adCount++;
                 }
             }
         }
 
-        // Reassemble content
         return implode('</p>', $paragraphs);
     }
 
     private static function getReadAlsoHtml($article)
     {
-        $url = route('article.show', $article->slug);
-        $title = $article->title;
-        
+        $url   = route('article.show', $article->slug);
+        $title = e($article->title);
+
         return '
-        <div class="read-also-box my-4 p-3 border-start border-4 border-primary bg-light">
-            <h6 class="m-0 fw-bold text-uppercase text-secondary" style="font-size: 12px; letter-spacing: 1px;">' . __('frontend.read_also') . '</h6>
-            <a href="' . $url . '" class="text-dark fw-bold text-decoration-none h6 mt-1 d-block">' . $title . '</a>
+        <div class="read-also-box my-6 p-4 border-l-4 border-amber-500 bg-slate-900/50 rounded-r-xl">
+            <span class="block text-[10px] font-black uppercase tracking-widest text-amber-500/70 mb-2">Baca Juga</span>
+            <a href="' . $url . '" class="text-white font-bold text-sm hover:text-amber-400 transition-colors leading-snug">' . $title . '</a>
         </div>';
     }
 
     private static function getAdHtml($script)
     {
         return '
-        <div class="in-article-ad my-4 text-center">
-            <span class="d-block text-muted small mb-1" style="font-size: 10px;">ADVERTISEMENT</span>
-            ' . $script . '
+        <div class="in-article-ad my-8 text-center">
+            <span class="block text-[9px] font-black uppercase tracking-[0.3em] text-slate-600 mb-3">Advertisement</span>
+            <div class="overflow-hidden rounded-xl">
+                ' . $script . '
+            </div>
         </div>';
     }
 }

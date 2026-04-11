@@ -15,6 +15,21 @@
         </span>
       </a>
 
+      {{-- Dynamic Header Ad Zone (728x90) --}}
+      @php
+          $adstraIsActive  = ($settings['adsterra_active'] ?? '0') === '1';
+          $headerAdScript  = $adstraIsActive && !empty($settings['adsterra_banner_728x90_script'])
+                              ? $settings['adsterra_banner_728x90_script']
+                              : ($settings['ad_header_script'] ?? null);
+      @endphp
+      @if($headerAdScript)
+        <div class="hidden lg:block flex-grow max-w-[728px] mx-8">
+            <div class="w-full h-[90px] flex items-center justify-center overflow-hidden border border-slate-800/50 rounded-lg bg-slate-900/30">
+                {!! $headerAdScript !!}
+            </div>
+        </div>
+      @endif
+
       <div class="flex items-center gap-4 md:gap-6 w-full md:w-auto justify-between md:justify-end">
         <form action="{{ route('search') }}" method="GET"
           class="flex-grow md:flex-grow-0 flex items-center bg-slate-900 border border-slate-700 hover:border-[#D4AF37]/50 px-4 py-2 rounded focus-within:border-[#D4AF37] transition-all">
