@@ -46,7 +46,7 @@
                 
                 <!-- Pagination -->
                 <div class="mt-4">
-                    {{ $articles->links('pagination::bootstrap-5') }}
+                    {{ $articles->links('pagination.premium') }}
                 </div>
                 
                 <!-- Ad Widget -->

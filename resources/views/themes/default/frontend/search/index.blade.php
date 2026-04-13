@@ -48,7 +48,7 @@
                 
                 <!-- Pagination -->
                 <div class="mt-4">
-                    {{ $articles->appends(['q' => $query])->links('pagination::bootstrap-5') }}
+                    {{ $articles->appends(['q' => $query])->links('pagination.premium') }}
                 </div>
             </div>
             

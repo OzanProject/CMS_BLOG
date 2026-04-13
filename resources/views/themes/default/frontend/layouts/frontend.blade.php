@@ -1,51 +1,75 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="canonical" href="{{ url()->current() }}">
-    
+    <link rel="canonical" href="{{ rtrim(config('app.url'), '/') }}{{ request()->getPathInfo() }}">
+
     @php
         $settings = \App\Models\Configuration::whereIn('key', [
-            'adsense_active', 'adsense_client_id', 'adsense_auto_ads',
-            'adsterra_active', 
-            'adsterra_popunder_script', 'adsterra_social_bar_script',
-            'adsterra_banner_728x90_script', 'adsterra_banner_300x250_script',
-            'adsterra_native_banner_script', 'adsterra_smartlink_url',
+            'adsense_active',
+            'adsense_client_id',
+            'adsense_auto_ads',
+            'adsterra_active',
+            'adsterra_popunder_script',
+            'adsterra_social_bar_script',
+            'adsterra_banner_728x90_script',
+            'adsterra_banner_300x250_script',
+            'adsterra_native_banner_script',
+            'adsterra_smartlink_url',
             'homepage_youtube_url',
-            'site_name', 'site_description', 'site_logo', 'site_favicon',
-            'google_verification_code', 'google_analytics_id', 'social_facebook',
-            'social_twitter', 'social_youtube', 'social_instagram', 'social_google',
-            'contact_address', 'contact_phone', 'contact_email', 'site_copyright'
+            'site_name',
+            'site_description',
+            'site_logo',
+            'site_favicon',
+            'google_verification_code',
+            'google_analytics_id',
+            'social_facebook',
+            'social_twitter',
+            'social_youtube',
+            'social_instagram',
+            'social_google',
+            'contact_address',
+            'contact_phone',
+            'contact_email',
+            'site_copyright'
         ])->pluck('value', 'key');
     @endphp
 
     <!-- Google AdSense Auto Ads -->
     @if(($settings['adsense_active'] ?? '0') === '1' && ($settings['adsense_auto_ads'] ?? '0') === '1' && !empty($settings['adsense_client_id']))
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ $settings['adsense_client_id'] }}" crossorigin="anonymous"></script>
+        <script async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ $settings['adsense_client_id'] }}"
+            crossorigin="anonymous"></script>
     @endif
-    
+
     <title>@yield('meta_title', $settings['site_name'] ?? 'DeepBlog')</title>
-    <meta name="description" content="@yield('meta_description', $settings['site_description'] ?? 'News & Magazine Website')">
+    <meta name="description"
+        content="@yield('meta_description', $settings['site_description'] ?? 'News & Magazine Website')">
     <meta name="keywords" content="@yield('meta_keywords', '')">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="@yield('meta_title', $settings['site_name'] ?? 'DeepBlog')">
-    <meta property="og:description" content="@yield('meta_description', $settings['site_description'] ?? 'News & Magazine Website')">
-    <meta property="og:image" content="@yield('meta_image', isset($settings['site_logo']) ? asset('storage/' . $settings['site_logo']) : asset('nextpage-lite/assets/img/logo.png'))">
+    <meta property="og:description"
+        content="@yield('meta_description', $settings['site_description'] ?? 'News & Magazine Website')">
+    <meta property="og:image"
+        content="@yield('meta_image', isset($settings['site_logo']) ? asset('storage/' . $settings['site_logo']) : asset('nextpage-lite/assets/img/logo.png'))">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="{{ url()->current() }}">
     <meta property="twitter:title" content="@yield('meta_title', $settings['site_name'] ?? 'DeepBlog')">
-    <meta property="twitter:description" content="@yield('meta_description', $settings['site_description'] ?? 'News & Magazine Website')">
-    <meta property="twitter:image" content="@yield('meta_image', isset($settings['site_logo']) ? asset('storage/' . $settings['site_logo']) : asset('nextpage-lite/assets/img/logo.png'))">
+    <meta property="twitter:description"
+        content="@yield('meta_description', $settings['site_description'] ?? 'News & Magazine Website')">
+    <meta property="twitter:image"
+        content="@yield('meta_image', isset($settings['site_logo']) ? asset('storage/' . $settings['site_logo']) : asset('nextpage-lite/assets/img/logo.png'))">
     @if(isset($settings['google_verification_code']))
-    <meta name="google-site-verification" content="{{ $settings['google_verification_code'] }}">
+        <meta name="google-site-verification" content="{{ $settings['google_verification_code'] }}">
     @endif
 
     <!-- favicon -->
@@ -70,48 +94,52 @@
                 top: 100%;
                 left: 0;
                 width: 100%;
-                background-color: rgba(8, 15, 45, 0.98); /* Deep Blue, slightly transparent */
-                backdrop-filter: blur(10px); /* Premium Blur Effect */
+                background-color: rgba(8, 15, 45, 0.98);
+                /* Deep Blue, slightly transparent */
+                backdrop-filter: blur(10px);
+                /* Premium Blur Effect */
                 z-index: 99999;
                 padding: 15px 0;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-                border-top: 1px solid rgba(255,255,255,0.1);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
             }
-            
+
             .navbar-nav {
                 padding: 0 15px;
             }
-            
+
             .navbar-nav li {
-                border-bottom: 1px solid rgba(255,255,255,0.05);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             }
-            
+
             .navbar-nav li a {
                 padding: 12px 15px !important;
                 color: #fff !important;
                 font-size: 15px;
             }
-            
+
             .navbar-nav li a:hover {
-                color: #0d6efd !important; /* Bootstrap Primary Blue */
+                color: #0d6efd !important;
+                /* Bootstrap Primary Blue */
                 padding-left: 20px !important;
                 transition: all 0.2s;
             }
         }
     </style>
-    
+
     <!-- Google Analytics / GTM -->
     @if(isset($settings['google_analytics_id']))
         <!-- Google tag (gtag.js) -->
         <script async src="https://www.googletagmanager.com/gtag/js?id={{ $settings['google_analytics_id'] }}"></script>
         <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', '{{ $settings['google_analytics_id'] }}');
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', '{{ $settings['google_analytics_id'] }}');
         </script>
     @endif
 </head>
+
 <body style="display: flex; flex-direction: column; min-height: 100vh;">
 
 
@@ -119,7 +147,8 @@
     <div class="td-search-popup" id="td-search-popup">
         <form action="{{ route('search') }}" method="GET" class="search-form">
             <div class="form-group">
-                <input type="text" name="q" class="form-control" placeholder="{{ __('frontend.search_placeholder') }}" value="{{ request('q') }}">
+                <input type="text" name="q" class="form-control" placeholder="{{ __('frontend.search_placeholder') }}"
+                    value="{{ request('q') }}">
             </div>
             <button type="submit" class="submit-btn"><i class="fa fa-search"></i></button>
         </form>
@@ -145,15 +174,27 @@
                     <div class="col-lg-6 col-md-5 mt-2 mt-md-0 text-md-right text-center">
                         <div class="topbar-social">
                             <div class="topbar-date d-none d-lg-inline-block mr-3">
-                                <a href="{{ route('lang.switch', 'en') }}" rel="nofollow" class="{{ app()->getLocale() == 'en' ? 'text-white font-weight-bold' : 'text-white-50' }}">EN</a> | 
-                                <a href="{{ route('lang.switch', 'id') }}" rel="nofollow" class="{{ app()->getLocale() == 'id' ? 'text-white font-weight-bold' : 'text-white-50' }}">ID</a>
+                                <a href="{{ route('lang.switch', 'en') }}" rel="nofollow"
+                                    class="{{ app()->getLocale() == 'en' ? 'text-white font-weight-bold' : 'text-white-50' }}">EN</a>
+                                |
+                                <a href="{{ route('lang.switch', 'id') }}" rel="nofollow"
+                                    class="{{ app()->getLocale() == 'id' ? 'text-white font-weight-bold' : 'text-white-50' }}">ID</a>
                             </div>
-                            <div class="topbar-date d-none d-lg-inline-block"><i class="fa fa-calendar"></i> {{ date('l, F j') }}</div>
+                            <div class="topbar-date d-none d-lg-inline-block"><i class="fa fa-calendar"></i>
+                                {{ date('l, F j') }}</div>
                             <ul class="social-area social-area-2">
-                                @if(isset($settings['social_facebook'])) <li><a class="facebook-icon" href="{{ $settings['social_facebook'] }}"><i class="fa fa-facebook"></i></a></li> @endif
-                                @if(isset($settings['social_twitter'])) <li><a class="twitter-icon" href="{{ $settings['social_twitter'] }}"><i class="fa fa-twitter"></i></a></li> @endif
-                                @if(isset($settings['social_youtube'])) <li><a class="youtube-icon" href="{{ $settings['social_youtube'] }}"><i class="fa fa-youtube-play"></i></a></li> @endif
-                                @if(isset($settings['social_instagram'])) <li><a class="instagram-icon" href="{{ $settings['social_instagram'] }}"><i class="fa fa-instagram"></i></a></li> @endif
+                                @if(isset($settings['social_facebook']))
+                                    <li><a class="facebook-icon" href="{{ $settings['social_facebook'] }}"><i
+                                class="fa fa-facebook"></i></a></li> @endif
+                                @if(isset($settings['social_twitter']))
+                                    <li><a class="twitter-icon" href="{{ $settings['social_twitter'] }}"><i
+                                class="fa fa-twitter"></i></a></li> @endif
+                                @if(isset($settings['social_youtube']))
+                                    <li><a class="youtube-icon" href="{{ $settings['social_youtube'] }}"><i
+                                class="fa fa-youtube-play"></i></a></li> @endif
+                                @if(isset($settings['social_instagram']))
+                                    <li><a class="instagram-icon" href="{{ $settings['social_instagram'] }}"><i
+                                class="fa fa-instagram"></i></a></li> @endif
                             </ul>
                         </div>
                     </div>
@@ -169,7 +210,8 @@
                     <div class="col-xl-6 col-lg-5 align-self-center d-none d-lg-block">
                         <div class="logo text-md-left text-center">
                             <a class="main-logo" href="{{ url('/') }}">
-                                <h2 class="text-white mb-0" style="font-weight: 800; letter-spacing: 1px;">{{ $settings['site_name'] ?? 'DeepBlog' }}</h2>
+                                <h2 class="text-white mb-0" style="font-weight: 800; letter-spacing: 1px;">
+                                    {{ $settings['site_name'] ?? 'DeepBlog' }}</h2>
                             </a>
                         </div>
                     </div>
@@ -189,11 +231,12 @@
                 <div class="responsive-mobile-menu">
                     <div class="logo d-lg-none d-block">
                         <a class="main-logo" href="{{ url('/') }}">
-                             <h4 class="mb-0 text-white" style="font-weight: 800; letter-spacing: 0.5px;">{{ $settings['site_name'] ?? 'DeepBlog' }}</h4>
+                            <h4 class="mb-0 text-white" style="font-weight: 800; letter-spacing: 0.5px;">
+                                {{ $settings['site_name'] ?? 'DeepBlog' }}</h4>
                         </a>
                     </div>
-                    <button class="menu toggle-btn d-block d-lg-none" data-target="#nextpage_main_menu" 
-                    aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="menu toggle-btn d-block d-lg-none" data-target="#nextpage_main_menu"
+                        aria-expanded="false" aria-label="Toggle navigation">
                         <span class="icon-left"></span>
                         <span class="icon-right"></span>
                     </button>
@@ -203,44 +246,47 @@
                 </div>
                 <div class="collapse navbar-collapse" id="nextpage_main_menu">
                     <div class="d-flex justify-content-end p-3 d-lg-none">
-                        <button class="menu toggle-btn border-0 bg-transparent text-white" data-target="#nextpage_main_menu" 
-                        aria-expanded="true" aria-label="Close navigation" onclick="$('#nextpage_main_menu').collapse('hide')">
+                        <button class="menu toggle-btn border-0 bg-transparent text-white"
+                            data-target="#nextpage_main_menu" aria-expanded="true" aria-label="Close navigation"
+                            onclick="$('#nextpage_main_menu').collapse('hide')">
                             <i class="fa fa-times fa-2x"></i>
                         </button>
                     </div>
                     <ul class="navbar-nav menu-open">
                         <li class="current-menu-item">
                             <a href="{{ url('/') }}">{{ __('frontend.home') }}</a>
-                        </li>                        
+                        </li>
                         @php
                             $categories = \App\Models\Category::all();
                         @endphp
                         @foreach($categories->take(5) as $category)
-                        <li>
-                            <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}</a>
-                        </li>
+                            <li>
+                                <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}</a>
+                            </li>
                         @endforeach
 
                         @if($categories->count() > 5)
-                        <li class="menu-item-has-children">
-                            <a href="#">{{ __('frontend.more') ?? 'More' }}</a>
-                            <ul class="sub-menu">
-                                @foreach($categories->skip(5) as $category)
-                                <li>
-                                    <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}</a>
-                                </li>
-                                @endforeach
-                                <li class="bg-light">
-                                    <a href="{{ route('category.index') }}" class="text-primary font-weight-bold" style="font-size: 13px;">view all...</a>
-                                </li>
-                            </ul>
-                        </li>
+                            <li class="menu-item-has-children">
+                                <a href="#">{{ __('frontend.more') ?? 'More' }}</a>
+                                <ul class="sub-menu">
+                                    @foreach($categories->skip(5) as $category)
+                                        <li>
+                                            <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}</a>
+                                        </li>
+                                    @endforeach
+                                    <li class="bg-light">
+                                        <a href="{{ route('category.index') }}" class="text-primary font-weight-bold"
+                                            style="font-size: 13px;">view all...</a>
+                                    </li>
+                                </ul>
+                            </li>
                         @endif
                     </ul>
                 </div>
                 <div class="nav-right-part nav-right-part-desktop">
                     <form action="{{ route('search') }}" method="GET" class="menu-search-inner">
-                        <input type="text" name="q" placeholder="{{ __('frontend.search_placeholder') }}" value="{{ request('q') }}">
+                        <input type="text" name="q" placeholder="{{ __('frontend.search_placeholder') }}"
+                            value="{{ request('q') }}">
                         <button type="submit" class="submit-btn"><i class="fa fa-search"></i></button>
                     </form>
                 </div>
@@ -252,10 +298,11 @@
     <style>
         /* Premium Footer Overhaul CSS */
         .footer-area.premium-border-top {
-            border-top: 1px solid rgba(255,255,255,0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
             background: linear-gradient(180deg, #0a0e14 0%, #05070a 100%) !important;
             padding-top: 80px !important;
         }
+
         .widget-title {
             font-family: 'Montserrat', sans-serif;
             font-weight: 800;
@@ -266,6 +313,7 @@
             margin-bottom: 30px !important;
             position: relative;
         }
+
         .widget-title:after {
             content: "";
             position: absolute;
@@ -275,11 +323,13 @@
             height: 2px;
             background: #f59e0b;
         }
+
         .footer-area p {
             color: #94a3b8 !important;
             line-height: 1.8;
             font-size: 14px;
         }
+
         .social-area-premium {
             display: flex;
             gap: 12px;
@@ -287,38 +337,43 @@
             padding: 0;
             margin-top: 25px;
         }
+
         .social-area-premium li a {
             width: 38px;
             height: 38px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             display: flex;
             align-items: center;
             justify-content: center;
             color: #64748b;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
         .social-area-premium li a:hover {
             background: #f59e0b;
             color: #000;
             transform: translateY(-5px);
             border-color: #f59e0b;
-            box-shadow: 0 10px 20px -5px rgba(245,158,11,0.4);
+            box-shadow: 0 10px 20px -5px rgba(245, 158, 11, 0.4);
         }
+
         .newsletter-glass {
-            background: rgba(255,255,255,0.02) !important;
+            background: rgba(255, 255, 255, 0.02) !important;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.08) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
             border-radius: 12px !important;
             padding: 12px 20px !important;
             color: #fff !important;
         }
+
         .newsletter-glass:focus {
-            background: rgba(255,255,255,0.05) !important;
+            background: rgba(255, 255, 255, 0.05) !important;
             border-color: #f59e0b !important;
             box-shadow: none !important;
         }
+
         .btn-premium-send {
             background: #f59e0b !important;
             border: none !important;
@@ -327,10 +382,12 @@
             color: #000 !important;
             font-weight: 700 !important;
         }
+
         .contact_info_list_premium {
             list-style: none;
             padding: 0;
         }
+
         .contact_info_list_premium li {
             color: #94a3b8;
             margin-bottom: 15px;
@@ -339,15 +396,18 @@
             align-items: center;
             font-size: 14px;
         }
+
         .contact_info_list_premium li i {
             color: #f59e0b;
             font-size: 16px;
         }
+
         .footer-bottom-premium {
             margin-top: 80px;
             padding: 40px 0;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
+
         .widget_nav_menu_premium {
             list-style: none;
             padding: 0;
@@ -357,6 +417,7 @@
             margin-bottom: 25px;
             flex-wrap: wrap;
         }
+
         .widget_nav_menu_premium li a {
             color: #64748b;
             font-weight: 600;
@@ -365,17 +426,23 @@
             letter-spacing: 1px;
             transition: color 0.3s;
         }
+
         .widget_nav_menu_premium li a:hover {
             color: #f59e0b;
         }
+
         .back-to-top {
-            bottom: 100px !important; /* Raised to avoid overlap with Adsterra Social Bar */
+            bottom: 100px !important;
+            /* Raised to avoid overlap with Adsterra Social Bar */
             right: 30px !important;
             background: #f59e0b !important;
             border-radius: 12px !important;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
         }
-        .back-to-top i { color: #000 !important; }
+
+        .back-to-top i {
+            color: #000 !important;
+        }
     </style>
 
     <div style="flex: 1;">
@@ -390,12 +457,21 @@
                     <div class="widget">
                         <h5 class="widget-title">{{ __('frontend.about_us') }}</h5>
                         <div class="widget_about">
-                            <p>{{ Str::limit($settings['site_description'] ?? 'Platform berita terpercaya yang menyajikan informasi terkini seputar teknologi, tutorial, dan inspirasi harian.', 150) }}</p>
+                            <p>{{ Str::limit($settings['site_description'] ?? 'Platform berita terpercaya yang menyajikan informasi terkini seputar teknologi, tutorial, dan inspirasi harian.', 150) }}
+                            </p>
                             <ul class="social-area-premium">
-                                @if(isset($settings['social_facebook'])) <li><a href="{{ $settings['social_facebook'] }}"><i class="fa fa-facebook"></i></a></li> @endif
-                                @if(isset($settings['social_twitter'])) <li><a href="{{ $settings['social_twitter'] }}"><i class="fa fa-twitter"></i></a></li> @endif
-                                @if(isset($settings['social_youtube'])) <li><a href="{{ $settings['social_youtube'] }}"><i class="fa fa-youtube-play"></i></a></li> @endif
-                                @if(isset($settings['social_instagram'])) <li><a href="{{ $settings['social_instagram'] }}"><i class="fa fa-instagram"></i></a></li> @endif
+                                @if(isset($settings['social_facebook']))
+                                    <li><a href="{{ $settings['social_facebook'] }}"><i class="fa fa-facebook"></i></a></li>
+                                @endif
+                                @if(isset($settings['social_twitter']))
+                                    <li><a href="{{ $settings['social_twitter'] }}"><i class="fa fa-twitter"></i></a></li>
+                                @endif
+                                @if(isset($settings['social_youtube']))
+                                    <li><a href="{{ $settings['social_youtube'] }}"><i class="fa fa-youtube-play"></i></a>
+                                </li> @endif
+                                @if(isset($settings['social_instagram']))
+                                    <li><a href="{{ $settings['social_instagram'] }}"><i class="fa fa-instagram"></i></a>
+                                </li> @endif
                             </ul>
                         </div>
                     </div>
@@ -404,16 +480,20 @@
                     <div class="widget widget_newsletter">
                         <h5 class="widget-title">{{ __('frontend.newsletter') ?? 'Newsletter' }}</h5>
                         @if(session('success'))
-                            <div class="alert alert-success p-2 mb-3 text-center" style="font-size: 12px; border-radius: 10px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: #10b981;">
+                            <div class="alert alert-success p-2 mb-3 text-center"
+                                style="font-size: 12px; border-radius: 10px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: #10b981;">
                                 {{ session('success') }}
                             </div>
                         @endif
-                        <p>{{ __('frontend.newsletter_desc') ?? 'Berlangganan untuk mendapatkan berita terbaru langsung ke email Anda.' }}</p>
+                        <p>{{ __('frontend.newsletter_desc') ?? 'Berlangganan untuk mendapatkan berita terbaru langsung ke email Anda.' }}
+                        </p>
                         <form action="{{ route('newsletter.subscribe') }}" method="POST" class="mt-4">
                             @csrf
                             <div class="input-group">
-                                <input type="email" name="email" class="form-control newsletter-glass" placeholder="{{ __('frontend.email') }}" required>
-                                <button class="btn btn-premium-send" type="submit"><i class="fa fa-paper-plane"></i></button>
+                                <input type="email" name="email" class="form-control newsletter-glass"
+                                    placeholder="{{ __('frontend.email') }}" required>
+                                <button class="btn btn-premium-send" type="submit"><i
+                                        class="fa fa-paper-plane"></i></button>
                             </div>
                         </form>
                     </div>
@@ -422,9 +502,12 @@
                     <div class="widget">
                         <h5 class="widget-title">{{ __('frontend.contacts') }}</h5>
                         <ul class="contact_info_list_premium">
-                            @if(isset($settings['contact_address'])) <li><i class="fa fa-map-marker"></i> {{ $settings['contact_address'] }}</li> @endif
-                            @if(isset($settings['contact_phone'])) <li><i class="fa fa-phone"></i> {{ $settings['contact_phone'] }}</li> @endif
-                            @if(isset($settings['contact_email'])) <li><i class="fa fa-envelope-o"></i> {{ $settings['contact_email'] }}</li> @endif
+                            @if(isset($settings['contact_address']))
+                            <li><i class="fa fa-map-marker"></i> {{ $settings['contact_address'] }}</li> @endif
+                            @if(isset($settings['contact_phone']))
+                            <li><i class="fa fa-phone"></i> {{ $settings['contact_phone'] }}</li> @endif
+                            @if(isset($settings['contact_email']))
+                            <li><i class="fa fa-envelope-o"></i> {{ $settings['contact_email'] }}</li> @endif
                         </ul>
                     </div>
                 </div>
@@ -434,18 +517,20 @@
                         <div class="footer-recent-posts">
                             @if(isset($footerPopularArticles))
                                 @foreach($footerPopularArticles as $footerArticle)
-                                <div class="media mb-3">
-                                    <div class="media-body">
-                                        <h6 class="mb-0" style="font-size: 14px; line-height: 1.5; font-weight: 600;">
-                                            <a href="{{ route('article.show', $footerArticle->slug) }}" class="text-white hover-amber transition-all">
-                                                {{ Str::limit($footerArticle->title, 55) }}
-                                            </a>
-                                        </h6>
-                                        <span class="text-muted d-block mt-1" style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">
-                                            {{ $footerArticle->published_at->format('M d, Y') }}
-                                        </span>
+                                    <div class="media mb-3">
+                                        <div class="media-body">
+                                            <h6 class="mb-0" style="font-size: 14px; line-height: 1.5; font-weight: 600;">
+                                                <a href="{{ route('article.show', $footerArticle->slug) }}"
+                                                    class="text-white hover-amber transition-all">
+                                                    {{ Str::limit($footerArticle->title, 55) }}
+                                                </a>
+                                            </h6>
+                                            <span class="text-muted d-block mt-1"
+                                                style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">
+                                                {{ $footerArticle->published_at->format('M d, Y') }}
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
                                 @endforeach
                             @endif
                         </div>
@@ -454,13 +539,15 @@
             </div>
             <div class="footer-bottom-premium text-center">
                 <ul class="widget_nav_menu_premium">
-                     @foreach(\App\Models\Page::where('status', 1)->where('slug', '!=', 'contact')->get() as $pageLink)
+                    @foreach(\App\Models\Page::where('status', 1)->where('slug', '!=', 'contact')->get() as $pageLink)
                         <li><a href="{{ route('page.show', $pageLink->slug) }}">{{ $pageLink->title }}</a></li>
-                     @endforeach
-                     <li><a href="{{ route('contact.index') }}">{{ __('frontend.contacts') }}</a></li>
-                     <li><a href="{{ route('sitemap') }}">Sitemap</a></li>
+                    @endforeach
+                    <li><a href="{{ route('contact.index') }}">{{ __('frontend.contacts') }}</a></li>
+                    <li><a href="{{ route('sitemap') }}">Sitemap</a></li>
                 </ul>
-                <p class="mb-0">{{ $settings['site_copyright'] ?? 'Copyright © 2026 ' . ($settings['site_name'] ?? 'Ozan Project') }}</p>
+                <p class="mb-0">
+                    {{ $settings['site_copyright'] ?? 'Copyright © 2026 ' . ($settings['site_name'] ?? 'Ozan Project') }}
+                </p>
                 <div class="mt-3 text-muted" style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase;">
                     Handcrafted with <i class="fa fa-heart text-danger"></i> for Excellence
                 </div>
@@ -470,8 +557,13 @@
     <!-- footer area end -->
 
     <style>
-        .hover-amber:hover { color: #f59e0b !important; }
-        .transition-all { transition: all 0.3s ease; }
+        .hover-amber:hover {
+            color: #f59e0b !important;
+        }
+
+        .transition-all {
+            transition: all 0.3s ease;
+        }
     </style>
 
     <!-- back to top area start -->
@@ -496,4 +588,5 @@
     <script src="{{ asset('nextpage-lite/assets/js/main.js') }}"></script>
     @stack('scripts')
 </body>
+
 </html>
