@@ -211,7 +211,8 @@
                         <div class="logo text-md-left text-center">
                             <a class="main-logo" href="{{ url('/') }}">
                                 <h2 class="text-white mb-0" style="font-weight: 800; letter-spacing: 1px;">
-                                    {{ $settings['site_name'] ?? 'DeepBlog' }}</h2>
+                                    {{ $settings['site_name'] ?? 'DeepBlog' }}
+                                </h2>
                             </a>
                         </div>
                     </div>
@@ -232,7 +233,8 @@
                     <div class="logo d-lg-none d-block">
                         <a class="main-logo" href="{{ url('/') }}">
                             <h4 class="mb-0 text-white" style="font-weight: 800; letter-spacing: 0.5px;">
-                                {{ $settings['site_name'] ?? 'DeepBlog' }}</h4>
+                                {{ $settings['site_name'] ?? 'DeepBlog' }}
+                            </h4>
                         </a>
                     </div>
                     <button class="menu toggle-btn d-block d-lg-none" data-target="#nextpage_main_menu"
@@ -548,9 +550,6 @@
                 <p class="mb-0">
                     {{ $settings['site_copyright'] ?? 'Copyright © 2026 ' . ($settings['site_name'] ?? 'Ozan Project') }}
                 </p>
-                <div class="mt-3 text-muted" style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase;">
-                    Handcrafted with <i class="fa fa-heart text-danger"></i> for Excellence
-                </div>
             </div>
         </div>
     </footer>
