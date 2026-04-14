@@ -161,11 +161,50 @@
         transition: all 0.2s; 
         border-bottom: 1px dotted transparent;
     }
-    .toc-link:hover { color: #0d6efd !important; padding-left: 5px; }
+    .toc-link:hover, .toc-link.active { color: #0d6efd !important; padding-left: 5px; }
     .toc-link.h3-link { color: #64748b !important; font-size: 13.5px; }
     .chevron-rotate { transform: rotate(-180deg); }
     
-    /* Adjust for fixed navbar if any */
+    /* Table Responsive Fix */
+    .article-content { overflow-wrap: break-word; }
+    .table-responsive-wrapper { 
+        width: 100%; 
+        overflow-x: auto; 
+        -webkit-overflow-scrolling: touch; 
+        margin: 25px 0; 
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+    .article-content table { min-width: 600px; width: 100% !important; margin-bottom: 0 !important; }
+    .article-content table th { background: #f8fafc; color: #1e293b; font-weight: 700; }
+    .article-content table th, .article-content table td { padding: 12px 15px; border: 1px solid #e2e8f0; }
+
+    /* Sticky Sidebar TOC */
+    .widget-toc-sidebar {
+        background: #fff;
+        padding: 25px;
+        border-radius: 20px;
+        border: 1px solid #f1f5f9;
+        margin-bottom: 30px;
+    }
+    .widget-toc-sidebar .toc-title {
+        font-size: 14px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #0f172a;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #0d6efd;
+        display: inline-block;
+    }
+    
+    @media (max-width: 991px) {
+        .widget-toc-sidebar { display: none; }
+    }
+
+    /* Adjust for fixed navbar */
     :target::before {
         content: "";
         display: block;
@@ -196,31 +235,67 @@
         const content = document.getElementById("article-content");
         const tocContainer = document.getElementById("toc-container");
         const tocList = document.getElementById("toc-list");
+        const sidebarTocContainer = document.getElementById("sidebar-toc-container");
+        const sidebarTocList = document.getElementById("sidebar-toc-list");
 
-        if (!content || !tocList) return;
+        if (!content) return;
 
+        // 1. Wrap Tables for Responsiveness
+        const tables = content.querySelectorAll("table");
+        tables.forEach(table => {
+            const wrapper = document.createElement("div");
+            wrapper.className = "table-responsive-wrapper";
+            table.parentNode.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+        });
+
+        // 2. Generate TOC
         const headings = content.querySelectorAll("h2, h3");
 
         if (headings.length > 0) {
-            tocContainer.classList.remove('d-none');
+            // Show both containers
+            if (tocContainer) tocContainer.classList.remove('d-none');
+            if (sidebarTocContainer) sidebarTocContainer.classList.remove('d-none');
             
             headings.forEach((heading, index) => {
                 const id = "section-" + index;
                 heading.setAttribute("id", id);
-                heading.classList.add('scroll-margin');
 
-                const li = document.createElement("li");
-                li.className = "toc-item border-bottom-faint";
-                if (heading.tagName === "H3") li.style.paddingLeft = "20px";
+                // Create link for both lists
+                const createTocItem = (tag) => {
+                    const li = document.createElement("li");
+                    li.className = "toc-item";
+                    if (tag === "H3") li.style.paddingLeft = "20px";
 
-                const a = document.createElement("a");
-                a.href = "#" + id;
-                a.innerHTML = heading.innerText;
-                a.className = "toc-link " + (heading.tagName === "H3" ? "h3-link" : "h2-link");
+                    const a = document.createElement("a");
+                    a.href = "#" + id;
+                    a.innerHTML = heading.innerText;
+                    a.className = "toc-link " + (tag === "H3" ? "h3-link" : "h2-link");
+                    
+                    li.appendChild(a);
+                    return li;
+                };
 
-                li.appendChild(a);
-                tocList.appendChild(li);
+                if (tocList) tocList.appendChild(createTocItem(heading.tagName));
+                if (sidebarTocList) sidebarTocList.appendChild(createTocItem(heading.tagName));
             });
+            
+            // 3. Simple Intersection Observer for Sidebar Highlight
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        document.querySelectorAll('.toc-link').forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === '#' + id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: '-100px 0px -70% 0px' });
+
+            headings.forEach(heading => observer.observe(heading));
         }
     });
 </script>
@@ -274,6 +349,12 @@
             <!-- Sidebar -->
             <div class="col-lg-4">
                 <div class="sticky-sidebar">
+                    <!-- Sticky TOC Widget for Sidebar -->
+                    <div id="sidebar-toc-container" class="widget-toc-sidebar shadow-sm d-none">
+                        <h6 class="toc-title">Daftar Isi</h6>
+                        <ul id="sidebar-toc-list" style="list-style: none; padding: 0; margin: 0;"></ul>
+                    </div>
+
                     <div class="section-title mb-4">
                         <h6 class="title font-weight-bold">{{ __('frontend.recent_posts') }}</h6>
                     </div>
