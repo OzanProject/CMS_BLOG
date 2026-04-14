@@ -59,7 +59,7 @@
                             <div class="toc-card shadow-sm border-0 rounded-lg p-4 bg-white" style="border-left: 4px solid #0d6efd !important;">
                                 <div class="d-flex align-items-center justify-content-between mb-3" style="cursor: pointer;" onclick="toggleTOC()">
                                     <h6 class="m-0 font-weight-bold d-flex align-items-center" style="letter-spacing: 0.5px; color: #0f172a;">
-                                        <i class="fa fa-list-ul mr-2 text-primary"></i> {{ __('frontend.table_of_contents') ?? 'DAFTAR ISI' }}
+                                        <i class="fa fa-list-ul mr-2 text-primary"></i> {{ \Illuminate\Support\Facades\Lang::has('frontend.table_of_contents') ? __('frontend.table_of_contents') : 'DAFTAR ISI' }}
                                     </h6>
                                     <i id="toc-chevron" class="fa fa-chevron-down text-muted transition-all"></i>
                                 </div>

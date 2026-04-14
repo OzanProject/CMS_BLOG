@@ -62,4 +62,5 @@ return [
     'all_articles' => 'Semua Artikel', // New Key
     'no_articles' => 'Tidak ada artikel ditemukan.', // New Key
     'read_also' => 'Baca Juga',
+    'table_of_contents' => 'Daftar Isi',
 ];

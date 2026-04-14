@@ -62,4 +62,5 @@ return [
     'all_articles' => 'All Articles', // New Key
     'no_articles' => 'No articles found.', // New Key
     'read_also' => 'Read Also',
+    'table_of_contents' => 'Table of Contents',
 ];
