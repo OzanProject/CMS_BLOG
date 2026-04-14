@@ -1,6 +1,6 @@
 @extends('frontend.layouts.frontend')
 
-@section('title', $article->meta_title ?? $article->title)
+@section('meta_title', $article->meta_title ?? $article->title)
 @section('meta_description', $article->meta_description ?? Str::limit(strip_tags($article->content), 150))
 @section('meta_keywords', $article->keywords)
 
@@ -47,7 +47,7 @@
                                     <i class="fa fa-calendar-check-o mr-2 text-primary"></i> {{ $article->published_at->translatedFormat('d F Y') }}
                                 </li>
                                 <li class="text-muted small d-flex align-items-center">
-                                    <i class="fa fa-eye mr-2 text-primary"></i> {{ $article->views }} {{ __('dilihat') }}
+                                    <i class="fa fa-eye mr-2 text-primary"></i> {{ $article->views }} {{ __('frontend.views') }}
                                 </li>
                             </ul>
                         </div>
@@ -74,65 +74,77 @@
                             </div>
                         </div>
 
-                        <style>
-                            .tag-premium {
-                                background: linear-gradient(135deg, #0d6efd 0%, #0043a8 100%);
-                                color: #fff !important;
-                                padding: 5px 15px;
-                                border-radius: 50px;
-                                font-size: 12px;
-                                font-weight: 700;
-                                text-transform: uppercase;
-                                letter-spacing: 0.5px;
-                                text-decoration: none !important;
-                                transition: all 0.3s;
-                                box-shadow: 0 4px 10px rgba(13, 110, 253, 0.2);
-                            }
-                            .tag-premium:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(13, 110, 253, 0.3); color: #fff; }
-                            
-                            .btn-premium-social {
-                                width: 45px;
-                                height: 45px;
-                                border-radius: 12px;
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                color: #fff;
-                                font-size: 18px;
-                                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                                border: none;
-                                text-decoration: none !important;
-                            }
-                            .btn-premium-social:hover { transform: translateY(-5px); color: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-                            .fb { background: #1877f2; }
-                            .tw { background: #1da1f2; }
-                            .wa { background: #25d366; }
-                            .tg { background: #0088cc; }
-                            .link { background: #64748b; }
-                            
-                            .hover-zoom:hover { transform: scale(1.02); }
-                            .transition-all { transition: all 0.5s ease; }
-                            
-                            .article-content blockquote {
-                                border-left: 5px solid #0d6efd;
-                                padding: 20px;
-                                background: #f1f5f9;
-                                border-radius: 0 15px 15px 0;
-                                font-style: italic;
-                                margin: 30px 0;
-                            }
-                            .article-content img { border-radius: 15px; margin: 20px 0; max-width: 100%; height: auto; shadow: 0 4px 6px rgba(0,0,0,0.1); }
-                        </style>
+@push('styles')
+<style>
+    .tag-premium {
+        background: linear-gradient(135deg, #0d6efd 0%, #0043a8 100%);
+        color: #fff !important;
+        padding: 5px 15px;
+        border-radius: 50px;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        text-decoration: none !important;
+        transition: all 0.3s;
+        box-shadow: 0 4px 10px rgba(13, 110, 253, 0.2);
+    }
+    .tag-premium:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(13, 110, 253, 0.3); color: #fff; }
+    
+    .btn-premium-social {
+        width: 45px;
+        height: 45px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 18px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: none;
+        text-decoration: none !important;
+    }
+    .btn-premium-social:hover { transform: translateY(-5px); color: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+    .fb { background: #1877f2; }
+    .tw { background: #1da1f2; }
+    .wa { background: #25d366; }
+    .tg { background: #0088cc; }
+    .link { background: #64748b; }
+    
+    .hover-zoom:hover { transform: scale(1.02); }
+    .transition-all { transition: all 0.5s ease; }
+    
+    .article-content blockquote {
+        border-left: 5px solid #0d6efd;
+        padding: 20px;
+        background: #f1f5f9;
+        border-radius: 0 15px 15px 0;
+        font-style: italic;
+        margin: 30px 0;
+    }
+    .article-content img { border-radius: 15px; margin: 20px 0; max-width: 100%; height: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    
+    .hover-up:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.08) !important; }
+    
+    .sticky-sidebar { position: sticky; top: 100px; }
+    .shadow-xs { box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .rounded-lg { border-radius: 20px !important; }
+    h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; }
+</style>
+@endpush
 
-                        <script>
-                            function copyToClipboard(text) {
-                                navigator.clipboard.writeText(text).then(function() {
-                                    alert('Link berhasil disalin!');
-                                }, function(err) {
-                                    console.error('Gagal menyalin: ', err);
-                                });
-                            }
-                        </script>
+@push('scripts')
+<script>
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(function() {
+            alert('Link berhasil disalin!');
+        }, function(err) {
+            console.error('Gagal menyalin: ', err);
+        });
+    }
+</script>
+@endpush
+
                     </div>
                     
                     <!-- Related Posts -->
@@ -168,9 +180,7 @@
                     </div>
                     @endif
 
-                    <style>
-                        .hover-up:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.08) !important; }
-                    </style>
+
 
                     <!-- Comments Section -->
                     <div class="mt-5 p-4 bg-light rounded-lg">
@@ -219,10 +229,5 @@
     </div>
 </div>
 
-<style>
-    .sticky-sidebar { position: sticky; top: 100px; }
-    .shadow-xs { box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-    .rounded-lg { border-radius: 20px !important; }
-    h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; }
-</style>
+
 @endsection

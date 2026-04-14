@@ -18,6 +18,7 @@
     </ol>
 </nav>
 
+@push('styles')
 <style>
     .breadcrumb-item + .breadcrumb-item::before {
         content: "\f105"; /* FontAwesome Angle Right */
@@ -29,6 +30,8 @@
     .hover-primary:hover { color: #007bff !important; }
     .transition-all { transition: all 0.3s ease; }
 </style>
+@endpush
+
 
 @php
     $itemListElement = [
