@@ -11,7 +11,22 @@
                     <button type="button" class="btn btn-danger d-none" id="bulkDeleteBtn" onclick="submitBulkDelete()">
                         <i class="fa fa-trash me-2"></i>{{ __('common.delete_selected') ?? 'Delete Selected' }}
                     </button>
+                    <form action="{{ route('admin.articles.index') }}" method="GET" class="d-none d-md-flex align-items-center gap-2">
+                        @if(request('search'))
+                            <input type="hidden" name="search" value="{{ request('search') }}">
+                        @endif
+                        <select name="per_page" class="form-select form-select-sm bg-dark border-0 text-white w-auto" onchange="this.form.submit()">
+                            <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
+                            <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>20</option>
+                            <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                            <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
+                        </select>
+                        <span class="text-muted small">/page</span>
+                    </form>
                     <form action="{{ route('admin.articles.index') }}" method="GET" class="d-none d-md-flex">
+                        @if(request('per_page'))
+                            <input type="hidden" name="per_page" value="{{ request('per_page') }}">
+                        @endif
                         <input class="form-control bg-dark border-0 me-2" type="search" name="search"
                             value="{{ request('search') }}" placeholder="{{ __('common.search') }}...">
                         <button type="submit" class="btn btn-dark"><i class="fa fa-search"></i></button>

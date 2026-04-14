@@ -34,8 +34,11 @@ class ArticleController extends Controller
             });
         }
 
+        // Dynamic Pagination (per_page)
+        $perPage = $request->get('per_page', 10);
+        
         // Sort by Views (Highest first), then by Date (Newest first)
-        $articles = $query->orderBy('views', 'desc')->latest()->paginate(10)->withQueryString();
+        $articles = $query->orderBy('views', 'desc')->latest()->paginate($perPage)->withQueryString();
                             
         return view('admin.articles.index', compact('articles'));
     }
@@ -77,7 +80,7 @@ class ArticleController extends Controller
             $filename = 'articles/' . Str::random(40) . '.webp';
             
             // Optimization: Resize & Convert to WebP
-            $manager = new ImageManager(new Driver());
+            $manager = ImageManager::gd();
             $image = $manager->read($file);
             $image->scale(width: 1200); // Max width 1200px
             $encoded = $image->toWebp(quality: 80);
@@ -171,7 +174,7 @@ class ArticleController extends Controller
             $filename = 'articles/' . Str::random(40) . '.webp';
             
             // Optimization
-            $manager = new ImageManager(new Driver());
+            $manager = ImageManager::gd();
             $image = $manager->read($file);
             $image->scale(width: 1200);
             $encoded = $image->toWebp(quality: 80);
@@ -285,7 +288,7 @@ class ArticleController extends Controller
             $filename = 'media/' . Str::random(40) . '.webp';
             
             // Optimization
-            $manager = new ImageManager(new Driver());
+            $manager = ImageManager::gd();
             $image = $manager->read($file);
             $image->scale(width: 1000); // Limit content image width
             $encoded = $image->toWebp(quality: 80);
