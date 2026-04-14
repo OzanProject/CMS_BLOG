@@ -54,7 +54,22 @@
                         
                         <h1 class="title font-weight-bold mb-4" style="font-size: 2.5rem; line-height: 1.2; color: #0f172a;">{{ $article->title }}</h1>
                         
-                        <div class="article-content mt-4" style="font-size: 1.15rem; line-height: 1.8; color: #334155;">
+                        <!-- Premium Table of Contents -->
+                        <div id="toc-container" class="toc-wrapper mb-5 d-none">
+                            <div class="toc-card shadow-sm border-0 rounded-lg p-4 bg-white" style="border-left: 4px solid #0d6efd !important;">
+                                <div class="d-flex align-items-center justify-content-between mb-3" style="cursor: pointer;" onclick="toggleTOC()">
+                                    <h6 class="m-0 font-weight-bold d-flex align-items-center" style="letter-spacing: 0.5px; color: #0f172a;">
+                                        <i class="fa fa-list-ul mr-2 text-primary"></i> {{ __('frontend.table_of_contents') ?? 'DAFTAR ISI' }}
+                                    </h6>
+                                    <i id="toc-chevron" class="fa fa-chevron-down text-muted transition-all"></i>
+                                </div>
+                                <div id="toc-content" class="toc-list-wrap">
+                                    <ul id="toc-list" class="m-0 p-0" style="list-style: none;"></ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="article-content" class="article-content mt-4" style="font-size: 1.15rem; line-height: 1.8; color: #334155;">
                             @php
                                 $adScript = \App\Models\Configuration::where('key', 'ad_in_article_script')->value('value');
                                 $readAlso = $relatedArticles->shuffle()->first();
@@ -130,6 +145,33 @@
     .shadow-xs { box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
     .rounded-lg { border-radius: 20px !important; }
     h1, h2, h3, h4, h5, h6 { font-family: 'Poppins', sans-serif; }
+    
+    /* Premium TOC Styling */
+    html { scroll-behavior: smooth; }
+    .toc-wrapper { max-width: 600px; }
+    .toc-card { transition: all 0.3s ease; border: 1px solid #f1f5f9 !important; }
+    .toc-list-wrap { overflow: hidden; transition: max-height 0.4s ease; max-height: 1000px; }
+    .toc-list-wrap.collapsed { max-height: 0; }
+    .toc-link { 
+        display: block; 
+        padding: 6px 0; 
+        color: #475569 !important; 
+        font-size: 14px; 
+        text-decoration: none !important; 
+        transition: all 0.2s; 
+        border-bottom: 1px dotted transparent;
+    }
+    .toc-link:hover { color: #0d6efd !important; padding-left: 5px; }
+    .toc-link.h3-link { color: #64748b !important; font-size: 13.5px; }
+    .chevron-rotate { transform: rotate(-180deg); }
+    
+    /* Adjust for fixed navbar if any */
+    :target::before {
+        content: "";
+        display: block;
+        height: 100px;
+        margin-top: -100px;
+    }
 </style>
 @endpush
 
@@ -142,6 +184,45 @@
             console.error('Gagal menyalin: ', err);
         });
     }
+
+    function toggleTOC() {
+        const content = document.getElementById('toc-content');
+        const chevron = document.getElementById('toc-chevron');
+        content.classList.toggle('collapsed');
+        chevron.classList.toggle('chevron-rotate');
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const content = document.getElementById("article-content");
+        const tocContainer = document.getElementById("toc-container");
+        const tocList = document.getElementById("toc-list");
+
+        if (!content || !tocList) return;
+
+        const headings = content.querySelectorAll("h2, h3");
+
+        if (headings.length > 0) {
+            tocContainer.classList.remove('d-none');
+            
+            headings.forEach((heading, index) => {
+                const id = "section-" + index;
+                heading.setAttribute("id", id);
+                heading.classList.add('scroll-margin');
+
+                const li = document.createElement("li");
+                li.className = "toc-item border-bottom-faint";
+                if (heading.tagName === "H3") li.style.paddingLeft = "20px";
+
+                const a = document.createElement("a");
+                a.href = "#" + id;
+                a.innerHTML = heading.innerText;
+                a.className = "toc-link " + (heading.tagName === "H3" ? "h3-link" : "h2-link");
+
+                li.appendChild(a);
+                tocList.appendChild(li);
+            });
+        }
+    });
 </script>
 @endpush
 
