@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cache;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Mews\Purifier\Facades\Purifier;
 
 class ArticleController extends Controller
 {
@@ -66,6 +67,9 @@ class ArticleController extends Controller
         $data = $request->except('featured_image');
         $data['user_id'] = auth()->id();
         $data['slug'] = Str::slug($request->title);
+
+        // 🔒 Sanitasi konten HTML dari TinyMCE - mencegah XSS
+        $data['content'] = Purifier::clean($request->content, 'default');
         
         // Handle Image Upload with Optimization
         if ($request->hasFile('featured_image')) {
@@ -154,6 +158,9 @@ class ArticleController extends Controller
 
         $data = $request->except('featured_image');
         $data['slug'] = Str::slug($request->title);
+
+        // 🔒 Sanitasi konten HTML dari TinyMCE - mencegah XSS
+        $data['content'] = Purifier::clean($request->content, 'default');
 
         if ($request->hasFile('featured_image')) {
             // Delete old image
