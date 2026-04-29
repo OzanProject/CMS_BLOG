@@ -1,5 +1,5 @@
 @if($heroArticle)
-    <section class="mb-16 mt-2 md:mt-4">
+    <section class="mb-16 mt-0">
         <div
             class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center bg-surface-container-lowest p-8 lg:p-12 rounded-[2rem] border border-outline-variant/30 shadow-premium">
 

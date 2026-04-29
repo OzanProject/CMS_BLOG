@@ -205,7 +205,7 @@
     @stack('styles')
 </head>
 
-<body class="bg-premium-mesh text-on-surface font-body-md antialiased selection:bg-secondary-container selection:text-white pt-16">
+<body class="bg-premium-mesh text-on-surface font-body-md antialiased selection:bg-secondary-container selection:text-white pt-14">
     
     {{-- Skip to Content --}}
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-primary focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">
@@ -218,7 +218,7 @@
         
         {{-- Manual AdSense Slot --}}
         @if(!$is_sensitive_page && ($settings['adsense_active'] ?? '0') === '1' && !empty($settings['adsense_client_id']))
-        <div class="max-w-[1200px] mx-auto px-8 mt-2 mb-2 text-center overflow-hidden min-h-[90px]">
+        <div class="max-w-[1200px] mx-auto px-8 overflow-hidden">
             <ins class="adsbygoogle"
                  style="display:block"
                  data-ad-client="{{ $settings['adsense_client_id'] }}"
