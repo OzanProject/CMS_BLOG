@@ -50,7 +50,7 @@ class AppServiceProvider extends ServiceProvider
         \Illuminate\Support\Facades\View::composer([
             'layouts.frontend',           // Fallback
             'frontend.layouts.frontend',   // Tema Default
-            'themes.modern.frontend.layouts.app' // Tema Modern
+            'themes.modern.frontend.*'     // All Modern Theme Frontend Views
         ], \App\Http\View\Composers\FrontendViewComposer::class);
 
         try {

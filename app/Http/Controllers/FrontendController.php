@@ -132,14 +132,23 @@ class FrontendController extends Controller
 
         $settings = \App\Models\Configuration::pluck('value', 'key');
 
-        // Fetch Related Articles (Same Category, Exclude Current)
+        // Fetch related articles from same category
         $relatedArticles = Article::where('category_id', $article->category_id)
             ->where('id', '!=', $article->id)
             ->where('status', 'published')
             ->where('published_at', '<=', now())
-            ->orderBy('published_at', 'desc')
-            ->take(3) // Show 3 related articles
+            ->take(5)
             ->get();
+
+        // Fallback to recent articles if no related found in same category
+        if ($relatedArticles->isEmpty()) {
+            $relatedArticles = Article::where('id', '!=', $article->id)
+                ->where('status', 'published')
+                ->where('published_at', '<=', now())
+                ->orderBy('published_at', 'desc')
+                ->take(5)
+                ->get();
+        }
 
         // Fetch Trending Articles (Same as Home)
         $trendingArticles = Article::where('status', 'published')

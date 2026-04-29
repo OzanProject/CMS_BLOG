@@ -24,6 +24,12 @@ class FrontendViewComposer
             ->take(3)
             ->get();
 
+        $categories = Category::withCount('articles')
+            ->having('articles_count', '>', 0)
+            ->orderBy('name', 'asc')
+            ->get();
+
+        $view->with('categories', $categories);
         $view->with('footerTags', $tags);
         $view->with('footerPopularArticles', $popularArticles);
     }
