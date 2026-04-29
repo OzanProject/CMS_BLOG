@@ -3,12 +3,7 @@
 @section('content')
     @php $heroArticle = $bannerArticles->first(); @endphp
 
-    <div class="max-w-[1200px] mx-auto px-8 py-12">
-
-        {{-- Breadcrumbs --}}
-        <nav aria-label="Breadcrumb" class="mb-6 flex items-center text-sm font-meta text-outline">
-            <a class="hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-secondary rounded px-1" href="{{ url('/') }}">Home</a>
-        </nav>
+    <div class="max-w-[1200px] mx-auto px-8 pb-12 mt-2 md:mt-4">
 
         {{-- HERO SECTION — Featured/Banner Article --}}
         @include('themes.modern.frontend.home_partials.hero')

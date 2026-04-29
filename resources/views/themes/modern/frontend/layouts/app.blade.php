@@ -171,9 +171,9 @@
 
     <main id="main-content" class="min-h-screen">
         
-        {{-- Manual AdSense Slot: High CTR placement --}}
+        {{-- Manual AdSense Slot --}}
         @if(($settings['adsense_active'] ?? '0') === '1' && !empty($settings['adsense_client_id']))
-        <div class="max-w-[1200px] mx-auto px-8 mt-6 mb-2 text-center overflow-hidden">
+        <div class="max-w-[1200px] mx-auto px-8 mt-2 mb-2 text-center overflow-hidden">
             <ins class="adsbygoogle"
                  style="display:block"
                  data-ad-client="{{ $settings['adsense_client_id'] }}"

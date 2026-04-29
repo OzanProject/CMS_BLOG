@@ -79,25 +79,7 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     @foreach($articles->slice(1) as $article)
-                        <article class="bg-surface-container-lowest rounded-lg overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.02)] border border-outline-variant hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)] transition-all duration-300 flex flex-col group cursor-pointer"
-                                 onclick="window.location='{{ route('article.show', $article->slug) }}'">
-                            <div class="h-48 w-full overflow-hidden relative">
-                                <img alt="{{ $article->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                                     src="{{ asset('storage/' . $article->featured_image) }}" loading="lazy">
-                            </div>
-                            <div class="p-5 flex flex-col flex-grow gap-3">
-                                <h4 class="font-h3 text-[20px] leading-snug text-on-surface group-hover:text-secondary transition-colors line-clamp-2">
-                                    <a href="{{ route('article.show', $article->slug) }}">{{ $article->title }}</a>
-                                </h4>
-                                <p class="font-body-md text-[15px] text-on-surface-variant line-clamp-2 flex-grow">
-                                    {{ $article->excerpt ?? Str::limit(strip_tags($article->content), 120) }}
-                                </p>
-                                <div class="flex items-center justify-between mt-2 font-meta text-[12px] text-on-surface-variant border-t border-surface-variant pt-3">
-                                    <span class="font-semibold">{{ $article->user->name }}</span>
-                                    <span>{{ $article->published_at->format('M d, Y') }}</span>
-                                </div>
-                            </div>
-                        </article>
+                        @include('themes.modern.frontend.layouts.partials.article_card')
                     @endforeach
                 </div>
 

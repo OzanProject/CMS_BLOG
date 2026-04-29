@@ -310,12 +310,12 @@
                 <h3 class="font-h3 text-h3 text-on-surface mb-8">Related Articles</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     @foreach($relatedArticles as $rel)
-                    <article class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 hover:shadow-lg transition-all duration-300 group">
-                        <span class="font-label-caps text-secondary-container mb-3 block text-xs">{{ $rel->category->name ?? '' }}</span>
-                        <h4 class="font-h3 text-xl leading-tight text-on-surface mb-3 group-hover:text-secondary-container transition-colors">
+                    <article class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-6 shadow-premium hover:shadow-premium-hover transition-all duration-300 group">
+                        <span class="font-label-caps text-secondary mb-3 block text-[10px] uppercase tracking-widest font-bold">{{ $rel->category->name ?? '' }}</span>
+                        <h4 class="font-h3 text-[20px] leading-tight text-on-surface mb-3 group-hover:text-secondary transition-colors line-clamp-2">
                             <a href="{{ route('article.show', $rel->slug) }}">{{ $rel->title }}</a>
                         </h4>
-                        <p class="font-meta text-sm text-on-surface-variant line-clamp-2">{{ Str::limit(strip_tags($rel->content), 120) }}</p>
+                        <p class="font-body-md text-sm text-on-surface-variant line-clamp-2">{{ Str::limit(strip_tags($rel->content), 120) }}</p>
                     </article>
                     @endforeach
                 </div>
@@ -343,14 +343,17 @@
             @endif
 
             @if(isset($trendingArticles) && $trendingArticles->isNotEmpty())
-            <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant">
-                <h3 class="font-label-caps text-xs text-on-surface mb-4 border-b border-surface-container pb-2 tracking-widest uppercase">Trending Now</h3>
-                <ul class="space-y-4 font-meta text-on-surface-variant">
+            <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30 shadow-premium">
+                <h3 class="font-label-caps text-xs text-on-surface mb-4 border-b border-surface-container pb-2 tracking-widest uppercase font-bold">Trending Now</h3>
+                <ul class="space-y-5 font-meta text-on-surface-variant">
                     @foreach($trendingArticles->take(5) as $index => $trend)
                     <li>
-                        <a class="flex gap-3 group hover:text-secondary-container transition-colors" href="{{ route('article.show', $trend->slug) }}">
-                            <span class="text-2xl font-bold text-outline/30 group-hover:text-secondary/40 transition-colors leading-none pt-0.5 flex-shrink-0">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</span>
-                            <span class="text-sm leading-snug group-hover:text-on-surface transition-colors">{{ Str::limit($trend->title, 55) }}</span>
+                        <a class="flex gap-4 group hover:text-secondary transition-colors items-start" href="{{ route('article.show', $trend->slug) }}">
+                            <span class="text-3xl font-bold text-outline/20 group-hover:text-secondary/30 transition-colors leading-none pt-1 flex-shrink-0 italic font-h2">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</span>
+                            <div class="flex flex-col gap-1">
+                                <span class="text-sm leading-snug group-hover:text-on-surface transition-colors font-semibold">{{ Str::limit($trend->title, 55) }}</span>
+                                <span class="font-label-caps text-[9px] text-outline uppercase tracking-widest">{{ $trend->category->name ?? '' }}</span>
+                            </div>
                         </a>
                     </li>
                     @endforeach
@@ -358,14 +361,14 @@
             </div>
             @endif
 
-            <div class="bg-primary-container text-on-primary-container p-6 rounded-xl">
-                <h3 class="font-h3 text-lg mb-2 text-on-secondary-container">The Weekly Signal</h3>
-                <p class="font-meta text-sm mb-4">Deep technical analysis delivered every Tuesday.</p>
-                <form action="{{ route('newsletter.subscribe') }}" method="POST" class="flex flex-col gap-3">
+            <div class="bg-gradient-to-br from-slate-900 to-blue-900 text-white p-8 rounded-3xl shadow-premium border border-white/10">
+                <h3 class="font-h3 text-xl mb-2 text-white">The Weekly Signal</h3>
+                <p class="font-meta text-sm mb-6 text-blue-100 opacity-80 leading-relaxed">Deep technical analysis delivered every Tuesday.</p>
+                <form action="{{ route('newsletter.subscribe') }}" method="POST" class="flex flex-col gap-4">
                     @csrf
                     <input name="email" type="email" required placeholder="Email address"
-                           class="w-full bg-surface-container-lowest border-none rounded px-4 py-2 font-meta text-sm focus:ring-2 focus:ring-secondary-container outline-none text-on-surface">
-                    <button type="submit" class="w-full bg-secondary text-on-secondary font-meta text-sm font-semibold py-2 rounded hover:bg-secondary-container transition-colors">Subscribe</button>
+                           class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 font-meta text-sm focus:ring-2 focus:ring-blue-400 outline-none text-white placeholder-blue-200/50 transition-all">
+                    <button type="submit" class="w-full bg-blue-500 text-white font-label-caps text-xs font-bold py-3.5 rounded-xl hover:bg-blue-400 hover:shadow-lg transition-all uppercase tracking-widest">Subscribe</button>
                 </form>
             </div>
 
