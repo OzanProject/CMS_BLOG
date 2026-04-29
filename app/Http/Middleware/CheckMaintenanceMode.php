@@ -23,11 +23,15 @@ class CheckMaintenanceMode
         if ($isMaintenance && $isMaintenance == '1') {
             
             // 2. Exclude Admin routes and Login/Logout/Register routes
-            if ($request->is('admin/*') || 
+            if ($request->is('admin') || 
+                $request->is('admin/*') || 
                 $request->is('login') || 
                 $request->is('register') || 
                 $request->is('logout') ||
-                $request->is('lang/*')) {
+                $request->is('forgot-password') ||
+                $request->is('reset-password/*') ||
+                $request->is('lang/*') ||
+                $request->is('livewire/*')) {
                 return $next($request);
             }
 

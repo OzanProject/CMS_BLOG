@@ -150,6 +150,13 @@ class FrontendController extends Controller
                 ->get();
         }
 
+        // Fetch Trending Articles (Same as Home)
+        $trendingArticles = Article::where('status', 'published')
+            ->where('published_at', '<=', now())
+            ->orderBy('views', 'desc')
+            ->take(5)
+            ->get();
+
         // Fetch Categories with counts for sidebar
         $categories = Category::withCount('articles')->get();
 
