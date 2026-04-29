@@ -88,9 +88,12 @@
         </script>
     @endif
 
-    @if(!$is_sensitive_page && ($settings['adsense_active'] ?? '0') === '1' && ($settings['adsense_auto_ads'] ?? '0') === '1' && !empty($settings['adsense_client_id']))
+    {{-- MATIKAN SEMENTARA SAMPAI DOMAIN DI-APPROVE AGAR TIDAK MERUSAK LAYOUT --}}
+    {{-- 
+    @if(!$is_sensitive_page && ($settings['adsense_active'] ?? '0') === '1' && !empty($settings['adsense_client_id']))
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ $settings['adsense_client_id'] }}" crossorigin="anonymous"></script>
     @endif
+    --}}
 
     {{-- TailwindCSS CDN with Enhanced Config --}}
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -205,7 +208,7 @@
     @stack('styles')
 </head>
 
-<body class="bg-premium-mesh text-on-surface font-body-md antialiased selection:bg-secondary-container selection:text-white pt-14">
+<body class="bg-premium-mesh text-on-surface font-body-md antialiased selection:bg-secondary-container selection:text-white">
     
     {{-- Skip to Content --}}
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-primary focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">
@@ -215,20 +218,6 @@
     @include('themes.modern.frontend.layouts.partials.header')
 
     <main id="main-content" class="min-h-screen">
-        
-        {{-- Manual AdSense Slot --}}
-        @if(!$is_sensitive_page && ($settings['adsense_active'] ?? '0') === '1' && !empty($settings['adsense_client_id']))
-        <div class="max-w-[1200px] mx-auto px-8 overflow-hidden">
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="{{ $settings['adsense_client_id'] }}"
-                 data-ad-slot="auto"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        </div>
-        @endif
-
         @yield('content')
     </main>
 

@@ -49,6 +49,7 @@ class ContentInjector
             }
         }
 
+        /*
         // 2. Inject Ads dynamically
         if ($isActive && !empty($adScript) && $frequency > 0) {
             $adCount = 0;
@@ -65,6 +66,7 @@ class ContentInjector
                 }
             }
         }
+        */
 
         return implode('</p>', $paragraphs);
     }
