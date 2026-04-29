@@ -3,7 +3,7 @@
 @section('title', 'Search: ' . $query . ' — ' . ($settings['site_name'] ?? 'TechJournal'))
 
 @section('content')
-<div class="max-w-[1200px] mx-auto px-8 py-12">
+<div class="max-w-[1200px] mx-auto px-8 py-6">
 
     {{-- Breadcrumbs --}}
     <nav aria-label="Breadcrumb" class="mb-6 flex items-center text-sm font-meta text-outline">

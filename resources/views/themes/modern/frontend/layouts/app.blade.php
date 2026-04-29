@@ -5,12 +5,20 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="robots" content="index, follow">
-    
     <title>@yield('title', $settings['site_name'] ?? 'TechJournal')</title>
     <meta name="description" content="@yield('meta_description', $settings['site_description'] ?? '')">
     <meta name="keywords" content="@yield('meta_keywords', $settings['site_keywords'] ?? '')">
-    <link rel="canonical" href="{{ url()->current() }}">
+    
+    @php
+        $is_sensitive_page = request()->routeIs('login', 'register', 'password.*', 'verification.*', 'admin.*', 'dashboard');
+    @endphp
+
+    @if($is_sensitive_page)
+        <meta name="robots" content="noindex, nofollow">
+    @else
+        <meta name="robots" content="index, follow">
+        <link rel="canonical" href="{{ url()->current() }}">
+    @endif
 
     {{-- SEO & Social Media --}}
     <meta property="og:site_name" content="{{ $settings['site_name'] ?? 'TechJournal' }}">
@@ -80,7 +88,7 @@
         </script>
     @endif
 
-    @if(($settings['adsense_active'] ?? '0') === '1' && ($settings['adsense_auto_ads'] ?? '0') === '1' && !empty($settings['adsense_client_id']))
+    @if(!$is_sensitive_page && ($settings['adsense_active'] ?? '0') === '1' && ($settings['adsense_auto_ads'] ?? '0') === '1' && !empty($settings['adsense_client_id']))
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ $settings['adsense_client_id'] }}" crossorigin="anonymous"></script>
     @endif
 
@@ -209,7 +217,7 @@
     <main id="main-content" class="min-h-screen">
         
         {{-- Manual AdSense Slot --}}
-        @if(($settings['adsense_active'] ?? '0') === '1' && !empty($settings['adsense_client_id']))
+        @if(!$is_sensitive_page && ($settings['adsense_active'] ?? '0') === '1' && !empty($settings['adsense_client_id']))
         <div class="max-w-[1200px] mx-auto px-8 mt-2 mb-2 text-center overflow-hidden min-h-[90px]">
             <ins class="adsbygoogle"
                  style="display:block"
