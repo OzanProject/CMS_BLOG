@@ -75,7 +75,7 @@
                 </div>
 
                 <div class="mt-12 flex justify-center">
-                    {{ $articles->appends(['q' => $query])->links() }}
+                                        {{ $articles->appends(['q' => $query])->links('themes.modern.frontend.layouts.partials.pagination') }}
                 </div>
             </div>
 

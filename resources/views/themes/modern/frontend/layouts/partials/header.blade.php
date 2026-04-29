@@ -2,11 +2,7 @@
 <nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 shadow-[0_4px_16px_rgba(15,23,42,0.04)] font-label-caps text-sm font-medium tracking-tight text-slate-900 dark:text-slate-100">
     <div class="max-w-[1200px] mx-auto px-8 h-16 flex items-center justify-between">
         <a aria-label="{{ $settings['site_name'] ?? 'TechJournal' }} Home" class="text-xl font-extrabold tracking-tighter text-slate-900 dark:text-slate-50 uppercase cursor-pointer active:scale-95 transition-all duration-200 hover:opacity-80" href="{{ url('/') }}">
-            @if(!empty($settings['site_logo']))
-                <img src="{{ asset('storage/' . $settings['site_logo']) }}" alt="{{ $settings['site_name'] ?? '' }}" class="h-8 w-auto">
-            @else
-                {{ $settings['site_name'] ?? 'TechJournal' }}
-            @endif
+            {{ $settings['site_name'] ?? 'TechJournal' }}
         </a>
 
         {{-- Dynamic Category Navigation --}}

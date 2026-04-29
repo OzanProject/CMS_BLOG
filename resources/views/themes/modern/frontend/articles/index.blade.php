@@ -59,7 +59,7 @@
 
             {{-- Pagination --}}
             <div class="mt-12 flex justify-center">
-                {{ $articles->links() }}
+                                {{ $articles->links('themes.modern.frontend.layouts.partials.pagination') }}
             </div>
         </div>
 

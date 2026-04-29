@@ -73,21 +73,21 @@ class ContentInjector
     {
         $url   = route('article.show', $article->slug);
         $title = e($article->title);
-        $label = __('frontend.read_also') ?: 'Read Also';
+        $label = __('frontend.read_also') ?: 'READ ALSO';
 
         return '
-        <div class="read-also-box" style="margin: 25px 0; padding: 15px 20px; border-left: 4px solid #f59e0b; background: rgba(128,128,128,0.08); border-radius: 0 10px 10px 0;">
-            <span style="display: block; font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; color: #f59e0b; margin-bottom: 6px;">' . $label . '</span>
-            <a href="' . $url . '" style="font-weight: 700; font-size: 16px; text-decoration: none; display: block; line-height: 1.4;">' . $title . '</a>
+        <div class="read-also-box" style="margin: 32px 0; padding: 20px; border-left: 4px solid #2170e4; background: #f8fafc; border-radius: 0 12px 12px 0; border: 1px solid #e2e8f0; border-left-width: 4px;">
+            <span style="display: block; font-family: \'Manrope\', sans-serif; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #2170e4; margin-bottom: 8px;">' . $label . '</span>
+            <a href="' . $url . '" style="font-family: \'Manrope\', sans-serif; font-weight: 700; font-size: 17px; text-decoration: none; color: #1e293b; display: block; line-height: 1.4;">' . $title . '</a>
         </div>';
     }
 
     private static function getAdHtml($script)
     {
         return '
-        <div class="in-article-ad my-8 text-center">
-            <span class="block text-[9px] font-black uppercase tracking-[0.3em] text-slate-600 mb-3">Advertisement</span>
-            <div class="overflow-hidden rounded-xl">
+        <div class="in-article-ad" style="margin: 40px 0; text-align: center;">
+            <span style="display: block; font-family: \'Manrope\', sans-serif; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.2em; color: #94a3b8; margin-bottom: 12px;">Advertisement</span>
+            <div style="overflow: hidden; border-radius: 12px;">
                 ' . $script . '
             </div>
         </div>';
