@@ -48,7 +48,7 @@
         </div>
         <form action="{{ route('search') }}" method="GET">
             <div class="flex gap-2">
-                <input id="searchOverlayInput" name="q" type="text" placeholder="{{ __('frontend.search_placeholder') ?? 'Search articles...' }}" value="{{ request('q') }}"
+                <input id="searchOverlayInput" name="q" type="text" placeholder="{{ 'Search articles...' }}" value="{{ request('q') }}"
                     class="flex-1 bg-surface dark:bg-slate-800 text-on-surface dark:text-white px-4 py-3 rounded border border-surface-variant dark:border-slate-700 focus:border-secondary focus:ring-1 focus:ring-secondary outline-none font-meta placeholder-outline">
                 <button type="submit" class="bg-primary text-on-primary px-6 py-3 rounded font-label-caps text-label-caps hover:opacity-90 transition-opacity">
                     <span class="material-symbols-outlined text-[20px]">search</span>

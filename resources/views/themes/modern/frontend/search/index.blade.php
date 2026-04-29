@@ -9,25 +9,25 @@
     <nav aria-label="Breadcrumb" class="mb-6 flex items-center text-sm font-meta text-outline">
         <a class="hover:text-primary transition-colors" href="{{ url('/') }}">Home</a>
         <span aria-hidden="true" class="mx-2 material-symbols-outlined text-[16px]">chevron_right</span>
-        <span aria-current="page" class="text-on-surface font-medium">{{ __('frontend.search') ?? 'Search' }}</span>
+        <span aria-current="page" class="text-on-surface font-medium">{{ 'Search' }}</span>
     </nav>
 
     {{-- Search Header --}}
     <div class="mb-12">
         <h1 class="font-h1 text-h1 text-on-surface mb-4">
-            {{ __('frontend.search_results') ?? 'Search Results for:' }}
+            {{ 'Search Results for:' }}
             <span class="text-secondary">"{{ $query }}"</span>
         </h1>
         <p class="font-body-lg text-body-lg text-on-surface-variant">
-            {{ __('frontend.showing') ?? 'Showing' }}
+            {{ 'Showing' }}
             <span class="font-semibold text-on-surface">{{ $articles->total() }}</span>
-            {{ __('frontend.articles_found') ?? 'articles matching your query.' }}
+            {{ 'articles matching your query.' }}
         </p>
 
         {{-- Search Form --}}
         <div class="mt-8 max-w-xl">
             <form action="{{ route('search') }}" method="GET" class="flex gap-2">
-                <input name="q" value="{{ $query }}" placeholder="{{ __('frontend.search_placeholder') ?? 'Search articles...' }}"
+                <input name="q" value="{{ $query }}" placeholder="{{ 'Search articles...' }}"
                     class="flex-1 bg-surface-container-lowest px-5 py-3.5 rounded-lg border border-surface-variant focus:border-secondary focus:ring-1 focus:ring-secondary outline-none font-meta text-on-surface placeholder-outline transition-all">
                 <button type="submit" class="bg-secondary text-on-secondary px-6 py-3.5 rounded-lg font-label-caps text-label-caps uppercase hover:opacity-90 transition-opacity flex items-center gap-2">
                     <span class="material-symbols-outlined text-[18px]">search</span>
@@ -40,10 +40,10 @@
     @if($articles->isEmpty())
         <div class="text-center py-24 bg-surface-container-lowest rounded-xl border border-surface-variant">
             <span class="material-symbols-outlined text-[64px] text-outline mb-4">search_off</span>
-            <h3 class="font-h3 text-h3 text-on-surface mb-2">{{ __('frontend.no_results') ?? 'No Results Found' }}</h3>
-            <p class="text-on-surface-variant font-meta mb-8 max-w-md mx-auto">{{ __('frontend.no_results_desc') ?? 'Sorry, we couldn\'t find any articles matching your search. Please try with different keywords.' }}</p>
+            <h3 class="font-h3 text-h3 text-on-surface mb-2">{{ 'No Results Found' }}</h3>
+            <p class="text-on-surface-variant font-meta mb-8 max-w-md mx-auto">{{ 'Sorry, we couldn\'t find any articles matching your search. Please try with different keywords.' }}</p>
             <a href="{{ url('/') }}" class="bg-secondary text-on-secondary px-6 py-3 rounded font-label-caps text-label-caps uppercase hover:opacity-90 transition-opacity">
-                {{ __('frontend.back_home') ?? 'Back to Home' }}
+                {{ 'Back to Home' }}
             </a>
         </div>
     @else
@@ -86,7 +86,7 @@
                 <div class="bg-surface-container-lowest rounded-xl p-6 border border-surface-variant sticky top-24">
                     <h4 class="font-h3 text-[18px] text-on-surface mb-6 flex items-center gap-2">
                         <span class="material-symbols-outlined text-secondary">trending_up</span>
-                        {{ __('frontend.popular_news') ?? 'Trending' }}
+                        {{ 'Trending' }}
                     </h4>
                     <div class="space-y-5">
                         @foreach($trendingArticles->take(5) as $index => $trend)

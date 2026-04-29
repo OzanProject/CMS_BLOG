@@ -1,6 +1,6 @@
 @extends('themes.modern.frontend.layouts.app')
 
-@section('title', __('frontend.articles') ?? 'All Articles' . ' — ' . ($settings['site_name'] ?? 'TechJournal'))
+@section('title', 'All Articles' . ' — ' . ($settings['site_name'] ?? 'TechJournal'))
 
 @section('content')
 <div class="max-w-[1200px] mx-auto px-8 py-12">
@@ -9,13 +9,13 @@
     <nav aria-label="Breadcrumb" class="mb-6 flex items-center text-sm font-meta text-outline">
         <a class="hover:text-primary transition-colors" href="{{ url('/') }}">Home</a>
         <span aria-hidden="true" class="mx-2 material-symbols-outlined text-[16px]">chevron_right</span>
-        <span aria-current="page" class="text-on-surface font-medium">{{ __('frontend.articles') ?? 'All Articles' }}</span>
+        <span aria-current="page" class="text-on-surface font-medium">{{ 'All Articles' }}</span>
     </nav>
 
     {{-- Page Header --}}
     <div class="mb-12 border-l-4 border-secondary-container pl-4">
-        <h1 class="font-h1 text-h1 text-on-surface mb-2">{{ __('frontend.articles') ?? 'Editorial Archives' }}</h1>
-        <p class="font-body-lg text-body-lg text-on-surface-variant">{{ __('frontend.explore_articles') ?? 'Exploring the intersection of technology, culture, and business.' }}</p>
+        <h1 class="font-h1 text-h1 text-on-surface mb-2">{{ 'Editorial Archives' }}</h1>
+        <p class="font-body-lg text-body-lg text-on-surface-variant">{{ 'Exploring the intersection of technology, culture, and business.' }}</p>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -51,7 +51,7 @@
                 @empty
                     <div class="md:col-span-2 text-center py-20">
                         <span class="material-symbols-outlined text-[64px] text-outline mb-4">search_off</span>
-                        <h3 class="font-h3 text-h3 text-on-surface mb-2">{{ __('frontend.no_articles') ?? 'No articles found' }}</h3>
+                        <h3 class="font-h3 text-h3 text-on-surface mb-2">{{ 'No articles found' }}</h3>
                         <p class="text-on-surface-variant font-meta">Check back later for new content.</p>
                     </div>
                 @endforelse
@@ -70,7 +70,7 @@
             <div class="bg-surface-container-lowest rounded-xl p-6 border border-surface-variant">
                 <h4 class="font-h3 text-[18px] text-on-surface mb-6 flex items-center gap-2">
                     <span class="material-symbols-outlined text-secondary">schedule</span>
-                    {{ __('frontend.recent_news') ?? 'Recent Articles' }}
+                    {{ 'Recent Articles' }}
                 </h4>
                 <div class="space-y-5">
                     @foreach($recentArticles->take(5) as $index => $recent)
@@ -94,7 +94,7 @@
             <div class="bg-surface-container-lowest rounded-xl p-6 border border-surface-variant">
                 <h4 class="font-h3 text-[18px] text-on-surface mb-5 flex items-center gap-2">
                     <span class="material-symbols-outlined text-secondary">category</span>
-                    {{ __('frontend.categories') ?? 'Categories' }}
+                    {{ 'Categories' }}
                 </h4>
                 <div class="flex flex-wrap gap-2">
                     @foreach(\App\Models\Category::all() as $cat)
@@ -111,10 +111,10 @@
                     <span class="material-symbols-outlined">mail</span>
                     Newsletter
                 </h4>
-                <p class="text-[13px] text-on-primary-fixed-variant mb-4 opacity-90">{{ __('frontend.newsletter_desc') ?? 'Stay updated with our latest articles.' }}</p>
+                <p class="text-[13px] text-on-primary-fixed-variant mb-4 opacity-90">{{ 'Stay updated with our latest articles.' }}</p>
                 <form action="{{ route('newsletter.subscribe') }}" method="POST" class="space-y-3">
                     @csrf
-                    <input name="email" type="email" placeholder="{{ __('frontend.email') ?? 'your@email.com' }}" required
+                    <input name="email" type="email" placeholder="{{ 'your@email.com' }}" required
                            class="w-full bg-surface text-on-surface px-4 py-3 rounded border border-transparent focus:border-secondary focus:ring-1 focus:ring-secondary outline-none font-meta text-sm placeholder-outline">
                     <button type="submit" class="w-full bg-secondary text-on-secondary font-label-caps text-label-caps uppercase py-3 rounded hover:opacity-90 transition-opacity">
                         Subscribe

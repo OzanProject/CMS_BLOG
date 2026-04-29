@@ -147,9 +147,9 @@
                      src="https://ui-avatars.com/api/?name={{ urlencode($article->user->name ?? 'Admin') }}&color=0058be&background=d8e2ff&bold=true&size=160">
                 <div>
                     <h3 class="font-h3 text-h3 text-on-surface mb-2">{{ $article->user->name ?? 'Admin' }}</h3>
-                    <p class="font-body-md text-on-surface-variant mb-4">{{ $article->user->bio ?? __('frontend.author_bio_default') ?? 'Author at ' . ($settings['site_name'] ?? 'TechJournal') . '.' }}</p>
+                    <p class="font-body-md text-on-surface-variant mb-4">{{ $article->user->bio ?? 'Author at ' . ($settings['site_name'] ?? 'TechJournal') . '.' }}</p>
                     <div class="flex gap-4">
-                        <a class="text-secondary hover:text-secondary-container font-meta text-[14px]" href="{{ route('author.show', Str::slug($article->user->name ?? 'admin')) }}">{{ __('frontend.more_articles') ?? 'More Articles' }}</a>
+                        <a class="text-secondary hover:text-secondary-container font-meta text-[14px]" href="{{ route('author.show', Str::slug($article->user->name ?? 'admin')) }}">{{ 'More Articles' }}</a>
                     </div>
                 </div>
             </div>
@@ -188,7 +188,7 @@
             <section class="mt-16 pt-12 border-t border-surface-container">
                 <h3 class="font-h3 text-h3 text-on-surface mb-8 flex items-center gap-2">
                     <span class="material-symbols-outlined text-secondary">forum</span>
-                    {{ __('frontend.comments') ?? 'Comments' }} ({{ $article->comments->count() }})
+                    {{ 'Comments' }} ({{ $article->comments->count() }})
                 </h3>
 
                 @forelse($article->comments as $comment)
@@ -215,12 +215,12 @@
                         @endif
                     </div>
                 @empty
-                    <p class="text-outline font-meta italic mb-8">{{ __('frontend.no_comments') ?? 'No comments yet. Be the first to share your thoughts!' }}</p>
+                    <p class="text-outline font-meta italic mb-8">{{ 'No comments yet. Be the first to share your thoughts!' }}</p>
                 @endforelse
 
                 {{-- Comment Form --}}
                 <div class="mt-8 p-6 rounded-xl bg-surface-container-lowest border border-outline-variant">
-                    <h4 class="font-h3 text-[18px] text-on-surface mb-5">{{ __('frontend.leave_comment') ?? 'Leave a Comment' }}</h4>
+                    <h4 class="font-h3 text-[18px] text-on-surface mb-5">{{ 'Leave a Comment' }}</h4>
                     @if(session('success'))
                         <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-4 font-meta text-sm">{{ session('success') }}</div>
                     @endif
@@ -229,16 +229,16 @@
                         <input type="text" name="website_catch" class="hidden" tabindex="-1" autocomplete="off">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block font-label-caps text-[11px] text-on-surface-variant mb-1.5 uppercase tracking-wider">{{ __('frontend.name') ?? 'Name' }} *</label>
+                                <label class="block font-label-caps text-[11px] text-on-surface-variant mb-1.5 uppercase tracking-wider">{{ 'Name' }} *</label>
                                 <input name="name" type="text" required value="{{ old('name') }}" class="w-full bg-surface-container-lowest border border-outline-variant rounded px-4 py-2.5 font-meta focus:ring-2 focus:ring-secondary-container outline-none text-on-surface">
                             </div>
                             <div>
-                                <label class="block font-label-caps text-[11px] text-on-surface-variant mb-1.5 uppercase tracking-wider">{{ __('frontend.email') ?? 'Email' }} *</label>
+                                <label class="block font-label-caps text-[11px] text-on-surface-variant mb-1.5 uppercase tracking-wider">{{ 'Email' }} *</label>
                                 <input name="email" type="email" required value="{{ old('email') }}" class="w-full bg-surface-container-lowest border border-outline-variant rounded px-4 py-2.5 font-meta focus:ring-2 focus:ring-secondary-container outline-none text-on-surface">
                             </div>
                         </div>
                         <div>
-                            <label class="block font-label-caps text-[11px] text-on-surface-variant mb-1.5 uppercase tracking-wider">{{ __('frontend.comment') ?? 'Comment' }} *</label>
+                            <label class="block font-label-caps text-[11px] text-on-surface-variant mb-1.5 uppercase tracking-wider">{{ 'Comment' }} *</label>
                             <textarea name="body" rows="4" required class="w-full bg-surface-container-lowest border border-outline-variant rounded px-4 py-2.5 font-meta focus:ring-2 focus:ring-secondary-container outline-none text-on-surface resize-none">{{ old('body') }}</textarea>
                         </div>
                         @if(config('services.recaptcha.site_key'))
@@ -246,7 +246,7 @@
                             <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}"></script>
                             <script>grecaptcha.ready(function(){grecaptcha.execute('{{ config('services.recaptcha.site_key') }}',{action:'comment'}).then(function(t){document.getElementById('recaptchaResponse').value=t})});</script>
                         @endif
-                        <button type="submit" class="bg-primary text-on-primary font-meta font-semibold px-6 py-2.5 rounded hover:bg-surface-tint transition-colors shadow-sm">{{ __('frontend.submit_comment') ?? 'Post Comment' }}</button>
+                        <button type="submit" class="bg-primary text-on-primary font-meta font-semibold px-6 py-2.5 rounded hover:bg-surface-tint transition-colors shadow-sm">{{ 'Post Comment' }}</button>
                         @if($errors->any())
                             <div class="mt-2 text-error text-sm font-meta">
                                 @foreach($errors->all() as $error)<p>{{ $error }}</p>@endforeach
@@ -259,7 +259,7 @@
             {{-- Related Articles --}}
             @if(isset($relatedArticles) && $relatedArticles->isNotEmpty())
             <section class="mt-16 pt-12 border-t border-surface-container">
-                <h3 class="font-h3 text-h3 text-on-surface mb-8">{{ __('frontend.related_articles') ?? 'Related Analysis' }}</h3>
+                <h3 class="font-h3 text-h3 text-on-surface mb-8">{{ 'Related Analysis' }}</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     @foreach($relatedArticles as $rel)
                     <article class="bg-surface-container-lowest border border-outline-variant rounded-xl p-5 hover:shadow-[0_4px_16px_rgba(15,23,42,0.08)] transition-all duration-300 group cursor-pointer flex flex-col justify-between h-full" onclick="window.location.href='{{ route('article.show', $rel->slug) }}'">
@@ -303,7 +303,7 @@
             {{-- Trending / Essential Brief --}}
             @if(isset($trendingArticles) && $trendingArticles->isNotEmpty())
             <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant">
-                <h3 class="font-label-caps text-on-surface mb-4 border-b border-surface-container pb-2">{{ __('frontend.popular_news') ?? 'TRENDING NOW' }}</h3>
+                <h3 class="font-label-caps text-on-surface mb-4 border-b border-surface-container pb-2">{{ 'TRENDING NOW' }}</h3>
                 <ul class="space-y-4 font-meta text-on-surface-variant">
                     @foreach($trendingArticles->take(5) as $index => $trend)
                     <li>
@@ -319,12 +319,12 @@
 
             {{-- Newsletter Snippet --}}
             <div class="bg-primary-container text-on-primary-container p-6 rounded-xl">
-                <h3 class="font-h3 text-h3 mb-2 text-on-secondary-container">{{ __('frontend.newsletter') ?? 'The Weekly Signal' }}</h3>
-                <p class="font-meta mb-4">{{ __('frontend.newsletter_desc') ?? 'Deep technical analysis delivered every Tuesday.' }}</p>
+                <h3 class="font-h3 text-h3 mb-2 text-on-secondary-container">{{ 'The Weekly Signal' }}</h3>
+                <p class="font-meta mb-4">{{ 'Deep technical analysis delivered every Tuesday.' }}</p>
                 <form action="{{ route('newsletter.subscribe') }}" method="POST" class="flex flex-col gap-3">
                     @csrf
-                    <input name="email" class="w-full bg-surface-container-lowest border-none rounded px-4 py-2 font-meta focus:ring-2 focus:ring-secondary-container outline-none text-on-surface" placeholder="{{ __('frontend.email') ?? 'Email address' }}" required type="email">
-                    <button class="w-full bg-secondary text-on-secondary font-meta font-semibold py-2 rounded hover:bg-secondary-container transition-colors" type="submit">{{ __('frontend.subscribe') ?? 'Subscribe' }}</button>
+                    <input name="email" class="w-full bg-surface-container-lowest border-none rounded px-4 py-2 font-meta focus:ring-2 focus:ring-secondary-container outline-none text-on-surface" placeholder="{{ 'Email address' }}" required type="email">
+                    <button class="w-full bg-secondary text-on-secondary font-meta font-semibold py-2 rounded hover:bg-secondary-container transition-colors" type="submit">{{ 'Subscribe' }}</button>
                 </form>
             </div>
 

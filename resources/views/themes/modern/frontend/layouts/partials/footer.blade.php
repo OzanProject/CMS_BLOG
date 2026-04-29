@@ -43,7 +43,7 @@
                        href="{{ route('page.show', $pageLink->slug) }}">{{ $pageLink->title }}</a>
                 @endforeach
                 <a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 underline decoration-slate-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-secondary rounded px-1 -mx-1"
-                   href="{{ route('contact.index') }}">{{ __('frontend.contacts') ?? 'Contact' }}</a>
+                   href="{{ route('contact.index') }}">{{ 'Contact' }}</a>
             </div>
             <div class="flex flex-col space-y-3">
                 <span class="text-slate-900 dark:text-slate-50 font-semibold mb-2">Categories</span>

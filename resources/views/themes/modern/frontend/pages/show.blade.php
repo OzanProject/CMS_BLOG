@@ -29,7 +29,7 @@
             <div class="bg-surface-container-lowest rounded-xl p-6 border border-surface-variant sticky top-24">
                 <h4 class="font-h3 text-[18px] text-on-surface mb-6 flex items-center gap-2">
                     <span class="material-symbols-outlined text-secondary">schedule</span>
-                    {{ __('frontend.recent_news') ?? 'Recent Articles' }}
+                    {{ 'Recent Articles' }}
                 </h4>
                 <div class="space-y-5">
                     @foreach($recentArticles->take(5) as $index => $recent)

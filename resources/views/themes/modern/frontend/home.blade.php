@@ -17,7 +17,7 @@
         <section class="mb-section-gap grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div class="lg:col-span-8 order-2 lg:order-1">
                 <div class="inline-block px-3 py-1 mb-4 rounded bg-surface-container-high text-on-surface-variant font-label-caps text-label-caps uppercase">
-                    {{ $heroArticle->is_featured ? __('frontend.featured') ?? 'Featured Analysis' : ($heroArticle->category->name ?? 'Latest') }}
+                    {{ $heroArticle->is_featured ? 'Featured Analysis' : ($heroArticle->category->name ?? 'Latest') }}
                 </div>
                 <h1 class="font-h1 text-h1 text-on-surface mb-6 leading-tight">
                     <a href="{{ route('article.show', $heroArticle->slug) }}" class="hover:text-secondary transition-colors">
@@ -61,7 +61,7 @@
         <section class="mb-section-gap border-t border-b border-surface-variant py-6">
             <div class="flex items-center gap-4 mb-4">
                 <span aria-hidden="true" class="material-symbols-outlined text-primary">trending_up</span>
-                <h3 class="font-h3 text-h3 text-on-surface">{{ __('frontend.trending') ?? 'Trending Now' }}</h3>
+                <h3 class="font-h3 text-h3 text-on-surface">{{ 'Trending Now' }}</h3>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 @foreach($trendingArticles->take(3) as $index => $trending)
@@ -81,7 +81,7 @@
             {{-- Main Content Grid --}}
             <div class="lg:col-span-8">
                 <div class="flex items-center justify-between mb-8 pb-2 border-b border-surface-variant">
-                    <h2 class="font-h2 text-h2 text-on-surface border-l-4 border-secondary-container pl-3">{{ __('frontend.latest_news') ?? 'Latest Editorials' }}</h2>
+                    <h2 class="font-h2 text-h2 text-on-surface border-l-4 border-secondary-container pl-3">{{ 'Latest Editorials' }}</h2>
                     <a class="font-label-caps text-label-caps uppercase text-secondary hover:underline focus:outline-none focus:ring-2 focus:ring-secondary rounded px-1" href="{{ route('article.index') }}">View All</a>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -149,10 +149,10 @@
                 <div class="bg-primary-container text-on-primary-container rounded-xl p-8">
                     <div class="flex items-center gap-3 mb-4 text-on-primary">
                         <span aria-hidden="true" class="material-symbols-outlined text-[32px]">mark_email_unread</span>
-                        <h3 class="font-h3 text-h3 leading-none">{{ __('frontend.newsletter') ?? 'The Briefing' }}</h3>
+                        <h3 class="font-h3 text-h3 leading-none">{{ 'The Briefing' }}</h3>
                     </div>
                     <p class="font-body-md text-body-md mb-6 opacity-90 text-on-primary-fixed-variant">
-                        {{ __('frontend.newsletter_desc') ?? 'Expert analysis delivered to your inbox every Tuesday.' }}
+                        {{ 'Expert analysis delivered to your inbox every Tuesday.' }}
                     </p>
                     @if(session('success'))
                         <div class="bg-green-100 border border-green-300 text-green-700 px-4 py-2 rounded mb-4 text-sm">
@@ -162,8 +162,8 @@
                     <form action="{{ route('newsletter.subscribe') }}" method="POST" class="space-y-4">
                         @csrf
                         <label class="sr-only" for="newsletter-email">Your email address</label>
-                        <input class="w-full bg-surface text-on-surface px-4 py-3 rounded border border-transparent focus:border-secondary focus:ring-1 focus:ring-secondary outline-none font-meta placeholder-outline" id="newsletter-email" name="email" placeholder="{{ __('frontend.email') ?? 'Your email address' }}" required type="email">
-                        <button class="w-full bg-secondary text-on-secondary font-label-caps text-label-caps uppercase py-3 rounded hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary" type="submit">{{ __('frontend.subscribe') ?? 'Subscribe Now' }}</button>
+                        <input class="w-full bg-surface text-on-surface px-4 py-3 rounded border border-transparent focus:border-secondary focus:ring-1 focus:ring-secondary outline-none font-meta placeholder-outline" id="newsletter-email" name="email" placeholder="{{ 'Your email address' }}" required type="email">
+                        <button class="w-full bg-secondary text-on-secondary font-label-caps text-label-caps uppercase py-3 rounded hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary" type="submit">{{ 'Subscribe Now' }}</button>
                     </form>
                 </div>
 
@@ -172,7 +172,7 @@
                 <div class="bg-surface-container-lowest rounded-xl p-6 border border-surface-variant">
                     <h4 class="font-h3 text-[18px] text-on-surface mb-6 flex items-center gap-2">
                         <span class="material-symbols-outlined text-secondary">local_fire_department</span>
-                        {{ __('frontend.popular_news') ?? 'Most Read' }}
+                        {{ 'Most Read' }}
                     </h4>
                     <div class="space-y-5">
                         @foreach($trendingArticles->skip(3)->take(4) as $index => $trend)
@@ -200,7 +200,7 @@
         @if(isset($gridArticles) && $gridArticles->isNotEmpty())
         <section class="mb-section-gap">
             <div class="flex items-center justify-between mb-8 pb-2 border-b border-surface-variant">
-                <h2 class="font-h2 text-h2 text-on-surface border-l-4 border-secondary-container pl-3">{{ __('frontend.explore') ?? 'Explore More' }}</h2>
+                <h2 class="font-h2 text-h2 text-on-surface border-l-4 border-secondary-container pl-3">{{ 'Explore More' }}</h2>
                 <a class="font-label-caps text-label-caps uppercase text-secondary hover:underline" href="{{ route('category.index') }}">All Categories</a>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -232,7 +232,7 @@
         <section class="mb-section-gap">
             <div class="flex items-center gap-4 mb-8">
                 <span class="material-symbols-outlined text-secondary">category</span>
-                <h3 class="font-h3 text-h3 text-on-surface">{{ __('frontend.categories') ?? 'Explore Categories' }}</h3>
+                <h3 class="font-h3 text-h3 text-on-surface">{{ 'Explore Categories' }}</h3>
             </div>
             <div class="flex flex-wrap gap-3">
                 @foreach($categories as $cat)

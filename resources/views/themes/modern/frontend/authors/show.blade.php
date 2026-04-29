@@ -20,7 +20,7 @@
         <div>
             <h1 class="font-h2 text-h2 text-on-surface mb-1">{{ $user->name }}</h1>
             <p class="font-meta text-meta text-outline">
-                {{ $articles->total() }} {{ __('frontend.articles_published') ?? 'articles published' }}
+                {{ $articles->total() }} {{ 'articles published' }}
             </p>
             @if($user->bio ?? false)
                 <p class="font-body-md text-body-md text-on-surface-variant mt-3 max-w-content-max">{{ $user->bio }}</p>
@@ -80,7 +80,7 @@
             <div class="bg-surface-container-lowest rounded-xl p-6 border border-surface-variant sticky top-24">
                 <h4 class="font-h3 text-[18px] text-on-surface mb-6 flex items-center gap-2">
                     <span class="material-symbols-outlined text-secondary">schedule</span>
-                    {{ __('frontend.recent_news') ?? 'Recent Articles' }}
+                    {{ 'Recent Articles' }}
                 </h4>
                 <div class="space-y-5">
                     @foreach($recentArticles->take(5) as $index => $recent)

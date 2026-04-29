@@ -1,6 +1,6 @@
 @extends('themes.modern.frontend.layouts.app')
 
-@section('title', ($title ?? __('frontend.contacts') ?? 'Contact') . ' — ' . ($settings['site_name'] ?? 'TechJournal'))
+@section('title', ($title ?? 'Contact') . ' — ' . ($settings['site_name'] ?? 'TechJournal'))
 
 @section('content')
 <div class="max-w-[1200px] mx-auto px-8 py-12">
@@ -9,13 +9,13 @@
     <nav aria-label="Breadcrumb" class="mb-6 flex items-center text-sm font-meta text-outline">
         <a class="hover:text-primary transition-colors" href="{{ url('/') }}">Home</a>
         <span aria-hidden="true" class="mx-2 material-symbols-outlined text-[16px]">chevron_right</span>
-        <span aria-current="page" class="text-on-surface font-medium">{{ $title ?? __('frontend.contacts') ?? 'Contact' }}</span>
+        <span aria-current="page" class="text-on-surface font-medium">{{ $title ?? 'Contact' }}</span>
     </nav>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {{-- Main Content --}}
         <div class="lg:col-span-8">
-            <h1 class="font-h1 text-h1 text-on-surface mb-8">{{ $title ?? __('frontend.contacts') ?? 'Contact Us' }}</h1>
+            <h1 class="font-h1 text-h1 text-on-surface mb-8">{{ $title ?? 'Contact Us' }}</h1>
 
             @if(!empty($content))
                 <div class="article-content font-body-md text-body-md text-on-surface-variant leading-relaxed mb-10">
@@ -33,40 +33,40 @@
 
             {{-- Contact Form --}}
             <div class="bg-surface-container-lowest rounded-xl p-8 border border-surface-variant">
-                <h2 class="font-h3 text-h3 text-on-surface mb-6">{{ __('frontend.send_message') ?? 'Send a Message' }}</h2>
+                <h2 class="font-h3 text-h3 text-on-surface mb-6">{{ 'Send a Message' }}</h2>
                 <form action="{{ route('contact.store') }}" method="POST" class="space-y-5">
                     @csrf
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <div>
-                            <label class="block font-meta text-[12px] text-on-surface-variant mb-1 uppercase tracking-wider" for="contact-name">{{ __('frontend.name') ?? 'Name' }} *</label>
+                            <label class="block font-meta text-[12px] text-on-surface-variant mb-1 uppercase tracking-wider" for="contact-name">{{ 'Name' }} *</label>
                             <input id="contact-name" name="name" type="text" required value="{{ old('name') }}"
                                 class="w-full bg-surface px-4 py-3 rounded border border-surface-variant focus:border-secondary focus:ring-1 focus:ring-secondary outline-none font-meta text-on-surface placeholder-outline"
-                                placeholder="{{ __('frontend.your_name') ?? 'Your name' }}">
+                                placeholder="{{ 'Your name' }}">
                             @error('name') <p class="text-error text-sm mt-1">{{ $message }}</p> @enderror
                         </div>
                         <div>
-                            <label class="block font-meta text-[12px] text-on-surface-variant mb-1 uppercase tracking-wider" for="contact-email">{{ __('frontend.email') ?? 'Email' }} *</label>
+                            <label class="block font-meta text-[12px] text-on-surface-variant mb-1 uppercase tracking-wider" for="contact-email">{{ 'Email' }} *</label>
                             <input id="contact-email" name="email" type="email" required value="{{ old('email') }}"
                                 class="w-full bg-surface px-4 py-3 rounded border border-surface-variant focus:border-secondary focus:ring-1 focus:ring-secondary outline-none font-meta text-on-surface placeholder-outline"
-                                placeholder="{{ __('frontend.your_email') ?? 'Your email' }}">
+                                placeholder="{{ 'Your email' }}">
                             @error('email') <p class="text-error text-sm mt-1">{{ $message }}</p> @enderror
                         </div>
                     </div>
                     <div>
-                        <label class="block font-meta text-[12px] text-on-surface-variant mb-1 uppercase tracking-wider" for="contact-subject">{{ __('frontend.subject') ?? 'Subject' }}</label>
+                        <label class="block font-meta text-[12px] text-on-surface-variant mb-1 uppercase tracking-wider" for="contact-subject">{{ 'Subject' }}</label>
                         <input id="contact-subject" name="subject" type="text" value="{{ old('subject') }}"
                             class="w-full bg-surface px-4 py-3 rounded border border-surface-variant focus:border-secondary focus:ring-1 focus:ring-secondary outline-none font-meta text-on-surface placeholder-outline"
-                            placeholder="{{ __('frontend.subject_placeholder') ?? 'Subject of your message' }}">
+                            placeholder="{{ 'Subject of your message' }}">
                     </div>
                     <div>
-                        <label class="block font-meta text-[12px] text-on-surface-variant mb-1 uppercase tracking-wider" for="contact-message">{{ __('frontend.message') ?? 'Message' }} *</label>
+                        <label class="block font-meta text-[12px] text-on-surface-variant mb-1 uppercase tracking-wider" for="contact-message">{{ 'Message' }} *</label>
                         <textarea id="contact-message" name="message" rows="6" required
                             class="w-full bg-surface px-4 py-3 rounded border border-surface-variant focus:border-secondary focus:ring-1 focus:ring-secondary outline-none font-meta text-on-surface placeholder-outline resize-none"
-                            placeholder="{{ __('frontend.message_placeholder') ?? 'Write your message here...' }}">{{ old('message') }}</textarea>
+                            placeholder="{{ 'Write your message here...' }}">{{ old('message') }}</textarea>
                         @error('message') <p class="text-error text-sm mt-1">{{ $message }}</p> @enderror
                     </div>
                     <button type="submit" class="bg-secondary text-on-secondary px-8 py-3 rounded font-label-caps text-label-caps uppercase hover:opacity-90 transition-opacity">
-                        {{ __('frontend.send') ?? 'Send Message' }}
+                        {{ 'Send Message' }}
                     </button>
                 </form>
             </div>
@@ -78,7 +78,7 @@
             <div class="bg-surface-container-lowest rounded-xl p-6 border border-surface-variant sticky top-24">
                 <h4 class="font-h3 text-[18px] text-on-surface mb-6 flex items-center gap-2">
                     <span class="material-symbols-outlined text-secondary">contact_support</span>
-                    {{ __('frontend.contact_info') ?? 'Contact Info' }}
+                    {{ 'Contact Info' }}
                 </h4>
                 <div class="space-y-5">
                     @if(!empty($settings['contact_address']))
@@ -103,7 +103,7 @@
 
                 {{-- Social Links --}}
                 <div class="mt-8 pt-6 border-t border-surface-variant">
-                    <h5 class="font-label-caps text-[11px] text-on-surface-variant uppercase tracking-wider mb-4">{{ __('frontend.follow_us') ?? 'Follow Us' }}</h5>
+                    <h5 class="font-label-caps text-[11px] text-on-surface-variant uppercase tracking-wider mb-4">{{ 'Follow Us' }}</h5>
                     <div class="flex gap-3">
                         @if(!empty($settings['social_facebook']))
                             <a href="{{ $settings['social_facebook'] }}" target="_blank" class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-secondary hover:text-white transition-all">

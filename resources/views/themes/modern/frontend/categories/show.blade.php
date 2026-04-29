@@ -10,7 +10,7 @@
     <nav aria-label="Breadcrumb" class="mb-6 flex items-center text-sm font-meta text-outline">
         <a class="hover:text-primary transition-colors" href="{{ url('/') }}">Home</a>
         <span aria-hidden="true" class="mx-2 material-symbols-outlined text-[16px]">chevron_right</span>
-        <a class="hover:text-primary transition-colors" href="{{ route('category.index') }}">{{ __('frontend.categories') ?? 'Categories' }}</a>
+        <a class="hover:text-primary transition-colors" href="{{ route('category.index') }}">{{ 'Categories' }}</a>
         <span aria-hidden="true" class="mx-2 material-symbols-outlined text-[16px]">chevron_right</span>
         <span aria-current="page" class="text-on-surface font-medium">{{ $category->name }}</span>
     </nav>
@@ -18,22 +18,22 @@
     {{-- Category Header --}}
     <div class="mb-12 border-l-4 border-secondary-container pl-4">
         <div class="inline-block px-3 py-1 mb-3 rounded bg-secondary-fixed text-on-secondary-fixed font-label-caps text-label-caps uppercase">
-            {{ __('frontend.category') ?? 'Category' }}
+            {{ 'Category' }}
         </div>
         <h1 class="font-h1 text-h1 text-on-surface mb-3">{{ $category->name }}</h1>
         @if($category->description)
             <p class="font-body-lg text-body-lg text-on-surface-variant max-w-content-max">{{ $category->description }}</p>
         @endif
-        <p class="font-meta text-meta text-outline mt-3">{{ $articles->total() }} {{ __('frontend.articles') ?? 'articles' }}</p>
+        <p class="font-meta text-meta text-outline mt-3">{{ $articles->total() }} {{ 'articles' }}</p>
     </div>
 
     @if($articles->isEmpty())
         <div class="text-center py-24 bg-surface-container-lowest rounded-xl border border-surface-variant">
             <span class="material-symbols-outlined text-[64px] text-outline mb-4">folder_open</span>
-            <h3 class="font-h3 text-h3 text-on-surface mb-2">{{ __('frontend.no_articles') ?? 'No articles yet' }}</h3>
+            <h3 class="font-h3 text-h3 text-on-surface mb-2">{{ 'No articles yet' }}</h3>
             <p class="text-on-surface-variant font-meta mb-8">No articles have been published in this category yet.</p>
             <a href="{{ url('/') }}" class="bg-secondary text-on-secondary px-6 py-3 rounded font-label-caps text-label-caps uppercase hover:opacity-90 transition-opacity">
-                {{ __('frontend.back_home') ?? 'Back to Home' }}
+                {{ 'Back to Home' }}
             </a>
         </div>
     @else
@@ -80,7 +80,7 @@
                 <div class="bg-surface-container-lowest rounded-xl p-6 border border-surface-variant sticky top-24">
                     <h4 class="font-h3 text-[18px] text-on-surface mb-6 flex items-center gap-2">
                         <span class="material-symbols-outlined text-secondary">trending_up</span>
-                        {{ __('frontend.popular_news') ?? 'Popular' }}
+                        {{ 'Popular' }}
                     </h4>
                     <div class="space-y-5">
                         @foreach($trendingArticles->take(5) as $index => $trend)
@@ -100,7 +100,7 @@
 
                     {{-- Other Categories --}}
                     <div class="mt-8 pt-6 border-t border-surface-variant">
-                        <h5 class="font-label-caps text-[11px] text-on-surface uppercase tracking-wider mb-4">{{ __('frontend.other_categories') ?? 'Other Categories' }}</h5>
+                        <h5 class="font-label-caps text-[11px] text-on-surface uppercase tracking-wider mb-4">{{ 'Other Categories' }}</h5>
                         <div class="flex flex-wrap gap-2">
                             @foreach(\App\Models\Category::where('id', '!=', $category->id)->take(8)->get() as $otherCat)
                                 <a href="{{ route('category.show', $otherCat->slug) }}" class="px-3 py-1.5 rounded-full bg-surface-container-low border border-surface-variant text-on-surface-variant text-[11px] font-label-caps uppercase hover:bg-secondary hover:text-on-secondary hover:border-secondary transition-all">
