@@ -153,7 +153,7 @@
             display: none !important;
         }
 
-        {{-- Dark mode overrides --}}
+        /* Dark mode overrides */
         html.dark body { background-color: #111111; color: #e6e1e5; }
         html.dark .bg-premium-mesh {
             background-color: #111111;
@@ -161,6 +161,41 @@
                 radial-gradient(at 0% 0%, rgba(33, 112, 228, 0.1) 0px, transparent 50%),
                 radial-gradient(at 100% 100%, rgba(0, 88, 190, 0.1) 0px, transparent 50%);
         }
+
+        /* Responsive Table Support */
+        .article-body table {
+            width: 100%;
+            display: block;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            border-radius: 12px;
+            border: 1px solid rgba(128, 128, 128, 0.1);
+        }
+        .article-body table th,
+        .article-body table td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(128, 128, 128, 0.1);
+            min-width: 120px;
+        }
+        .article-body table th {
+            background: rgba(128, 128, 128, 0.05);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            color: #1d1b20;
+        }
+        .article-body table tr:last-child td {
+            border-bottom: none;
+        }
+
+        html.dark .article-body table { border-color: rgba(255, 255, 255, 0.1); }
+        html.dark .article-body table th { background: rgba(255, 255, 255, 0.05); color: #e6e1e5; }
+        html.dark .article-body table th,
+        html.dark .article-body table td { border-color: rgba(255, 255, 255, 0.1); }
     </style>
 
     @stack('styles')

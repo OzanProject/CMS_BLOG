@@ -1,5 +1,5 @@
 @if ($paginator->hasPages())
-    <nav role="navigation" aria-label="{{ __('Pagination Navigation') }}" class="flex items-center justify-center space-x-2 mt-12">
+    <nav role="navigation" aria-label="{{ __('Pagination Navigation') }}" class="flex flex-wrap items-center justify-center gap-2 mt-12">
         {{-- Previous Page Link --}}
         @if ($paginator->onFirstPage())
             <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-surface-container-low text-outline cursor-default" aria-disabled="true" aria-label="{{ __('pagination.previous') }}">
@@ -12,7 +12,7 @@
         @endif
 
         {{-- Pagination Elements --}}
-        <div class="flex items-center space-x-2 font-meta text-sm font-medium">
+        <div class="flex flex-wrap items-center justify-center gap-2 font-meta text-sm font-medium">
             @foreach ($elements as $element)
                 {{-- "Three Dots" Separator --}}
                 @if (is_string($element))
