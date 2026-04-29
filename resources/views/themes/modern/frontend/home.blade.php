@@ -1,182 +1,247 @@
 @extends('themes.modern.frontend.layouts.app')
 
 @section('content')
-    @php $heroArticle = $bannerArticles->shift() ?? $latestArticles->first(); @endphp
+    @php $heroArticle = $bannerArticles->first(); @endphp
 
-    <section class="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white pt-16 pb-32 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-            <div class="absolute inset-0 bg-black/10"></div>
+    <div class="max-w-[1200px] mx-auto px-8 py-12">
 
-            <div class="relative grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div class="space-y-8 z-10">
-                    <div
-                        class="inline-flex items-center px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-xs font-bold uppercase tracking-widest">
-                        <i class="fas fa-bolt mr-2 text-yellow-300"></i> BERITA TERKINI
-                    </div>
+        {{-- Breadcrumbs --}}
+        <nav aria-label="Breadcrumb" class="mb-6 flex items-center text-sm font-meta text-outline">
+            <a class="hover:text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-secondary rounded px-1" href="{{ url('/') }}">Home</a>
+        </nav>
 
-                    @if($heroArticle)
-                        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
-                            <a href="{{ route('article.show', $heroArticle->slug) }}"
-                                class="hover:underline decoration-4 underline-offset-8">
-                                {{ $heroArticle->title }}
-                            </a>
-                        </h1>
-                        <p class="text-lg text-blue-100 leading-relaxed max-w-lg line-clamp-3">
-                            {{ Str::limit(strip_tags($heroArticle->content), 150) }}
-                        </p>
-                        <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                            <a href="{{ route('article.show', $heroArticle->slug) }}"
-                                class="group bg-white text-gray-900 px-8 py-4 rounded-2xl font-bold text-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex items-center justify-center">
-                                <i class="fas fa-book-open mr-3 group-hover:rotate-12 transition-transform text-blue-600"></i>
-                                Baca Berita
-                            </a>
-                        </div>
-                    @endif
+        {{-- ═══════════════════════════════════════════════
+             HERO SECTION — Featured/Banner Article
+             ═══════════════════════════════════════════════ --}}
+        @if($heroArticle)
+        <section class="mb-section-gap grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <div class="lg:col-span-8 order-2 lg:order-1">
+                <div class="inline-block px-3 py-1 mb-4 rounded bg-surface-container-high text-on-surface-variant font-label-caps text-label-caps uppercase">
+                    {{ $heroArticle->is_featured ? __('frontend.featured') ?? 'Featured Analysis' : ($heroArticle->category->name ?? 'Latest') }}
                 </div>
-
-                @if($heroArticle)
-                    <div class="relative mt-8 lg:mt-0">
-                        <img src="{{ asset('storage/' . $heroArticle->image) }}" alt="Hero"
-                            class="w-full h-80 md:h-[400px] object-cover rounded-3xl shadow-2xl animate-pulse-slow ring-8 ring-white/10">
-                        <div
-                            class="absolute -bottom-6 -right-6 md:-bottom-8 md:-right-8 w-20 h-20 md:w-24 md:h-24 bg-gradient-to-tr from-yellow-400 to-orange-500 rounded-full animate-bounce shadow-xl flex items-center justify-center">
-                            <i class="fas fa-star text-white text-3xl"></i>
-                        </div>
+                <h1 class="font-h1 text-h1 text-on-surface mb-6 leading-tight">
+                    <a href="{{ route('article.show', $heroArticle->slug) }}" class="hover:text-secondary transition-colors">
+                        {{ $heroArticle->title }}
+                    </a>
+                </h1>
+                <p class="font-body-lg text-body-lg text-on-surface-variant mb-6 max-w-content-max">
+                    {{ Str::limit(strip_tags($heroArticle->content), 180) }}
+                </p>
+                <div class="flex items-center gap-4 font-meta text-meta text-outline">
+                    <span class="flex items-center gap-2">
+                        <span aria-hidden="true" class="material-symbols-outlined text-[18px]">person</span>
+                        By {{ $heroArticle->user->name ?? 'Admin' }}
+                    </span>
+                    <span class="flex items-center gap-2">
+                        <span aria-hidden="true" class="material-symbols-outlined text-[18px]">calendar_today</span>
+                        {{ $heroArticle->published_at->format('M d, Y') }}
+                    </span>
+                    <span class="flex items-center gap-2">
+                        <span aria-hidden="true" class="material-symbols-outlined text-[18px]">visibility</span>
+                        {{ number_format($heroArticle->views) }} views
+                    </span>
+                </div>
+            </div>
+            <div class="lg:col-span-4 order-1 lg:order-2 h-[300px] lg:h-[400px] rounded-xl overflow-hidden shadow-sm relative bg-surface-container">
+                @if($heroArticle->featured_image)
+                    <img alt="{{ $heroArticle->title }}" class="w-full h-full object-cover absolute inset-0" src="{{ asset('storage/' . $heroArticle->featured_image) }}">
+                @else
+                    <div class="w-full h-full flex items-center justify-center bg-surface-container-high">
+                        <span class="material-symbols-outlined text-[64px] text-outline">article</span>
                     </div>
                 @endif
             </div>
-        </div>
-    </section>
+        </section>
+        @endif
 
-    <section class="py-20 bg-white -mt-10 rounded-t-[3rem] relative z-20 shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between mb-12">
-                <div>
-                    <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Terbaru Hari Ini</h2>
-                    <div class="w-20 h-1.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
-                </div>
+        {{-- ═══════════════════════════════════════════════
+             TRENDING BAR — Top Trending Articles
+             ═══════════════════════════════════════════════ --}}
+        @if(isset($trendingArticles) && $trendingArticles->count() >= 3)
+        <section class="mb-section-gap border-t border-b border-surface-variant py-6">
+            <div class="flex items-center gap-4 mb-4">
+                <span aria-hidden="true" class="material-symbols-outlined text-primary">trending_up</span>
+                <h3 class="font-h3 text-h3 text-on-surface">{{ __('frontend.trending') ?? 'Trending Now' }}</h3>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                @foreach($latestArticles->take(8) as $article)
-                    <a href="{{ route('article.show', $article->slug) }}"
-                        class="group bg-white border border-gray-100 rounded-3xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden flex flex-col">
-                        <div class="h-48 relative overflow-hidden bg-gray-200">
-                            <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }}"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div
-                                class="absolute top-4 left-4 bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest shadow-lg">
-                                {{ $article->category->name }}
-                            </div>
-                        </div>
-                        <div class="p-6 flex-grow flex flex-col">
-                            <span class="text-xs text-gray-500 font-bold mb-3"><i class="far fa-clock mr-1"></i>
-                                {{ $article->published_at->diffForHumans() }}</span>
-                            <h3
-                                class="text-lg font-bold text-gray-900 leading-snug group-hover:text-blue-600 transition-colors">
-                                {{ $article->title }}
-                            </h3>
-                            <p class="text-gray-500 text-sm mt-3 line-clamp-2">
-                                {{ Str::limit(strip_tags($article->content), 80) }}</p>
-                        </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                @foreach($trendingArticles->take(3) as $index => $trending)
+                    <a class="group block focus:outline-none focus:ring-2 focus:ring-secondary rounded p-1" href="{{ route('article.show', $trending->slug) }}">
+                        <span class="text-primary font-bold text-xl mr-2">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</span>
+                        <span class="font-h3 text-[18px] leading-snug group-hover:text-secondary transition-colors">{{ $trending->title }}</span>
                     </a>
                 @endforeach
-            </div>
-
-            <div class="mt-12 flex justify-center">
-                {{ $latestArticles->links() }}
-            </div>
-        </div>
-    </section>
-
-    <section class="py-20 bg-gray-50 border-t border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-16">Eksplor Kategori</h2>
-
-            @php
-                // Array untuk memberi ikon dan warna berbeda pada setiap kategori
-                $styles = [
-                    ['icon' => 'fa-home', 'bg' => 'from-red-500 to-orange-500', 'text' => 'group-hover:text-red-600'],
-                    ['icon' => 'fa-globe', 'bg' => 'from-blue-500 to-indigo-500', 'text' => 'group-hover:text-blue-600'],
-                    ['icon' => 'fa-chart-line', 'bg' => 'from-green-500 to-teal-500', 'text' => 'group-hover:text-green-600'],
-                    ['icon' => 'fa-laptop', 'bg' => 'from-purple-500 to-pink-500', 'text' => 'group-hover:text-purple-600'],
-                    ['icon' => 'fa-futbol', 'bg' => 'from-yellow-500 to-orange-500', 'text' => 'group-hover:text-yellow-600'],
-                    ['icon' => 'fa-heart', 'bg' => 'from-pink-500 to-rose-500', 'text' => 'group-hover:text-pink-600'],
-                ];
-            @endphp
-
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                @foreach($categories as $index => $cat)
-                    @php $style = $styles[$index % count($styles)]; @endphp
-                    <a href="{{ route('category.show', $cat->slug) }}"
-                        class="group p-6 rounded-3xl bg-white shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 text-center border border-gray-100">
-                        <div
-                            class="w-16 h-16 bg-gradient-to-r {{ $style['bg'] }} rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg">
-                            <i class="fas {{ $style['icon'] }} text-white text-2xl"></i>
-                        </div>
-                        <h3
-                            class="font-extrabold text-gray-800 text-sm uppercase tracking-wider {{ $style['text'] }} transition-colors">
-                            {{ $cat->name }}</h3>
-                    </a>
-                @endforeach
-            </div>
-        </div>
-    </section>
-
-    {{-- Featured YouTube Video --}}
-    @php
-        $youtubeUrl = $settings['homepage_youtube_url'] ?? null;
-        $videoId = '';
-        if ($youtubeUrl) {
-            if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $youtubeUrl, $match)) {
-                $videoId = $match[1];
-            }
-        }
-    @endphp
-
-    @if($videoId)
-        <section class="py-20 bg-[#0d1117] border-t border-slate-800">
-            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-extrabold text-white mb-2">Editor's Choice</h2>
-                    <div class="w-16 h-1 bg-amber-500 mx-auto rounded-full"></div>
-                </div>
-                <div class="relative aspect-video rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-slate-700">
-                    <iframe 
-                        src="https://www.youtube.com/embed/{{ $videoId }}" 
-                        class="absolute inset-0 w-full h-full"
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
-                </div>
             </div>
         </section>
-    @endif
+        @endif
 
-    <section class="py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl"></div>
+        {{-- ═══════════════════════════════════════════════
+             MAIN CONTENT + SIDEBAR
+             ═══════════════════════════════════════════════ --}}
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-section-gap">
+            {{-- Main Content Grid --}}
+            <div class="lg:col-span-8">
+                <div class="flex items-center justify-between mb-8 pb-2 border-b border-surface-variant">
+                    <h2 class="font-h2 text-h2 text-on-surface border-l-4 border-secondary-container pl-3">{{ __('frontend.latest_news') ?? 'Latest Editorials' }}</h2>
+                    <a class="font-label-caps text-label-caps uppercase text-secondary hover:underline focus:outline-none focus:ring-2 focus:ring-secondary rounded px-1" href="{{ route('article.index') }}">View All</a>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    @foreach($latestArticles as $article)
+                        {{-- Article Card --}}
+                        <article class="bg-surface-container-lowest rounded-xl overflow-hidden group transition-all duration-300 hover:shadow-[0_16px_32px_-12px_rgba(0,0,0,0.08)] relative focus-within:ring-2 focus-within:ring-secondary">
+                            <a aria-label="Read article: {{ $article->title }}" class="absolute inset-0 z-10" href="{{ route('article.show', $article->slug) }}"></a>
+                            <div class="h-48 bg-surface-variant overflow-hidden relative">
+                                @if($article->featured_image)
+                                    <img alt="{{ $article->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="{{ asset('storage/' . $article->featured_image) }}">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center bg-surface-container-high">
+                                        <span class="material-symbols-outlined text-[48px] text-outline">article</span>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="p-6">
+                                <div class="flex items-center justify-between mb-3 relative z-20">
+                                    <a class="inline-block px-2 py-1 rounded bg-secondary-fixed text-on-secondary-fixed font-label-caps text-label-caps uppercase hover:opacity-80" href="{{ route('category.show', $article->category->slug) }}">{{ $article->category->name }}</a>
+                                    <span class="font-meta text-meta text-outline">{{ $article->published_at->diffForHumans() }}</span>
+                                </div>
+                                <h3 class="font-h3 text-h3 text-on-surface mb-3 group-hover:text-secondary transition-colors line-clamp-2">{{ $article->title }}</h3>
+                                <p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">{{ Str::limit(strip_tags($article->content), 100) }}</p>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
 
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <div class="mb-10">
-                <h2 class="text-3xl md:text-5xl font-extrabold mb-6">Dapatkan Update Harian</h2>
-                <p class="text-lg text-gray-400 max-w-2xl mx-auto">
-                    Berlangganan newsletter kami untuk mendapatkan berita terbaru langsung ke email Anda.
-                </p>
+                {{-- Pagination --}}
+                <div class="mt-12 flex justify-center">
+                    {{ $latestArticles->links() }}
+                </div>
             </div>
-            <div
-                class="bg-white/10 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-10 max-w-2xl mx-auto shadow-2xl">
-                <form action="{{ route('newsletter.subscribe') }}" method="POST" class="flex flex-col sm:flex-row gap-4">
-                    @csrf
-                    <input name="email" type="email" placeholder="Masukkan alamat email..." required
-                        class="flex-1 px-6 py-4 bg-gray-900/50 border border-gray-700 rounded-2xl text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 outline-none transition-all duration-200">
-                    <button type="submit"
-                        class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 px-8 py-4 rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                        Berlangganan
-                    </button>
-                </form>
-            </div>
+
+            {{-- Sidebar --}}
+            <aside class="lg:col-span-4 space-y-8">
+                {{-- AdSense/Adsterra Slot --}}
+                @php
+                    $adstraActive = ($settings['adsterra_active'] ?? '0') === '1';
+                    $sidebarAdHtml = $adstraActive && !empty($settings['adsterra_banner_300x250_script'])
+                                        ? $settings['adsterra_banner_300x250_script']
+                                        : ($settings['ad_sidebar_script'] ?? null);
+                    $hasAdSense = ($settings['adsense_active'] ?? '0') === '1' && !empty($settings['adsense_client_id']);
+                @endphp
+
+                @if($sidebarAdHtml)
+                <div class="border border-surface-variant rounded bg-surface p-4 text-center">
+                    <span aria-hidden="true" class="font-label-caps text-[10px] text-outline tracking-wider uppercase mb-2 block">Advertisement</span>
+                    <div aria-label="Advertisement Space" class="h-[250px] bg-surface-container-low flex items-center justify-center text-on-surface-variant font-meta overflow-hidden">
+                        {!! $sidebarAdHtml !!}
+                    </div>
+                </div>
+                @elseif($hasAdSense)
+                <div class="border border-surface-variant rounded bg-surface p-4 text-center">
+                    <span aria-hidden="true" class="font-label-caps text-[10px] text-outline tracking-wider uppercase mb-2 block">Advertisement</span>
+                    <ins class="adsbygoogle" style="display:block;min-height:250px"
+                         data-ad-client="{{ $settings['adsense_client_id'] }}"
+                         data-ad-slot="auto" data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                </div>
+                @endif
+
+                {{-- Newsletter Widget --}}
+                <div class="bg-primary-container text-on-primary-container rounded-xl p-8">
+                    <div class="flex items-center gap-3 mb-4 text-on-primary">
+                        <span aria-hidden="true" class="material-symbols-outlined text-[32px]">mark_email_unread</span>
+                        <h3 class="font-h3 text-h3 leading-none">{{ __('frontend.newsletter') ?? 'The Briefing' }}</h3>
+                    </div>
+                    <p class="font-body-md text-body-md mb-6 opacity-90 text-on-primary-fixed-variant">
+                        {{ __('frontend.newsletter_desc') ?? 'Expert analysis delivered to your inbox every Tuesday.' }}
+                    </p>
+                    @if(session('success'))
+                        <div class="bg-green-100 border border-green-300 text-green-700 px-4 py-2 rounded mb-4 text-sm">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    <form action="{{ route('newsletter.subscribe') }}" method="POST" class="space-y-4">
+                        @csrf
+                        <label class="sr-only" for="newsletter-email">Your email address</label>
+                        <input class="w-full bg-surface text-on-surface px-4 py-3 rounded border border-transparent focus:border-secondary focus:ring-1 focus:ring-secondary outline-none font-meta placeholder-outline" id="newsletter-email" name="email" placeholder="{{ __('frontend.email') ?? 'Your email address' }}" required type="email">
+                        <button class="w-full bg-secondary text-on-secondary font-label-caps text-label-caps uppercase py-3 rounded hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary" type="submit">{{ __('frontend.subscribe') ?? 'Subscribe Now' }}</button>
+                    </form>
+                </div>
+
+                {{-- Trending Sidebar --}}
+                @if(isset($trendingArticles) && $trendingArticles->count() > 3)
+                <div class="bg-surface-container-lowest rounded-xl p-6 border border-surface-variant">
+                    <h4 class="font-h3 text-[18px] text-on-surface mb-6 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-secondary">local_fire_department</span>
+                        {{ __('frontend.popular_news') ?? 'Most Read' }}
+                    </h4>
+                    <div class="space-y-5">
+                        @foreach($trendingArticles->skip(3)->take(4) as $index => $trend)
+                            <a href="{{ route('article.show', $trend->slug) }}" class="group flex gap-4">
+                                <span class="font-h2 text-[28px] font-bold text-outline/30 group-hover:text-secondary/50 transition-colors leading-none pt-1">
+                                    {{ str_pad($index + 4, 2, '0', STR_PAD_LEFT) }}
+                                </span>
+                                <div>
+                                    <h5 class="font-meta text-[14px] font-semibold text-on-surface group-hover:text-secondary transition-colors leading-snug">
+                                        {{ Str::limit($trend->title, 60) }}
+                                    </h5>
+                                    <p class="text-[12px] text-outline mt-1">{{ $trend->category->name ?? '' }}</p>
+                                </div>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+            </aside>
         </div>
-    </section>
+
+        {{-- ═══════════════════════════════════════════════
+             BOTTOM GRID — Random/Explore Articles
+             ═══════════════════════════════════════════════ --}}
+        @if(isset($gridArticles) && $gridArticles->isNotEmpty())
+        <section class="mb-section-gap">
+            <div class="flex items-center justify-between mb-8 pb-2 border-b border-surface-variant">
+                <h2 class="font-h2 text-h2 text-on-surface border-l-4 border-secondary-container pl-3">{{ __('frontend.explore') ?? 'Explore More' }}</h2>
+                <a class="font-label-caps text-label-caps uppercase text-secondary hover:underline" href="{{ route('category.index') }}">All Categories</a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                @foreach($gridArticles as $gridArticle)
+                    <a href="{{ route('article.show', $gridArticle->slug) }}" class="group block rounded-xl overflow-hidden bg-surface-container-lowest border border-surface-variant hover:shadow-lg transition-all duration-300">
+                        <div class="h-40 overflow-hidden bg-surface-container-high">
+                            @if($gridArticle->featured_image)
+                                <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="{{ asset('storage/' . $gridArticle->featured_image) }}" alt="{{ $gridArticle->title }}">
+                            @else
+                                <div class="w-full h-full flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-[40px] text-outline">article</span>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="p-4">
+                            <span class="text-[11px] font-label-caps text-secondary uppercase tracking-wider">{{ $gridArticle->category->name ?? '' }}</span>
+                            <h3 class="font-h3 text-[16px] text-on-surface mt-2 leading-snug group-hover:text-secondary transition-colors line-clamp-2">{{ $gridArticle->title }}</h3>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </section>
+        @endif
+
+        {{-- ═══════════════════════════════════════════════
+             CATEGORIES EXPLORE
+             ═══════════════════════════════════════════════ --}}
+        @if(isset($categories) && $categories->isNotEmpty())
+        <section class="mb-section-gap">
+            <div class="flex items-center gap-4 mb-8">
+                <span class="material-symbols-outlined text-secondary">category</span>
+                <h3 class="font-h3 text-h3 text-on-surface">{{ __('frontend.categories') ?? 'Explore Categories' }}</h3>
+            </div>
+            <div class="flex flex-wrap gap-3">
+                @foreach($categories as $cat)
+                    <a href="{{ route('category.show', $cat->slug) }}" class="px-5 py-2.5 rounded-full border border-surface-variant bg-surface-container-lowest text-on-surface-variant font-label-caps text-label-caps uppercase hover:bg-primary hover:text-on-primary hover:border-primary transition-all duration-200">
+                        {{ $cat->name }}
+                    </a>
+                @endforeach
+            </div>
+        </section>
+        @endif
+    </div>
 @endsection

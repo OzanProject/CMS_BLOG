@@ -1,78 +1,112 @@
 @extends('themes.modern.frontend.layouts.app')
 
-@section('title', 'Pencarian: ' . $query . ' - ' . ($settings['site_name'] ?? 'NewsHub'))
+@section('title', 'Search: ' . $query . ' — ' . ($settings['site_name'] ?? 'TechJournal'))
 
 @section('content')
-    <section class="bg-gray-900 text-white pt-16 pb-24">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="max-w-3xl">
-                <nav class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-500 mb-8">
-                    <a href="{{ url('/') }}" class="hover:text-white">Home</a>
-                    <i class="fas fa-chevron-right text-[8px]"></i>
-                    <span class="text-gray-300">Pencarian</span>
-                </nav>
-                <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-6">
-                    Hasil Pencarian untuk: <span class="text-blue-500">"{{ $query }}"</span>
-                </h1>
-                <p class="text-lg text-gray-400 font-medium">
-                    Menampilkan <span class="text-white font-bold">{{ $articles->total() }}</span> artikel yang sesuai dengan kueri Anda.
-                </p>
-            </div>
-            
-            <div class="mt-12 max-w-xl">
-                <form action="{{ route('search') }}" method="GET" class="relative group">
-                    <input name="q" value="{{ $query }}" class="w-full bg-gray-800 border border-gray-700 rounded-2xl px-6 py-5 text-sm text-white focus:border-blue-500 outline-none transition-all shadow-2xl placeholder:text-gray-600" placeholder="Cari berita lainnya...">
-                    <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 w-12 h-12 bg-blue-600 text-white rounded-xl flex items-center justify-center hover:bg-blue-700 transition-all shadow-lg">
-                        <i class="fas fa-search text-lg"></i>
-                    </button>
-                </form>
-            </div>
+<div class="max-w-[1200px] mx-auto px-8 py-12">
+
+    {{-- Breadcrumbs --}}
+    <nav aria-label="Breadcrumb" class="mb-6 flex items-center text-sm font-meta text-outline">
+        <a class="hover:text-primary transition-colors" href="{{ url('/') }}">Home</a>
+        <span aria-hidden="true" class="mx-2 material-symbols-outlined text-[16px]">chevron_right</span>
+        <span aria-current="page" class="text-on-surface font-medium">{{ __('frontend.search') ?? 'Search' }}</span>
+    </nav>
+
+    {{-- Search Header --}}
+    <div class="mb-12">
+        <h1 class="font-h1 text-h1 text-on-surface mb-4">
+            {{ __('frontend.search_results') ?? 'Search Results for:' }}
+            <span class="text-secondary">"{{ $query }}"</span>
+        </h1>
+        <p class="font-body-lg text-body-lg text-on-surface-variant">
+            {{ __('frontend.showing') ?? 'Showing' }}
+            <span class="font-semibold text-on-surface">{{ $articles->total() }}</span>
+            {{ __('frontend.articles_found') ?? 'articles matching your query.' }}
+        </p>
+
+        {{-- Search Form --}}
+        <div class="mt-8 max-w-xl">
+            <form action="{{ route('search') }}" method="GET" class="flex gap-2">
+                <input name="q" value="{{ $query }}" placeholder="{{ __('frontend.search_placeholder') ?? 'Search articles...' }}"
+                    class="flex-1 bg-surface-container-lowest px-5 py-3.5 rounded-lg border border-surface-variant focus:border-secondary focus:ring-1 focus:ring-secondary outline-none font-meta text-on-surface placeholder-outline transition-all">
+                <button type="submit" class="bg-secondary text-on-secondary px-6 py-3.5 rounded-lg font-label-caps text-label-caps uppercase hover:opacity-90 transition-opacity flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">search</span>
+                    Search
+                </button>
+            </form>
         </div>
-    </section>
+    </div>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 pb-32">
-        @if($articles->isEmpty())
-            <div class="bg-white rounded-[3rem] p-24 text-center shadow-xl border border-gray-100 -mt-32 relative z-20">
-                <div class="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-8">
-                    <i class="fas fa-search-minus text-gray-300 text-4xl"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-900 mb-4">Tidak Ditemukan</h3>
-                <p class="text-gray-500 mb-10 max-w-md mx-auto">Maaf, kami tidak menemukan artikel yang sesuai dengan kata kunci yang Anda cari. Silakan coba dengan kata kunci yang berbeda.</p>
-                <a href="{{ url('/') }}" class="inline-flex items-center justify-center bg-blue-600 text-white px-10 py-4 rounded-2xl font-bold text-lg hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl">
-                    Kembali ke Beranda
-                </a>
-            </div>
-        @else
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach($articles as $article)
-                    <a href="{{ route('article.show', $article->slug) }}"
-                        class="group bg-white border border-gray-100 rounded-3xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden flex flex-col">
-                        <div class="h-48 relative overflow-hidden bg-gray-200">
-                            <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }}"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div
-                                class="absolute top-4 left-4 bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest shadow-lg">
-                                {{ $article->category->name }}
+    @if($articles->isEmpty())
+        <div class="text-center py-24 bg-surface-container-lowest rounded-xl border border-surface-variant">
+            <span class="material-symbols-outlined text-[64px] text-outline mb-4">search_off</span>
+            <h3 class="font-h3 text-h3 text-on-surface mb-2">{{ __('frontend.no_results') ?? 'No Results Found' }}</h3>
+            <p class="text-on-surface-variant font-meta mb-8 max-w-md mx-auto">{{ __('frontend.no_results_desc') ?? 'Sorry, we couldn\'t find any articles matching your search. Please try with different keywords.' }}</p>
+            <a href="{{ url('/') }}" class="bg-secondary text-on-secondary px-6 py-3 rounded font-label-caps text-label-caps uppercase hover:opacity-90 transition-opacity">
+                {{ __('frontend.back_home') ?? 'Back to Home' }}
+            </a>
+        </div>
+    @else
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div class="lg:col-span-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    @foreach($articles as $article)
+                        <article class="bg-surface-container-lowest rounded-xl overflow-hidden group transition-all duration-300 hover:shadow-[0_16px_32px_-12px_rgba(0,0,0,0.08)] relative focus-within:ring-2 focus-within:ring-secondary">
+                            <a aria-label="Read article: {{ $article->title }}" class="absolute inset-0 z-10" href="{{ route('article.show', $article->slug) }}"></a>
+                            <div class="h-48 bg-surface-variant overflow-hidden relative">
+                                @if($article->featured_image)
+                                    <img alt="{{ $article->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="{{ asset('storage/' . $article->featured_image) }}">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center bg-surface-container-high">
+                                        <span class="material-symbols-outlined text-[48px] text-outline">article</span>
+                                    </div>
+                                @endif
                             </div>
-                        </div>
-                        <div class="p-6 flex-grow flex flex-col">
-                            <span class="text-xs text-gray-500 font-bold mb-3"><i class="far fa-clock mr-1"></i>
-                                {{ $article->published_at->diffForHumans() }}</span>
-                            <h3
-                                class="text-lg font-bold text-gray-900 leading-snug group-hover:text-blue-600 transition-colors">
-                                {{ $article->title }}
-                            </h3>
-                            <p class="text-gray-500 text-sm mt-3 line-clamp-2">
-                                {{ Str::limit(strip_tags($article->content), 80) }}</p>
-                        </div>
-                    </a>
-                @endforeach
+                            <div class="p-6">
+                                <div class="flex items-center justify-between mb-3 relative z-20">
+                                    <a class="inline-block px-2 py-1 rounded bg-secondary-fixed text-on-secondary-fixed font-label-caps text-label-caps uppercase hover:opacity-80" href="{{ route('category.show', $article->category->slug) }}">{{ $article->category->name }}</a>
+                                    <span class="font-meta text-meta text-outline">{{ $article->published_at->diffForHumans() }}</span>
+                                </div>
+                                <h3 class="font-h3 text-h3 text-on-surface mb-3 group-hover:text-secondary transition-colors line-clamp-2">{{ $article->title }}</h3>
+                                <p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">{{ Str::limit(strip_tags($article->content), 100) }}</p>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+
+                <div class="mt-12 flex justify-center">
+                    {{ $articles->appends(['q' => $query])->links() }}
+                </div>
             </div>
 
-            <div class="mt-16 flex justify-center border-t border-gray-100 pt-16">
-                {{ $articles->links() }}
-            </div>
-        @endif
-    </main>
+            {{-- Sidebar --}}
+            <aside class="lg:col-span-4 space-y-8">
+                {{-- Trending --}}
+                @if(isset($trendingArticles) && $trendingArticles->isNotEmpty())
+                <div class="bg-surface-container-lowest rounded-xl p-6 border border-surface-variant sticky top-24">
+                    <h4 class="font-h3 text-[18px] text-on-surface mb-6 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-secondary">trending_up</span>
+                        {{ __('frontend.popular_news') ?? 'Trending' }}
+                    </h4>
+                    <div class="space-y-5">
+                        @foreach($trendingArticles->take(5) as $index => $trend)
+                            <a href="{{ route('article.show', $trend->slug) }}" class="group flex gap-4">
+                                <span class="font-h2 text-[24px] font-bold text-outline/30 group-hover:text-secondary/50 transition-colors leading-none pt-1">
+                                    {{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}
+                                </span>
+                                <div>
+                                    <h5 class="font-meta text-[14px] font-semibold text-on-surface group-hover:text-secondary transition-colors leading-snug">
+                                        {{ Str::limit($trend->title, 55) }}
+                                    </h5>
+                                    <p class="text-[11px] text-outline mt-1">{{ $trend->category->name ?? '' }}</p>
+                                </div>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+            </aside>
+        </div>
+    @endif
+</div>
 @endsection
-

@@ -1,7 +1,9 @@
 @extends('themes.modern.frontend.layouts.app')
 
-@section('title', ($article->title ?? 'Dispatch') . ' — ' . ($settings['site_name'] ?? 'Editorial'))
-@section('meta_description', Str::limit(strip_tags($article->content ?? ''), 160))
+@section('title', ($article->meta_title ?? $article->title) . ' — ' . ($settings['site_name'] ?? 'TechJournal'))
+@section('meta_description', $article->meta_description ?? Str::limit(strip_tags($article->content), 160))
+@section('meta_keywords', $article->keywords ?? '')
+@section('meta_image', !empty($article->featured_image) ? asset('storage/' . $article->featured_image) : '')
 
 @push('styles')
 <script type="application/ld+json">
@@ -9,7 +11,7 @@
   "@context": "https://schema.org",
   "@type": "NewsArticle",
   "headline": "{{ addslashes($article->title ?? '') }}",
-  "image": ["{{ isset($article->image) ? asset('storage/' . $article->image) : '' }}"],
+  "image": ["{{ !empty($article->featured_image) ? asset('storage/' . $article->featured_image) : '' }}"],
   "datePublished": "{{ isset($article->published_at) ? $article->published_at->toIso8601String() : '' }}",
   "dateModified": "{{ $article->updated_at->toIso8601String() }}",
   "author": {
@@ -18,7 +20,7 @@
   },
   "publisher": {
     "@type": "Organization",
-    "name": "{{ addslashes($settings['site_name'] ?? 'Editorial') }}",
+    "name": "{{ addslashes($settings['site_name'] ?? 'TechJournal') }}",
     "logo": {
       "@type": "ImageObject",
       "url": "{{ !empty($settings['site_logo']) ? asset('storage/' . $settings['site_logo']) : '' }}"
@@ -27,71 +29,62 @@
   "description": "{{ addslashes(Str::limit(strip_tags($article->content ?? ''), 160)) }}"
 }
 </script>
-<style>
-    .article-content p { margin-bottom: 1.75rem; line-height: 1.9; color: #94a3b8; font-size: 1.0625rem; }
-    .article-content h2 { color: #f1f5f9; font-size: 1.6rem; font-weight: 800; margin-top: 3rem; margin-bottom: 1.25rem; font-family: 'Newsreader', Georgia, serif; border-bottom: 1px solid rgba(245,158,11,0.15); padding-bottom: 0.5rem; }
-    .article-content h3 { color: #fbbf24; font-size: 1.25rem; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1rem; }
-    .article-content blockquote { border-left: 3px solid #f59e0b; padding: 1.25rem 1.75rem; font-style: italic; color: #64748b; margin: 2.5rem 0; background: rgba(245,158,11,0.04); border-radius: 0 0.75rem 0.75rem 0; }
-    .article-content img { border-radius: 1.25rem; margin: 2.5rem 0; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5); max-width: 100%; }
-    .article-content ul, .article-content ol { padding-left: 1.5rem; margin-bottom: 1.75rem; color: #94a3b8; }
-    .article-content ul li, .article-content ol li { margin-bottom: 0.5rem; }
-    .article-content a { color: #fbbf24; text-decoration: underline; text-underline-offset: 3px; }
-    .article-content a:hover { color: #f59e0b; }
-</style>
 @endpush
 
 @section('content')
-<div class="w-full max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-16">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+<div class="max-w-[1200px] mx-auto px-8 py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-        {{-- ===== MAIN ARTICLE COLUMN (8/12) ===== --}}
+        {{-- ===== MAIN ARTICLE COLUMN ===== --}}
         <article class="lg:col-span-8">
 
             {{-- Breadcrumbs --}}
-            <nav class="flex items-center gap-2 mb-10 text-[10px] font-black uppercase tracking-[0.2em] text-slate-600">
-                <a href="{{ url('/') }}" class="hover:text-amber-500 transition-colors">Home</a>
+            <nav aria-label="Breadcrumb" class="mb-8 flex items-center text-sm font-meta text-outline">
+                <a class="hover:text-primary transition-colors" href="{{ url('/') }}">Home</a>
                 @if(isset($article->category))
-                    <span>›</span>
-                    <a href="{{ route('category.show', $article->category->slug) }}" class="hover:text-amber-500 transition-colors">{{ $article->category->name }}</a>
+                    <span aria-hidden="true" class="mx-2 material-symbols-outlined text-[16px]">chevron_right</span>
+                    <a class="hover:text-primary transition-colors" href="{{ route('category.show', $article->category->slug) }}">{{ $article->category->name }}</a>
                 @endif
-                <span>›</span>
-                <span class="text-slate-500 truncate max-w-[200px]">{{ Str::limit($article->title, 40) }}</span>
+                <span aria-hidden="true" class="mx-2 material-symbols-outlined text-[16px]">chevron_right</span>
+                <span aria-current="page" class="text-on-surface font-medium truncate max-w-[250px]">{{ Str::limit($article->title, 40) }}</span>
             </nav>
 
             {{-- Category Badge --}}
             @if(isset($article->category))
-            <span class="bg-amber-500 text-slate-950 px-4 py-1.5 rounded text-[10px] font-black uppercase tracking-widest mb-6 inline-block shadow-[0_0_15px_rgba(245,158,11,0.15)]">
+            <div class="inline-block px-3 py-1 mb-4 rounded bg-secondary-fixed text-on-secondary-fixed font-label-caps text-label-caps uppercase">
                 {{ $article->category->name }}
-            </span>
+            </div>
             @endif
 
             {{-- Headline --}}
-            <h1 class="font-headline font-black text-3xl md:text-5xl lg:text-[3.25rem] text-white leading-[1.08] tracking-tight mb-8">
-                {{ $article->title }}
-            </h1>
+            <h1 class="font-h1 text-h1 text-on-surface mb-6 leading-tight">{{ $article->title }}</h1>
 
             {{-- Author & Meta --}}
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between py-7 border-y border-slate-900/80 mb-10 gap-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between py-5 border-y border-surface-variant mb-8 gap-4">
                 <div class="flex items-center gap-4">
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode($article->user->name ?? 'Admin') }}&color=f59e0b&background=0d1117&bold=true&size=80"
-                         class="w-12 h-12 rounded-full border border-amber-500/20"
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode($article->user->name ?? 'Admin') }}&color=0058be&background=d8e2ff&bold=true&size=80"
+                         class="w-11 h-11 rounded-full border border-secondary/20"
                          alt="{{ $article->user->name ?? 'Author' }}">
                     <div>
-                        <p class="font-bold text-white text-sm">By {{ $article->user->name ?? 'Admin' }}</p>
-                        <p class="text-[10px] text-slate-600 uppercase tracking-widest">{{ $article->published_at->format('d M Y, H:i') }} WIB</p>
+                        <a href="{{ route('author.show', Str::slug($article->user->name ?? 'admin')) }}" class="font-meta font-semibold text-on-surface hover:text-secondary transition-colors">
+                            By {{ $article->user->name ?? 'Admin' }}
+                        </a>
+                        <p class="text-[12px] text-outline font-meta">{{ $article->published_at->format('d M Y, H:i') }}</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest text-slate-600">
-                    <span class="material-symbols-outlined text-sm">visibility</span>
-                    {{ number_format($article->views) }} views
+                <div class="flex items-center gap-3 font-meta text-meta text-outline">
+                    <span class="flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[16px]">visibility</span>
+                        {{ number_format($article->views) }} views
+                    </span>
                 </div>
             </div>
 
             {{-- Featured Image --}}
-            @if(!empty($article->image))
-            <figure class="mb-12">
-                <div class="rounded-[1.5rem] overflow-hidden bg-slate-900 border border-slate-800/50 shadow-2xl">
-                    <img src="{{ asset('storage/' . $article->image) }}"
+            @if(!empty($article->featured_image))
+            <figure class="mb-10">
+                <div class="rounded-xl overflow-hidden bg-surface-container shadow-sm">
+                    <img src="{{ asset('storage/' . $article->featured_image) }}"
                          alt="{{ $article->title }}"
                          class="w-full h-auto object-cover"
                          loading="eager">
@@ -99,41 +92,168 @@
             </figure>
             @endif
 
-            {{-- Article Body (with in-article ad injection) --}}
-            <div class="article-content">
-                {!! \App\Helpers\ContentInjector::inject($article->content, $settings) !!}
+            {{-- Article Body --}}
+            <div class="article-content font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                @if(class_exists('\App\Helpers\ContentInjector'))
+                    {!! \App\Helpers\ContentInjector::inject($article->content, $settings) !!}
+                @else
+                    {!! $article->content !!}
+                @endif
             </div>
 
             {{-- Tags --}}
-            @if(!empty($article->meta_keywords))
-            <div class="mt-12 pt-8 border-t border-slate-900/80 flex flex-wrap gap-2">
-                @foreach(array_filter(array_map('trim', explode(',', $article->meta_keywords))) as $tag)
-                    <span class="px-3 py-1.5 bg-slate-900 border border-slate-800 text-slate-400 text-[9px] font-bold uppercase rounded tracking-widest">
-                        # {{ $tag }}
+            @if($article->tags && $article->tags->isNotEmpty())
+            <div class="mt-10 pt-6 border-t border-surface-variant flex flex-wrap gap-2">
+                @foreach($article->tags as $tag)
+                    <span class="px-3 py-1.5 bg-surface-container text-on-surface-variant text-[11px] font-label-caps uppercase rounded-full border border-surface-variant">
+                        # {{ $tag->name }}
+                    </span>
+                @endforeach
+            </div>
+            @elseif(!empty($article->keywords))
+            <div class="mt-10 pt-6 border-t border-surface-variant flex flex-wrap gap-2">
+                @foreach(array_filter(array_map('trim', explode(',', $article->keywords))) as $keyword)
+                    <span class="px-3 py-1.5 bg-surface-container text-on-surface-variant text-[11px] font-label-caps uppercase rounded-full border border-surface-variant">
+                        # {{ $keyword }}
                     </span>
                 @endforeach
             </div>
             @endif
 
+            {{-- Share Buttons --}}
+            <div class="mt-8 pt-6 border-t border-surface-variant">
+                <h4 class="font-label-caps text-label-caps uppercase text-outline mb-4">Share this article</h4>
+                <div class="flex gap-3">
+                    <a href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($article->title) }}" target="_blank" rel="noopener noreferrer"
+                       class="px-4 py-2 rounded bg-surface-container hover:bg-primary hover:text-on-primary text-on-surface-variant text-sm font-meta transition-all">
+                        Twitter/X
+                    </a>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}" target="_blank" rel="noopener noreferrer"
+                       class="px-4 py-2 rounded bg-surface-container hover:bg-secondary hover:text-on-secondary text-on-surface-variant text-sm font-meta transition-all">
+                        Facebook
+                    </a>
+                    <a href="https://wa.me/?text={{ urlencode($article->title . ' ' . url()->current()) }}" target="_blank" rel="noopener noreferrer"
+                       class="px-4 py-2 rounded bg-surface-container hover:bg-green-600 hover:text-white text-on-surface-variant text-sm font-meta transition-all">
+                        WhatsApp
+                    </a>
+                </div>
+            </div>
+
+            {{-- Comments Section --}}
+            <section class="mt-12 pt-8 border-t border-surface-variant">
+                <h3 class="font-h3 text-h3 text-on-surface mb-8 flex items-center gap-3">
+                    <span class="material-symbols-outlined text-secondary">forum</span>
+                    {{ __('frontend.comments') ?? 'Comments' }}
+                    <span class="text-outline text-[16px]">({{ $article->comments->count() }})</span>
+                </h3>
+
+                {{-- Display Comments --}}
+                @forelse($article->comments as $comment)
+                    <div class="mb-6 p-5 rounded-xl bg-surface-container-low border border-surface-variant">
+                        <div class="flex items-center gap-3 mb-3">
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode($comment->name) }}&size=40&background=d8e2ff&color=0058be&bold=true" class="w-8 h-8 rounded-full" alt="">
+                            <div>
+                                <span class="font-meta font-semibold text-on-surface text-sm">{{ $comment->name }}</span>
+                                <span class="text-[11px] text-outline ml-2">{{ $comment->created_at->diffForHumans() }}</span>
+                            </div>
+                        </div>
+                        <p class="text-on-surface-variant font-body-md text-[16px] leading-relaxed">{{ $comment->body }}</p>
+
+                        {{-- Child Comments --}}
+                        @if($comment->children && $comment->children->isNotEmpty())
+                            @foreach($comment->children as $reply)
+                                <div class="mt-4 ml-8 p-4 rounded-lg bg-surface-container border border-surface-variant">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($reply->name) }}&size=32&background=d8e2ff&color=0058be&bold=true" class="w-6 h-6 rounded-full" alt="">
+                                        <span class="font-meta font-semibold text-on-surface text-sm">{{ $reply->name }}</span>
+                                        <span class="text-[10px] text-outline">{{ $reply->created_at->diffForHumans() }}</span>
+                                    </div>
+                                    <p class="text-on-surface-variant text-[15px] leading-relaxed">{{ $reply->body }}</p>
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
+                @empty
+                    <p class="text-outline font-meta italic mb-8">{{ __('frontend.no_comments') ?? 'No comments yet. Be the first!' }}</p>
+                @endforelse
+
+                {{-- Comment Form --}}
+                <div class="mt-8 p-6 rounded-xl bg-surface-container-lowest border border-surface-variant">
+                    <h4 class="font-h3 text-[18px] text-on-surface mb-5">{{ __('frontend.leave_comment') ?? 'Leave a Comment' }}</h4>
+                    <form action="{{ route('article.comment', $article->slug) }}" method="POST" class="space-y-4">
+                        @csrf
+                        {{-- Honeypot --}}
+                        <input type="text" name="website_catch" class="hidden" tabindex="-1" autocomplete="off">
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-meta text-[12px] text-on-surface-variant mb-1 uppercase tracking-wider" for="comment-name">{{ __('frontend.name') ?? 'Name' }} *</label>
+                                <input id="comment-name" name="name" type="text" required value="{{ old('name') }}"
+                                    class="w-full bg-surface px-4 py-3 rounded border border-surface-variant focus:border-secondary focus:ring-1 focus:ring-secondary outline-none font-meta text-on-surface placeholder-outline">
+                            </div>
+                            <div>
+                                <label class="block font-meta text-[12px] text-on-surface-variant mb-1 uppercase tracking-wider" for="comment-email">{{ __('frontend.email') ?? 'Email' }} *</label>
+                                <input id="comment-email" name="email" type="email" required value="{{ old('email') }}"
+                                    class="w-full bg-surface px-4 py-3 rounded border border-surface-variant focus:border-secondary focus:ring-1 focus:ring-secondary outline-none font-meta text-on-surface placeholder-outline">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block font-meta text-[12px] text-on-surface-variant mb-1 uppercase tracking-wider" for="comment-body">{{ __('frontend.comment') ?? 'Comment' }} *</label>
+                            <textarea id="comment-body" name="body" rows="4" required
+                                class="w-full bg-surface px-4 py-3 rounded border border-surface-variant focus:border-secondary focus:ring-1 focus:ring-secondary outline-none font-meta text-on-surface placeholder-outline resize-none">{{ old('body') }}</textarea>
+                        </div>
+
+                        {{-- reCAPTCHA v3 --}}
+                        @if(config('services.recaptcha.site_key'))
+                            <input type="hidden" name="g-recaptcha-response" id="recaptchaResponse">
+                            <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}"></script>
+                            <script>
+                                grecaptcha.ready(function() {
+                                    grecaptcha.execute('{{ config('services.recaptcha.site_key') }}', {action: 'comment'}).then(function(token) {
+                                        document.getElementById('recaptchaResponse').value = token;
+                                    });
+                                });
+                            </script>
+                        @endif
+
+                        <button type="submit" class="bg-secondary text-on-secondary px-6 py-3 rounded font-label-caps text-label-caps uppercase hover:opacity-90 transition-opacity">
+                            {{ __('frontend.submit_comment') ?? 'Post Comment' }}
+                        </button>
+
+                        @if($errors->any())
+                            <div class="mt-3 text-error text-sm font-meta">
+                                @foreach($errors->all() as $error)
+                                    <p>{{ $error }}</p>
+                                @endforeach
+                            </div>
+                        @endif
+                    </form>
+                </div>
+            </section>
+
             {{-- Related Articles --}}
             @if(isset($relatedArticles) && $relatedArticles->isNotEmpty())
-            <section class="mt-16 pt-12 border-t border-slate-900/80">
-                <h3 class="font-headline font-black text-xl text-white mb-8 flex items-center gap-4">
-                    <span class="w-5 h-[2px] bg-amber-500"></span>
-                    Continued Reading
+            <section class="mt-12 pt-8 border-t border-surface-variant">
+                <h3 class="font-h3 text-h3 text-on-surface mb-8 flex items-center gap-3">
+                    <span class="w-5 h-[2px] bg-secondary"></span>
+                    {{ __('frontend.related_articles') ?? 'Related Articles' }}
                 </h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach($relatedArticles as $rel)
                     <a href="{{ route('article.show', $rel->slug) }}" class="group block">
-                        <div class="aspect-video rounded-xl overflow-hidden bg-slate-900 border border-slate-800 mb-4">
-                            @if(!empty($rel->image))
-                                <img src="{{ asset('storage/' . $rel->image) }}"
-                                     class="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
+                        <div class="aspect-video rounded-xl overflow-hidden bg-surface-container mb-3 border border-surface-variant">
+                            @if(!empty($rel->featured_image))
+                                <img src="{{ asset('storage/' . $rel->featured_image) }}"
+                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                      alt="{{ $rel->title }}">
+                            @else
+                                <div class="w-full h-full flex items-center justify-center bg-surface-container-high">
+                                    <span class="material-symbols-outlined text-[36px] text-outline">article</span>
+                                </div>
                             @endif
                         </div>
-                        <p class="text-amber-500 text-[9px] font-black uppercase tracking-widest mb-2">{{ $rel->category->name ?? '' }}</p>
-                        <h4 class="font-headline font-bold text-base text-slate-300 group-hover:text-white leading-snug transition-colors">
+                        <span class="text-[11px] font-label-caps text-secondary uppercase tracking-wider">{{ $rel->category->name ?? '' }}</span>
+                        <h4 class="font-h3 text-[16px] text-on-surface group-hover:text-secondary leading-snug mt-1 transition-colors line-clamp-2">
                             {{ $rel->title }}
                         </h4>
                     </a>
@@ -144,62 +264,45 @@
 
         </article>
 
-        {{-- ===== SIDEBAR (4/12) ===== --}}
+        {{-- ===== SIDEBAR ===== --}}
         <aside class="lg:col-span-4">
-            <div class="sticky top-24 space-y-10">
+            <div class="sticky top-24 space-y-8">
 
-                {{-- ═══════════════════════════════════════════════
-                     SIDEBAR AD ZONE (300×250 Rectangle)
-                     Priority: Adsterra 300x250 → Generic Sidebar → AdSense manual unit
-                     ═══════════════════════════════════════════════ --}}
+                {{-- Sidebar Ad --}}
                 @php
-                    $adstraActive   = ($settings['adsterra_active'] ?? '0') === '1';
-                    $sidebarAdHtml  = $adstraActive && !empty($settings['adsterra_banner_300x250_script'])
-                                        ? $settings['adsterra_banner_300x250_script']
-                                        : ($settings['ad_sidebar_script'] ?? null);
-                    $hasAdSense     = ($settings['adsense_active'] ?? '0') === '1' && !empty($settings['adsense_client_id']);
+                    $adstraActive2 = ($settings['adsterra_active'] ?? '0') === '1';
+                    $sidebarAd2 = $adstraActive2 && !empty($settings['adsterra_banner_300x250_script'])
+                                    ? $settings['adsterra_banner_300x250_script']
+                                    : ($settings['ad_sidebar_script'] ?? null);
                 @endphp
 
-                @if($sidebarAdHtml)
+                @if($sidebarAd2)
                 <div class="text-center">
-                    <p class="text-[9px] font-black uppercase tracking-[0.3em] text-slate-700 mb-3">Advertisement</p>
-                    <div class="overflow-hidden rounded-xl border border-slate-900/50 min-h-[250px] flex items-center justify-center">
-                        {!! $sidebarAdHtml !!}
+                    <p class="font-label-caps text-[10px] text-outline tracking-wider uppercase mb-2">Advertisement</p>
+                    <div class="overflow-hidden rounded-xl border border-surface-variant min-h-[250px] flex items-center justify-center bg-surface-container-low">
+                        {!! $sidebarAd2 !!}
                     </div>
-                </div>
-                @elseif($hasAdSense)
-                <div class="text-center">
-                    <p class="text-[9px] font-black uppercase tracking-[0.3em] text-slate-700 mb-3">Advertisement</p>
-                    <ins class="adsbygoogle"
-                         style="display:block;min-height:250px"
-                         data-ad-client="{{ $settings['adsense_client_id'] }}"
-                         data-ad-slot="auto"
-                         data-ad-format="auto"
-                         data-full-width-responsive="true"></ins>
-                    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
                 </div>
                 @endif
 
-                {{-- Most Read --}}
+                {{-- Most Read / Trending --}}
                 @if(isset($trendingArticles) && $trendingArticles->isNotEmpty())
-                <div>
-                    <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 mb-6 pb-3 border-b border-slate-900 flex items-center gap-3">
-                        <span class="w-3 h-[2px] bg-amber-500"></span>
-                        Essential Brief
+                <div class="bg-surface-container-lowest rounded-xl p-6 border border-surface-variant">
+                    <h4 class="font-h3 text-[18px] text-on-surface mb-6 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-secondary">trending_up</span>
+                        {{ __('frontend.popular_news') ?? 'Trending Now' }}
                     </h4>
-                    <div class="space-y-7">
+                    <div class="space-y-5">
                         @foreach($trendingArticles->take(5) as $index => $trend)
-                        <a href="{{ route('article.show', $trend->slug) }}" class="group flex gap-5">
-                            <span class="font-headline text-3xl font-black text-slate-800 group-hover:text-amber-500/40 transition-colors leading-none pt-1">
+                        <a href="{{ route('article.show', $trend->slug) }}" class="group flex gap-4">
+                            <span class="font-h2 text-[28px] font-bold text-outline/30 group-hover:text-secondary/50 transition-colors leading-none pt-1">
                                 {{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}
                             </span>
-                            <div class="space-y-1.5">
-                                <h5 class="font-headline font-bold text-sm text-slate-300 group-hover:text-white leading-snug transition-colors">
+                            <div>
+                                <h5 class="font-meta text-[14px] font-semibold text-on-surface group-hover:text-secondary transition-colors leading-snug">
                                     {{ $trend->title }}
                                 </h5>
-                                <p class="text-[9px] font-bold text-slate-600 uppercase tracking-widest">
-                                    {{ $trend->category->name ?? '' }}
-                                </p>
+                                <p class="text-[12px] text-outline mt-1">{{ $trend->category->name ?? '' }}</p>
                             </div>
                         </a>
                         @endforeach
@@ -207,22 +310,21 @@
                 </div>
                 @endif
 
-                {{-- Newsletter Widget --}}
-                <div class="bg-[#0D1829] border border-amber-500/10 rounded-2xl p-8 relative overflow-hidden">
-                    <div class="absolute -top-8 -right-8 w-24 h-24 bg-amber-500/5 rounded-full blur-2xl"></div>
-                    <h4 class="font-headline font-black text-lg text-white mb-3 relative z-10">Newsletter</h4>
-                    <p class="text-slate-500 text-xs mb-6 leading-relaxed">Berita pilihan editorial langsung ke inbox Anda.</p>
-                    <form action="{{ route('newsletter.subscribe') }}" method="POST" class="space-y-3 relative z-10">
+                {{-- Newsletter --}}
+                <div class="bg-primary-container rounded-xl p-6 text-on-primary-container">
+                    <h4 class="font-h3 text-[18px] text-on-primary mb-3 flex items-center gap-2">
+                        <span class="material-symbols-outlined">mail</span>
+                        Newsletter
+                    </h4>
+                    <p class="text-[13px] text-on-primary-fixed-variant mb-4 opacity-90">{{ __('frontend.newsletter_desc') ?? 'Get curated analysis in your inbox.' }}</p>
+                    <form action="{{ route('newsletter.subscribe') }}" method="POST" class="space-y-3">
                         @csrf
-                        <input name="email" type="email" placeholder="alamat@email.com"
-                               class="w-full bg-slate-950/80 border border-slate-800 focus:border-amber-500 rounded-lg px-4 py-3 text-sm text-white outline-none transition-all placeholder:text-slate-700"
-                               required>
-                        <button type="submit"
-                                class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-3 rounded-lg text-[10px] uppercase tracking-widest transition-colors">
+                        <input name="email" type="email" placeholder="{{ __('frontend.email') ?? 'your@email.com' }}" required
+                               class="w-full bg-surface text-on-surface px-4 py-3 rounded border border-transparent focus:border-secondary focus:ring-1 focus:ring-secondary outline-none font-meta text-sm placeholder-outline">
+                        <button type="submit" class="w-full bg-secondary text-on-secondary font-label-caps text-label-caps uppercase py-3 rounded hover:opacity-90 transition-opacity">
                             Subscribe
                         </button>
                     </form>
-                    <p class="mt-4 text-[9px] text-slate-700 text-center uppercase tracking-widest">Berhenti berlangganan kapan saja.</p>
                 </div>
 
             </div>
