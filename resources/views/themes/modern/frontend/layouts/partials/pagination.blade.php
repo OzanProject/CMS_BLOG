@@ -13,7 +13,7 @@
         @endif
 
         {{-- Pagination Elements --}}
-        <div class="flex flex-wrap items-center justify-center gap-1 sm:gap-2 font-meta text-sm font-medium">
+        <div class="hidden sm:flex flex-wrap items-center justify-center gap-1 sm:gap-2 font-meta text-sm font-medium">
             @foreach ($elements as $element)
                 
                 {{-- "Three Dots" Separator --}}

@@ -47,8 +47,8 @@
 .article-body a { color:#0058be;text-decoration:underline;text-underline-offset:3px; }
 .article-body a:hover { color:#2170e4; }
 .article-body pre { background:#131b2e;color:#bec6e0;padding:1.25rem;border-radius:.5rem;overflow-x:auto;margin:1.5rem 0;font-size:.875rem; }
-.article-body table { width:100%;border-collapse:collapse;margin:1.5rem 0; }
-.article-body th,.article-body td { border:1px solid #e0e3e5;padding:.75rem 1rem;text-align:left; }
+.article-body table { width:100%;border-collapse:collapse;margin:1.5rem 0; display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.article-body th,.article-body td { border:1px solid #e0e3e5;padding:.75rem 1rem;text-align:left; min-width: 120px; }
 .article-body th { background:#f2f4f6;font-family:'Manrope',sans-serif;font-weight:600; }
 
 /* Table of Contents */
@@ -325,7 +325,7 @@
         </article>
 
         {{-- SIDEBAR --}}
-        <aside class="lg:col-span-4 hidden lg:block sticky top-24 h-fit space-y-10 pl-6 border-l border-surface-container">
+        <aside class="lg:col-span-4 hidden lg:block space-y-10 pl-6 border-l border-surface-container">
 
             @if($sidebarAdHtml)
             <div class="p-4 border border-outline-variant bg-surface-container-lowest flex items-center justify-center min-h-[250px] rounded-lg relative">

@@ -37,8 +37,8 @@ class ContentInjector
             $adScript       = $settings['ad_in_article_script'] ?? null;
         }
 
-        // Explode content by closing paragraph tag
-        $paragraphs = explode('</p>', $content);
+        // Explode content by closing paragraph tag (case-insensitive)
+        $paragraphs = preg_split('/<\/p>/i', $content);
         $totalParagraphs = count($paragraphs);
 
         // 1. Inject "Read Also" after Paragraph 2 (index 1)

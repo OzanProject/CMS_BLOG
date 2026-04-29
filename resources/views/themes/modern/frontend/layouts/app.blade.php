@@ -147,11 +147,7 @@
         /* Smooth scroll */
         html { scroll-behavior: smooth; }
 
-        /* Hide empty AdSense containers to prevent gaps on production */
-        .adsbygoogle[data-ad-status="unfilled"], 
-        .adsbygoogle[data-adsbygoogle-status="done"]:empty {
-            display: none !important;
-        }
+
 
         /* Dark mode overrides */
         html.dark body { background-color: #111111; color: #e6e1e5; }
@@ -214,7 +210,7 @@
         
         {{-- Manual AdSense Slot --}}
         @if(($settings['adsense_active'] ?? '0') === '1' && !empty($settings['adsense_client_id']))
-        <div class="max-w-[1200px] mx-auto px-8 mt-2 mb-2 text-center overflow-hidden">
+        <div class="max-w-[1200px] mx-auto px-8 mt-2 mb-2 text-center overflow-hidden min-h-[90px]">
             <ins class="adsbygoogle"
                  style="display:block"
                  data-ad-client="{{ $settings['adsense_client_id'] }}"

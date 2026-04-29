@@ -64,5 +64,35 @@
                 mobileToggle.textContent = mobileMenu.classList.contains('hidden') ? 'menu' : 'close';
             });
         }
+
+        // Search Overlay Logic
+        const searchToggle = document.getElementById('searchToggle');
+        const closeSearch = document.getElementById('closeSearch');
+        const searchOverlay = document.getElementById('searchOverlay');
+        const searchInput = document.getElementById('searchOverlayInput');
+
+        if (searchToggle && searchOverlay) {
+            searchToggle.addEventListener('click', () => {
+                searchOverlay.classList.remove('hidden');
+                searchOverlay.classList.add('flex');
+                if (searchInput) searchInput.focus();
+            });
+        }
+
+        if (closeSearch && searchOverlay) {
+            closeSearch.addEventListener('click', () => {
+                searchOverlay.classList.add('hidden');
+                searchOverlay.classList.remove('flex');
+            });
+        }
+
+        if (searchOverlay) {
+            searchOverlay.addEventListener('click', (e) => {
+                if (e.target === searchOverlay) {
+                    searchOverlay.classList.add('hidden');
+                    searchOverlay.classList.remove('flex');
+                }
+            });
+        }
     });
 </script>
