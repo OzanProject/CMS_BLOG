@@ -1,19 +1,21 @@
 @if ($paginator->hasPages())
     <nav role="navigation" aria-label="{{ __('Pagination Navigation') }}" class="flex flex-wrap items-center justify-center gap-2 mt-12">
+        
         {{-- Previous Page Link --}}
         @if ($paginator->onFirstPage())
-            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-surface-container-low text-outline cursor-default" aria-disabled="true" aria-label="{{ __('pagination.previous') }}">
+            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-surface-container-low text-outline opacity-50 cursor-not-allowed pointer-events-none" aria-disabled="true" aria-label="{{ __('pagination.previous') }}">
                 <span class="material-symbols-outlined text-[20px]">chevron_left</span>
             </span>
         @else
-            <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-surface-container-low text-on-surface hover:bg-secondary hover:text-on-secondary transition-all shadow-sm" aria-label="{{ __('pagination.previous') }}">
+            <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-surface-container-low text-on-surface hover:bg-secondary hover:text-on-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 transition-all shadow-sm" aria-label="{{ __('pagination.previous') }}">
                 <span class="material-symbols-outlined text-[20px]">chevron_left</span>
             </a>
         @endif
 
         {{-- Pagination Elements --}}
-        <div class="flex flex-wrap items-center justify-center gap-2 font-meta text-sm font-medium">
+        <div class="flex flex-wrap items-center justify-center gap-1 sm:gap-2 font-meta text-sm font-medium">
             @foreach ($elements as $element)
+                
                 {{-- "Three Dots" Separator --}}
                 @if (is_string($element))
                     <span class="inline-flex items-center justify-center w-10 h-10 text-outline cursor-default" aria-disabled="true">{{ $element }}</span>
@@ -23,11 +25,11 @@
                 @if (is_array($element))
                     @foreach ($element as $page => $url)
                         @if ($page == $paginator->currentPage())
-                            <span aria-current="page" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-secondary text-on-secondary shadow-md">
+                            <span aria-current="page" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-secondary text-on-secondary shadow-md font-bold">
                                 {{ $page }}
                             </span>
                         @else
-                            <a href="{{ $url }}" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-surface-container-low text-on-surface hover:bg-secondary-fixed hover:text-on-secondary-fixed transition-all" aria-label="{{ __('Go to page :page', ['page' => $page]) }}">
+                            <a href="{{ $url }}" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-surface-container-low text-on-surface hover:bg-secondary-fixed hover:text-on-secondary-fixed focus:outline-none focus:ring-2 focus:ring-secondary-fixed focus:ring-offset-2 transition-all" aria-label="{{ __('Go to page :page', ['page' => $page]) }}">
                                 {{ $page }}
                             </a>
                         @endif
@@ -38,13 +40,14 @@
 
         {{-- Next Page Link --}}
         @if ($paginator->hasMorePages())
-            <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-surface-container-low text-on-surface hover:bg-secondary hover:text-on-secondary transition-all shadow-sm" aria-label="{{ __('pagination.next') }}">
+            <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-surface-container-low text-on-surface hover:bg-secondary hover:text-on-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 transition-all shadow-sm" aria-label="{{ __('pagination.next') }}">
                 <span class="material-symbols-outlined text-[20px]">chevron_right</span>
             </a>
         @else
-            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-surface-container-low text-outline cursor-default" aria-disabled="true" aria-label="{{ __('pagination.next') }}">
+            <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-surface-container-low text-outline opacity-50 cursor-not-allowed pointer-events-none" aria-disabled="true" aria-label="{{ __('pagination.next') }}">
                 <span class="material-symbols-outlined text-[20px]">chevron_right</span>
             </span>
         @endif
+        
     </nav>
 @endif
