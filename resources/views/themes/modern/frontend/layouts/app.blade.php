@@ -209,7 +209,7 @@
     @stack('styles')
 </head>
 
-<body class="antialiased font-body-md text-on-surface bg-background pt-16">
+<body class="bg-surface text-on-surface font-body-md antialiased selection:bg-secondary-container selection:text-on-secondary-container pt-16">
 
     {{-- Google Tag Manager (noscript) --}}
     @if(!empty($settings['google_analytics_id']) && str_starts_with($settings['google_analytics_id'], 'GTM-'))
