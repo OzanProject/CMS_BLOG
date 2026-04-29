@@ -98,12 +98,12 @@
     </div>
 
     {{-- Right Column: Sidebar --}}
-    <aside class="lg:col-span-4 flex flex-col gap-8">
+    <aside class="lg:col-span-4 flex flex-col gap-8 sticky top-24 h-fit">
         
         {{-- Categories Sidebar --}}
         @php $allCategories = \App\Models\Category::withCount('articles')->having('articles_count', '>', 0)->orderBy('name', 'asc')->get(); @endphp
         @if($allCategories->isNotEmpty())
-            <div class="bg-surface-container-lowest sticky top-24 rounded-lg border border-outline-variant shadow-sm w-full flex flex-col gap-1 p-5">
+            <div class="bg-surface-container-lowest rounded-lg border border-outline-variant shadow-sm w-full flex flex-col gap-1 p-5">
                 <div class="mb-4">
                     <h3 class="font-h3 text-[18px] text-on-surface">Categories</h3>
                     <p class="font-meta text-xs text-on-surface-variant">Browse by Topic</p>

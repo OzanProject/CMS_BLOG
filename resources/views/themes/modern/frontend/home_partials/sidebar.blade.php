@@ -47,6 +47,28 @@
     </form>
 </div>
 
+{{-- Categories Widget --}}
+@php $allCategories = \App\Models\Category::withCount('articles')->having('articles_count', '>', 0)->orderBy('name', 'asc')->get(); @endphp
+@if($allCategories->isNotEmpty())
+    <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30 shadow-premium">
+        <div class="flex flex-col mb-6">
+            <h3 class="font-label-caps text-xs text-on-surface mb-1 tracking-widest uppercase font-bold">Categories</h3>
+            <p class="font-meta text-[11px] text-outline uppercase tracking-wider">Browse by Topic</p>
+        </div>
+        <div class="space-y-2">
+            @foreach($allCategories as $cat)
+                <a href="{{ route('category.show', $cat->slug) }}" class="group flex items-center justify-between p-3 rounded-xl border border-transparent hover:border-outline-variant hover:bg-surface-container-low transition-all duration-300">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-[18px] text-outline group-hover:text-primary transition-colors">folder</span>
+                        <span class="font-meta font-bold text-sm text-on-surface-variant group-hover:text-on-surface">{{ $cat->name }}</span>
+                    </div>
+                    <span class="px-2 py-0.5 rounded-lg bg-surface-container text-[10px] font-bold text-outline group-hover:bg-primary/10 group-hover:text-primary transition-all">{{ $cat->articles_count }}</span>
+                </a>
+            @endforeach
+        </div>
+    </div>
+@endif
+
 {{-- Trending Sidebar --}}
 @if(isset($trendingArticles) && $trendingArticles->count() > 3)
 <div class="bg-surface-container-lowest rounded-xl p-6 border border-surface-variant shadow-premium">
