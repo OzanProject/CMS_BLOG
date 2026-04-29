@@ -39,11 +39,10 @@
 </style>
 @endpush
 
+@section('content')
 @php
     $readTime = max(1, round(str_word_count(strip_tags($article->content)) / 200));
 @endphp
-
-@section('content')
 {{-- Reading Progress Bar --}}
 <div class="fixed top-16 left-0 w-full h-1 z-[45] bg-transparent">
     <div class="h-full bg-secondary w-0 transition-all duration-150 ease-out" id="progress-bar"></div>
@@ -333,6 +332,8 @@
     </div>
 </main>
 
+@endsection
+
 @push('scripts')
 <script>
 window.addEventListener('scroll', () => {
@@ -345,4 +346,3 @@ window.addEventListener('scroll', () => {
 });
 </script>
 @endpush
-@endsection
