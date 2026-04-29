@@ -144,8 +144,14 @@
                 radial-gradient(at 100% 100%, rgba(0, 88, 190, 0.03) 0px, transparent 50%);
         }
 
-        /* Smooth scroll for TOC and internal links */
+        /* Smooth scroll */
         html { scroll-behavior: smooth; }
+
+        /* Hide empty AdSense containers to prevent gaps on production */
+        .adsbygoogle[data-ad-status="unfilled"], 
+        .adsbygoogle[data-adsbygoogle-status="done"]:empty {
+            display: none !important;
+        }
 
         {{-- Dark mode overrides --}}
         html.dark body { background-color: #111111; color: #e6e1e5; }
