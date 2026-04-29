@@ -25,6 +25,7 @@ class CheckMaintenanceMode
             // 2. Exclude Admin routes and Login/Logout/Register routes
             if ($request->is('admin') || 
                 $request->is('admin/*') || 
+                $request->is('dashboard') || 
                 $request->is('login') || 
                 $request->is('register') || 
                 $request->is('logout') ||
