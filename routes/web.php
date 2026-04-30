@@ -9,9 +9,11 @@ Route::get('/', [\App\Http\Controllers\FrontendController::class, 'index'])->nam
 Route::get('/ads.txt', function () {
     $content = \App\Models\Configuration::where('key', 'ads_txt_content')->value('value');
     return response($content ?? '', 200)->header('Content-Type', 'text/plain');
-});
+})->withoutMiddleware([\App\Http\Middleware\CheckMaintenanceMode::class, \App\Http\Middleware\SecurityHeaders::class]);
 
-Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
+Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])
+    ->name('sitemap')
+    ->withoutMiddleware([\App\Http\Middleware\CheckMaintenanceMode::class, \App\Http\Middleware\SecurityHeaders::class]);
 
 
 

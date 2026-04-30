@@ -32,6 +32,8 @@ class CheckMaintenanceMode
                 $request->is('forgot-password') ||
                 $request->is('reset-password/*') ||
                 $request->is('lang/*') ||
+                $request->is('ads.txt') ||
+                $request->is('sitemap.xml') ||
                 $request->is('livewire/*')) {
                 return $next($request);
             }

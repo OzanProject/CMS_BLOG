@@ -13,6 +13,9 @@
         $is_sensitive_page = request()->routeIs('login', 'register', 'password.*', 'verification.*', 'admin.*', 'dashboard');
     @endphp
 
+    @if(!empty($settings['google_verification_code']))
+        <meta name="google-site-verification" content="{{ $settings['google_verification_code'] }}">
+    @endif
     @if($is_sensitive_page)
         <meta name="robots" content="noindex, nofollow">
     @else
@@ -88,12 +91,9 @@
         </script>
     @endif
 
-    {{-- MATIKAN SEMENTARA SAMPAI DOMAIN DI-APPROVE AGAR TIDAK MERUSAK LAYOUT --}}
-    {{-- 
-    @if(!$is_sensitive_page && ($settings['adsense_active'] ?? '0') === '1' && !empty($settings['adsense_client_id']))
+    @if(!$is_sensitive_page && ($settings['adsense_active'] ?? '0') === '1' && ($settings['adsense_auto_ads'] ?? '0') === '1' && !empty($settings['adsense_client_id']))
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ $settings['adsense_client_id'] }}" crossorigin="anonymous"></script>
     @endif
-    --}}
 
     {{-- TailwindCSS CDN with Enhanced Config --}}
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
