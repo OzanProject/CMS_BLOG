@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Response;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Page;
@@ -17,7 +16,6 @@ class SitemapController extends Controller
         // Static Pages
         $urls = [
             ['loc' => route('home'), 'lastmod' => now()->toAtomString(), 'priority' => '1.0', 'changefreq' => 'daily'],
-            ['loc' => route('search'), 'lastmod' => now()->toAtomString(), 'priority' => '0.8', 'changefreq' => 'weekly'],
         ];
 
         // Categories
