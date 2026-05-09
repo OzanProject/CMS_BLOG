@@ -20,7 +20,13 @@
         <meta name="robots" content="noindex, nofollow">
     @else
         <meta name="robots" content="index, follow">
-        <link rel="canonical" href="{{ url()->current() }}">
+        @php
+            $canonicalUrl = request()->url();
+            if (request()->has('page')) {
+                $canonicalUrl .= '?page=' . request()->query('page');
+            }
+        @endphp
+        <link rel="canonical" href="{{ $canonicalUrl }}">
     @endif
 
     {{-- SEO & Social Media --}}
